@@ -1,0 +1,75 @@
+{
+  "project_info": {
+    "project_number": "74923365098",
+    "firebase_url": "https://project-mpt.firebaseio.com",
+    "project_id": "project-mpt",
+    "storage_bucket": "project-mpt.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:74923365098:android:fc3d607bac0f2b02",
+        "android_client_info": {
+          "package_name": "com.projectmpt.projectmpt"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "74923365098-ad3gq91cqn1vi30lc7kbcjgqh5b5k3a2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.projectmpt.projectmpt",
+            "certificate_hash": "f281ee3103bcb26ce70d44cec5b52839c9ed7825"
+          }
+        },
+        {
+          "client_id": "74923365098-qtgs8nb7etfrfe5vnvbrq61hj1umfq92.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.projectmpt.projectmpt",
+            "certificate_hash": "77943dd8eff04a9e9c435e23bbf1786c06528f88"
+          }
+        },
+        {
+          "client_id": "74923365098-4u0mto9813u2ujso093qicaqediqtfta.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "74923365098-vrjrt29pjikltltb29omvkvj1s93vnj6.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "74923365098-ke5mohp55qk3lrprpsapdtplmmb38q0b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.projectmpt.projectmpt",
+            "certificate_hash": "71a074db67cf4fa153b9becd51a6c1b06d77a0ae"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDm0R0credWtugCBIhRsdzTxHXs1OTgHrI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "74923365098-4u0mto9813u2ujso093qicaqediqtfta.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
