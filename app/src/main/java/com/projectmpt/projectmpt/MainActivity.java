@@ -1,3 +1,5 @@
+
+
 package com.projectmpt.projectmpt;
 
 import android.content.Intent;
@@ -24,6 +26,12 @@ import com.firebase.ui.auth.IdpResponse;
 import com.firebase.ui.auth.ResultCodes;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.InputStream;
 import java.util.Arrays;
@@ -33,6 +41,13 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 123;
 
+    private DatabaseReference mDatabase;
+
+    ChildEventListener mChildEventListener;
+    DatabaseReference mNeedsRef = FirebaseDatabase.getInstance().getReference("Needs");
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +55,23 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
+
+        mNeedsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Long numNeeds = dataSnapshot.getChildrenCount();
+
+                TextView tvNeeds = (TextView)findViewById(R.id.tvNeeds);
+
+                if (numNeeds != null) tvNeeds.setText(numNeeds.toString());
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
 
     }
@@ -58,8 +90,8 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
-       if (auth.getCurrentUser() != null) {
-          //  String name = user.getDisplayName();
+        if (auth.getCurrentUser() != null) {
+            //  String name = user.getDisplayName();
             //String email = user.getEmail();
 //            Uri photoUrl = user.getPhotoUrl();
 //
@@ -129,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         // RC_SIGN_IN is the request code you passed into startActivityForResult(...) when starting the sign in flow.
-       if (requestCode == RC_SIGN_IN) {
+        if (requestCode == RC_SIGN_IN) {
             IdpResponse response = IdpResponse.fromResultIntent(data);
 
             // Successfully signed in
@@ -137,13 +169,13 @@ public class MainActivity extends AppCompatActivity {
 
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-               // Uri photoUrl = user.getPhotoUrl();
+                // Uri photoUrl = user.getPhotoUrl();
 
-               // if (photoUrl != null) {
-                    //ImageButton ibProfile = (ImageButton) findViewById(R.id.ibProfile);
+                // if (photoUrl != null) {
+                //ImageButton ibProfile = (ImageButton) findViewById(R.id.ibProfile);
 
-                 //   new DownloadImageTask((ImageButton) findViewById(R.id.action_profile))
-                     //       .execute(photoUrl.toString());
+                //   new DownloadImageTask((ImageButton) findViewById(R.id.action_profile))
+                //       .execute(photoUrl.toString());
                 //}
 
                 return;
@@ -151,8 +183,8 @@ public class MainActivity extends AppCompatActivity {
                 // Sign in failed
                 if (response == null) {
                     // User pressed back button
-                    TextView tvStatus = (TextView)findViewById(R.id.tvStatus);
-                    tvStatus.setText("cancelled");
+                    //TextView tvStatus = (TextView)findViewById(R.id.tvStatus);
+                    // tvStatus.setText("cancelled");
                     return;
                 }
 
@@ -174,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void startProfile(View view) {
 
-       // FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        // FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() != null) {

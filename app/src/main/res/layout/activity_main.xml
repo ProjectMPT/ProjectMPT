@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:orientation="vertical"
     tools:context="com.projectmpt.projectmpt.MainActivity">
 
     <android.support.v7.widget.Toolbar
@@ -14,39 +17,63 @@
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintTop_toTopOf="parent" />
+        />
 
+
+    <TextView
+        android:id="@+id/tvWelcome"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_alignParentTop="true"
+        android:hint="To Do Welcome message pulled from FireDB" />
 
 
 
     <TextView
-        android:id="@+id/tvStatus"
+        android:id="@+id/tvNeeds"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="191dp"
-        android:text="Log In Status"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginStart="16dp" />
+        android:layout_height="20dp"
+        android:layout_below="@id/tvWelcome"
+        android:hint="To Do Number of needs in the area" />
+
+    <TextView
+        android:id="@+id/tvNeedsMap"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:onClick="startMap"
+        android:layout_toRightOf="@id/tvNeeds"
+        android:layout_below="@id/tvWelcome"
+        android:paddingLeft="16dp"
+        android:hint="Map" />
+
+    <TextView
+        android:id="@+id/tvNeedsList"
+        android:layout_toRightOf="@id/tvNeedsMap"
+        android:layout_below="@id/tvWelcome"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:paddingLeft="16dp"
+        android:hint="List" />
+
+
+
+    <TextView
+        android:id="@+id/tvTransports"
+        android:layout_width="1000dp"
+        android:layout_height="20dp"
+        android:layout_below="@id/tvNeeds"
+        android:hint="To Do number of Transport Requests in area" />
+
 
     <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
+        android:id="@+id/cmdShowMap"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/tvTransports"
         android:contentDescription="Button"
-        android:onClick="startMap"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/my_toolbar"
-        tools:text="Map" />
+        android:onClick="startMeet"
+        tools:text="Enter New Need" />
 
 
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>
 

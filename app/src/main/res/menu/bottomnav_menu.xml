@@ -6,9 +6,9 @@
             android:icon="@drawable/common_google_signin_btn_icon_dark" />
        <item android:id="@+id/action_add_new"
             android:title="@string/nav_add_new"
-            android:icon="@drawable/ic_googleg_color_24dp" />
+            android:icon="@drawable/common_google_signin_btn_icon_dark" />
     <item android:id="@+id/action_help"
         android:title="@string/nav_help"
-        android:icon="@drawable/ic_googleg_color_24dp" />
+        android:icon="@drawable/common_google_signin_btn_icon_dark" />
 
     </menu>
