@@ -53,7 +53,7 @@ public class ListActivity extends AppCompatActivity implements BottomNavigationV
             protected void populateView(View view, Needs s, int i) {
                 TextView text = (TextView) view.findViewById(android.R.id.text1);
                 text.setText(s.description);
-                
+
             }
         };
 

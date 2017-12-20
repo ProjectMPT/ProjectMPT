@@ -5,6 +5,7 @@ package com.projectmpt.projectmpt;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -56,12 +57,16 @@ public class MainActivity extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
+
+
         mNeedsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Long numNeeds = dataSnapshot.getChildrenCount();
 
                 TextView tvNeeds = (TextView)findViewById(R.id.tvNeeds);
+
+
 
                 if (numNeeds != null) tvNeeds.setText(numNeeds.toString());
 
