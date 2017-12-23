@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -42,10 +43,12 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 123;
 
-    private DatabaseReference mDatabase;
+    //private DatabaseReference mDatabase;
 
-    ChildEventListener mChildEventListener;
+    //ChildEventListener mChildEventListener;
     DatabaseReference mNeedsRef = FirebaseDatabase.getInstance().getReference("Needs");
+
+    DatabaseReference mWelcome = FirebaseDatabase.getInstance().getReference("WelcomeMessage");
 
 
 
@@ -57,7 +60,8 @@ public class MainActivity extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
-
+        TextView tvTransportList = (TextView)findViewById(R.id.tvTransportList);
+        tvTransportList.setPaintFlags(tvTransportList.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
         mNeedsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -66,9 +70,7 @@ public class MainActivity extends AppCompatActivity {
 
                 TextView tvNeeds = (TextView)findViewById(R.id.tvNeeds);
 
-
-
-                if (numNeeds != null) tvNeeds.setText(numNeeds.toString());
+                if (numNeeds != null) tvNeeds.setText(numNeeds.toString() + " needs in your area" );
 
             }
 
@@ -77,6 +79,24 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        mWelcome.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String strWelcome = dataSnapshot.getValue().toString();
+
+                TextView tvWelcome = (TextView)findViewById(R.id.tvWelcome);
+
+                if (tvWelcome != null) tvWelcome.setText(strWelcome);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
 
 
     }
@@ -96,28 +116,13 @@ public class MainActivity extends AppCompatActivity {
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() != null) {
-            //  String name = user.getDisplayName();
-            //String email = user.getEmail();
-//            Uri photoUrl = user.getPhotoUrl();
-//
-//            TextView tvStatus = (TextView)findViewById(R.id.tvStatus);
-//
-//           if (name != null) tvStatus.setText(name);
-//
-//            if (photoUrl != null) {
-//                ImageButton ibProfile = (ImageButton) findViewById(R.id.ibProfile);
-//
-//                new DownloadImageTask((ImageButton) findViewById(R.id.ibProfile))
-//                        .execute(photoUrl.toString());
-//
-//            }
+
 
         } else {
             // not signed in
         }
 
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -247,6 +252,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void startMap(View view) {
         Intent intent = new Intent(this, MapActivity.class);
+        startActivity(intent);
+    }
+
+    public void startList(View view) {
+        Intent intent = new Intent(this, ListActivity.class);
         startActivity(intent);
     }
 

@@ -1,12 +1,12 @@
 package com.projectmpt.projectmpt;
 
+
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -15,13 +15,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+//import com.firebase.ui.FirebaseListAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.firebase.ui.database.FirebaseListAdapter;
 
 import java.util.Arrays;
 
@@ -48,7 +49,7 @@ public class ListActivity extends AppCompatActivity implements BottomNavigationV
         ListView lstNeeds = (ListView) findViewById(R.id.lstNeeds);
 
 //
-        FirebaseListAdapter myAdapter = new FirebaseListAdapter<Needs>(this,Needs.class,android.R.layout.simple_list_item_1,mNeedsRef) {
+        FirebaseListAdapter myAdapter = new FirebaseListAdapter<Needs>(this,Needs.class,android.R.layout.simple_list_item_2,mNeedsRef) {
             @Override
             protected void populateView(View view, Needs s, int i) {
                 TextView text = (TextView) view.findViewById(android.R.id.text1);
@@ -140,3 +141,4 @@ public class ListActivity extends AppCompatActivity implements BottomNavigationV
 
 
 }
+

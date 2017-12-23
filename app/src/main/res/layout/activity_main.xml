@@ -29,12 +29,17 @@
 
     <TextView
         android:id="@+id/tvWelcome"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Welcome message pulled from FireDB!"
         android:textAlignment="center"
         android:textAppearance="@style/standardText"
-        app:layout_constraintTop_toBottomOf="@id/imageView" />
+        android:paddingRight="@dimen/text_marginRight"
+        android:paddingTop="@dimen/text_marginTop"
+        android:paddingBottom="@dimen/text_marginBottom"
+        app:layout_constraintTop_toBottomOf="@id/imageView"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
 
 
     <TextView
@@ -43,6 +48,10 @@
         android:layout_height="wrap_content"
         android:text="X Needs"
         android:textAppearance="@style/standardText"
+        android:paddingLeft="@dimen/text_marginLeft"
+        android:paddingRight="@dimen/text_marginRight"
+        android:paddingTop="@dimen/text_marginTop"
+        android:paddingBottom="@dimen/text_marginBottom"
         app:layout_constraintTop_toBottomOf="@id/tvWelcome" />
 
     <TextView
@@ -52,6 +61,10 @@
         android:onClick="startMap"
         android:text="Map"
         android:textAppearance="@style/standardText"
+        android:paddingLeft="@dimen/text_marginLeft"
+        android:paddingRight="@dimen/text_marginRight"
+        android:paddingTop="@dimen/text_marginTop"
+        android:paddingBottom="@dimen/text_marginBottom"
         app:layout_constraintLeft_toRightOf="@id/tvNeeds"
         app:layout_constraintTop_toBottomOf="@id/tvWelcome" />
 
@@ -62,6 +75,11 @@
         android:layout_below="@id/tvWelcome"
         android:layout_toRightOf="@id/tvNeedsMap"
         android:text="List"
+        android:onClick="startList"
+        android:paddingLeft="@dimen/text_marginLeft"
+        android:paddingRight="@dimen/text_marginRight"
+        android:paddingTop="@dimen/text_marginTop"
+        android:paddingBottom="@dimen/text_marginBottom"
         android:textAppearance="@style/standardText"
         app:layout_constraintLeft_toRightOf="@id/tvNeedsMap"
         app:layout_constraintTop_toBottomOf="@id/tvWelcome" />
@@ -73,6 +91,10 @@
         android:layout_height="wrap_content"
         android:text="X Transport Requests"
         android:textAppearance="@style/standardText"
+        android:paddingLeft="@dimen/text_marginLeft"
+        android:paddingRight="@dimen/text_marginRight"
+        android:paddingTop="@dimen/text_marginTop"
+        android:paddingBottom="@dimen/text_marginBottom"
         app:layout_constraintTop_toBottomOf="@id/tvNeeds" />
 
     <TextView
@@ -82,6 +104,10 @@
         android:onClick="startMap"
         android:text="Map"
         android:textAppearance="@style/standardText"
+        android:paddingLeft="@dimen/text_marginLeft"
+        android:paddingRight="@dimen/text_marginRight"
+        android:paddingTop="@dimen/text_marginTop"
+        android:paddingBottom="@dimen/text_marginBottom"
         app:layout_constraintLeft_toRightOf="@id/tvTransports"
         app:layout_constraintTop_toBottomOf="@id/tvNeeds" />
 
@@ -91,7 +117,11 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/tvWelcome"
         android:layout_toRightOf="@id/tvNeedsMap"
-        android:text="List"
+        android:text="@string/map"
+        android:paddingLeft="@dimen/text_marginLeft"
+        android:paddingRight="@dimen/text_marginRight"
+        android:paddingTop="@dimen/text_marginTop"
+        android:paddingBottom="@dimen/text_marginBottom"
         android:textAppearance="@style/standardText"
         app:layout_constraintLeft_toRightOf="@id/tvTransportMap"
         app:layout_constraintTop_toBottomOf="@id/tvNeeds" />

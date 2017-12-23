@@ -21,8 +21,6 @@
         />
 
 
-
-
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="0dp"
@@ -31,15 +29,17 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:itemIconTint="@color/colorwhite"
+        app:itemIconTint="@color/colorAccent"
         app:itemTextColor="@color/common_google_signin_btn_text_dark"
         app:menu="@menu/bottomnav_menu"
         />
 
     <ListView
+        app:layout_constraintTop_toBottomOf="@id/my_toolbar"
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:id="@+id/lstNeeds"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
- />
+        />
 
 </android.support.constraint.ConstraintLayout>
