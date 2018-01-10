@@ -6,4 +6,8 @@
     <color name="colorAccent2">#ff561e</color>
     <color name="colorwhite">#ffffff</color>
     <color name="colorblack">#000000</color>
+    <color name="colorlinktext">#2ce080</color>
+    <color name="colorbackground">#f2f3f5</color>
+    <color name="colortoolbarbackground">#03314b</color>
+
 </resources>

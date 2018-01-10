@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
+    android:background="@color/colorbackground"
     tools:context="com.projectmpt.projectmpt.MainActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/my_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorBackgroundFloating"
+        android:background="@color/colorwhite"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:layout_constraintTop_toTopOf="parent"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
@@ -31,15 +31,17 @@
         android:id="@+id/tvWelcome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Welcome message pulled from FireDB!"
-        android:textAlignment="center"
-        android:textAppearance="@style/standardText"
+        android:paddingBottom="@dimen/text_marginBottom"
+        android:paddingLeft="@dimen/text_marginLeft"
         android:paddingRight="@dimen/text_marginRight"
         android:paddingTop="@dimen/text_marginTop"
-        android:paddingBottom="@dimen/text_marginBottom"
-        app:layout_constraintTop_toBottomOf="@id/imageView"
+        android:text="Very Long welcomeWelcome message sssssss pulled from FireDB!"
+        android:textAlignment="center"
+        android:textAppearance="@style/standardText"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imageView" />
 
 
     <TextView
@@ -60,7 +62,7 @@
         android:layout_height="wrap_content"
         android:onClick="startMap"
         android:text="Map"
-        android:textAppearance="@style/standardText"
+        android:textAppearance="@style/linkText"
         android:paddingLeft="@dimen/text_marginLeft"
         android:paddingRight="@dimen/text_marginRight"
         android:paddingTop="@dimen/text_marginTop"
@@ -80,7 +82,7 @@
         android:paddingRight="@dimen/text_marginRight"
         android:paddingTop="@dimen/text_marginTop"
         android:paddingBottom="@dimen/text_marginBottom"
-        android:textAppearance="@style/standardText"
+        android:textAppearance="@style/linkText"
         app:layout_constraintLeft_toRightOf="@id/tvNeedsMap"
         app:layout_constraintTop_toBottomOf="@id/tvWelcome" />
 
@@ -94,7 +96,7 @@
         android:paddingLeft="@dimen/text_marginLeft"
         android:paddingRight="@dimen/text_marginRight"
         android:paddingTop="@dimen/text_marginTop"
-        android:paddingBottom="@dimen/text_marginBottom"
+        android:paddingBottom="36dp"
         app:layout_constraintTop_toBottomOf="@id/tvNeeds" />
 
     <TextView
@@ -103,7 +105,7 @@
         android:layout_height="wrap_content"
         android:onClick="startMap"
         android:text="Map"
-        android:textAppearance="@style/standardText"
+        android:textAppearance="@style/linkText"
         android:paddingLeft="@dimen/text_marginLeft"
         android:paddingRight="@dimen/text_marginRight"
         android:paddingTop="@dimen/text_marginTop"
@@ -117,31 +119,31 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/tvWelcome"
         android:layout_toRightOf="@id/tvNeedsMap"
-        android:text="@string/map"
-        android:paddingLeft="@dimen/text_marginLeft"
-        android:paddingRight="@dimen/text_marginRight"
+        android:text="List"
+        android:paddingLeft="24dp"
+        android:paddingRight="0dp"
         android:paddingTop="@dimen/text_marginTop"
         android:paddingBottom="@dimen/text_marginBottom"
-        android:textAppearance="@style/standardText"
+        android:textAppearance="@style/linkText"
         app:layout_constraintLeft_toRightOf="@id/tvTransportMap"
         app:layout_constraintTop_toBottomOf="@id/tvNeeds" />
 
 
     <Button
-        android:layout_width="wrap_content"
         android:id="@+id/cmdShowMap"
-        android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/ic_addnew"
-        android:gravity="left|center_vertical"
-        android:textAppearance="@style/standardText"
+        android:layout_width="wrap_content"
+        android:layout_height="47dp"
         android:background="@android:color/white"
         android:contentDescription="Button"
-        android:elevation="1dp"
+         android:elevation="1dp"
         android:onClick="startMeet"
-        app:layout_constraintTop_toBottomOf="@id/tvTransports"
-        app:layout_constraintRight_toRightOf="parent"
+        android:text="+ Enter New Need"
+        android:paddingLeft="@dimen/text_marginLeft"
+        android:paddingRight="@dimen/text_marginRight"
+        android:textAppearance="@style/standardText"
         app:layout_constraintLeft_toLeftOf="parent"
-        tools:text="New Need" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvTransports" />
 
 
 </android.support.constraint.ConstraintLayout>

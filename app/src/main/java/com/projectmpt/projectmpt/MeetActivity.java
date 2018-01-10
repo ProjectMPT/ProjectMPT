@@ -94,6 +94,14 @@ public class MeetActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
+    public void cancelNeed(View view) {
+
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+
+    }
+
+
 
     public void saveNeed(View view) {
 
@@ -104,15 +112,15 @@ public class MeetActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         if (auth.getCurrentUser() != null) {
 
-       // Map mLocation = new HashMap();
-       // mLocation.put("latitude", llNeedLocation.latitude);
-       // mLocation.put("longitude", llNeedLocation.longitude);
+            // Map mLocation = new HashMap();
+            // mLocation.put("latitude", llNeedLocation.latitude);
+            // mLocation.put("longitude", llNeedLocation.longitude);
 
-        EditText txtNeed   = (EditText)findViewById(R.id.txtNeed);
-        String strNeed = txtNeed.getText().toString();
+            EditText txtNeed = (EditText) findViewById(R.id.txtNeed);
+            String strNeed = txtNeed.getText().toString();
 
-        EditText txtLocationDetails   = (EditText)findViewById(R.id.txtLocation);
-        String strLocationDetails = txtLocationDetails.getText().toString();
+            EditText txtLocationDetails = (EditText) findViewById(R.id.txtLocation);
+            String strLocationDetails = txtLocationDetails.getText().toString();
 /*
         mDatabase.child("Needs").push().getKey();
 
@@ -132,9 +140,29 @@ public class MeetActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 */
 
-        DatabaseReference mNeedsRef = FirebaseDatabase.getInstance().getReference("Needs");
-        Needs marker = new Needs(strNeed, strLocationDetails, user.getEmail(), llNeedLocation.latitude, llNeedLocation.longitude, epTimeFrom, epTimeTo );
-        mNeedsRef.push().setValue(marker);
+            DatabaseReference mNeedsRef = FirebaseDatabase.getInstance().getReference("Needs");
+            Needs marker = new Needs(strNeed, strLocationDetails, user.getEmail(), llNeedLocation.latitude, llNeedLocation.longitude, epTimeFrom, epTimeTo);
+            mNeedsRef.push().setValue(marker);
+
+            final Intent intent = new Intent(this, MainActivity.class);
+
+            AlertDialog alertDialog = new AlertDialog.Builder(MeetActivity.this).create();
+            alertDialog.setTitle("Saved");
+            alertDialog.setMessage("New need saved successfully");
+            alertDialog.setIcon(R.drawable.done_check_mark);
+
+            alertDialog.setButton(DialogInterface.BUTTON_POSITIVE,"OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+
+
+                    startActivity(intent);
+
+                }
+            });
+
+            alertDialog.show();
+
+
 
         } else {
 

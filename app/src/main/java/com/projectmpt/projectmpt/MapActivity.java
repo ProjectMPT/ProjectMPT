@@ -241,11 +241,13 @@ public class MapActivity extends AppCompatActivity
 
                 Intent intentMain = new Intent(this, MainActivity.class);
                 startActivity(intentMain);
+                break;
 
             case R.id.action_add_new:
 
                  Intent intentList = new Intent(this, MeetActivity.class);
                  startActivity(intentList);
+                 break;
 
             case R.id.action_help:
 

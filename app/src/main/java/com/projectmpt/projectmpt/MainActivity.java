@@ -59,9 +59,10 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        TextView tvTransportList = (TextView)findViewById(R.id.tvTransportList);
-        tvTransportList.setPaintFlags(tvTransportList.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        //TextView tvTransportList = (TextView)findViewById(R.id.tvTransportList);
+        //tvTransportList.setPaintFlags(tvTransportList.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
         mNeedsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
