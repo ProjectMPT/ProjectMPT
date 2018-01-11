@@ -25,6 +25,8 @@ import android.widget.ScrollView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.firebase.geofire.GeoFire;
+import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -39,6 +41,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import java.text.SimpleDateFormat;
@@ -107,42 +110,44 @@ public class MeetActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
+
+
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         FirebaseAuth auth = FirebaseAuth.getInstance();
 
         if (auth.getCurrentUser() != null) {
-
-            // Map mLocation = new HashMap();
-            // mLocation.put("latitude", llNeedLocation.latitude);
-            // mLocation.put("longitude", llNeedLocation.longitude);
 
             EditText txtNeed = (EditText) findViewById(R.id.txtNeed);
             String strNeed = txtNeed.getText().toString();
 
             EditText txtLocationDetails = (EditText) findViewById(R.id.txtLocation);
             String strLocationDetails = txtLocationDetails.getText().toString();
-/*
-        mDatabase.child("Needs").push().getKey();
 
-
-        Map mParent = new HashMap();
-        mParent.put("Owner", user.getEmail());
-        mParent.put("Description", strNeed);
-        mParent.put("LocationDetails", strLocationDetails);
-        mParent.put("TimeFrom", epTimeFrom);
-        mParent.put("TimeTo", epTimeTo);
-        mParent.put("LatLong", mLocation);
-
-        mDatabase.child("Needs").push().setValue(mParent);
-
-        } else {
-
-        }
-*/
 
             DatabaseReference mNeedsRef = FirebaseDatabase.getInstance().getReference("Needs");
             Needs marker = new Needs(strNeed, strLocationDetails, user.getEmail(), llNeedLocation.latitude, llNeedLocation.longitude, epTimeFrom, epTimeTo);
-            mNeedsRef.push().setValue(marker);
+
+
+
+            //mNeedsRef.push().setValue(marker);
+
+            mNeedsRef.push().setValue(marker, new DatabaseReference.CompletionListener() {
+                        @Override
+                        public void onComplete(DatabaseError databaseError,
+                                               DatabaseReference databaseReference) {
+                            String key = databaseReference.getKey();
+
+                            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("GeoFire");
+                            GeoFire geoFire = new GeoFire(ref);
+
+                            geoFire.setLocation(key, new GeoLocation(llNeedLocation.latitude, llNeedLocation.longitude));
+                            
+                        }
+                    });
+
+
+
+
 
             final Intent intent = new Intent(this, MainActivity.class);
 
