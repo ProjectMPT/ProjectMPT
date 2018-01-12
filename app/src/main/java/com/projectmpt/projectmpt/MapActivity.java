@@ -20,12 +20,21 @@ import android.support.v7.app.AppCompatActivity;
 
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.geofire.GeoFire;
+import com.firebase.geofire.GeoLocation;
+import com.firebase.geofire.GeoQuery;
+import com.firebase.geofire.GeoQueryDataEventListener;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 
+import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -39,11 +48,17 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MapActivity extends AppCompatActivity
@@ -59,6 +74,7 @@ public class MapActivity extends AppCompatActivity
     Location mLastLocation;
     Marker mCurrLocationMarker;
 
+    private FusedLocationProviderClient mFusedLocationClient;
 
     private static final String TAG = "MPTMapActivity";
 
@@ -107,41 +123,154 @@ public class MapActivity extends AppCompatActivity
 
     private void addMarkersToMap(final GoogleMap map){
 
-        mChildEventListener = mNeedsRef.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Needs marker = dataSnapshot.getValue(Needs.class);
-                String description = marker.getDescription();
-                String locationdetails = marker.getLocationdetails();
-                String owner = marker.getOwner();
-                Double latitude = marker.getLatitude();
-                Double longitude = marker.getLongitude();
-                Long timefrom = marker.getTimefrom();
-                Long timeto = marker.getTimeto();
-                LatLng location = new LatLng(latitude,longitude);
-                map.addMarker(new MarkerOptions().position(location).title(description).snippet(locationdetails));
-            }
+        if (ContextCompat.checkSelfPermission(this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
 
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-            }
+            mFusedLocationClient.getLastLocation()
+                    .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
 
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("NeedLocations");
 
-            }
+                            final Double gridSize = 0.20;
+                            final Double lowLong =  location.getLongitude()-gridSize;
+                            final Double highLong =  location.getLongitude()+gridSize;
 
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                            Query query = mNeedsRef.orderByChild("latitude").startAt(location.getLatitude()-gridSize).endAt(location.getLatitude()+gridSize);
+                            query.addListenerForSingleValueEvent(new ValueEventListener() {
 
-            }
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                                    for(DataSnapshot item: dataSnapshot.getChildren())
+                                    {
+                                        Needs marker = item.getValue(Needs.class);
 
-            }
-        });
+                                        if(item.child("longitude").getValue(Double.class) > lowLong && item.child("longitude").getValue(Double.class) < highLong ) {
+
+                                            String description = marker.getDescription();
+                                            String locationdetails = marker.getLocationdetails();
+                                           // String owner = marker.getOwner();
+                                            Double latitude = marker.getLatitude();
+                                            Double longitude = marker.getLongitude();
+                                           // Long timefrom = marker.getTimefrom();
+                                           // Long timeto = marker.getTimeto();
+                                            LatLng mlocation = new LatLng(latitude,longitude);
+                                            map.addMarker(new MarkerOptions().position(mlocation).title(description).snippet(locationdetails));
+
+                                            Log.w(TAG, "AddMarker: " + mlocation.toString() + description);
+
+                                        }
+
+                                    }
+
+
+                                }
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                    // Getting Post failed, log a message
+                                    //   Log.w(TAG, "getUser:onCancelled", databaseError.toException());
+                                }
+                            });
+
+
+
+                            if (location != null) {
+                                // Logic to handle location object
+                            }
+                        }
+                    });
+
+        }
+
+
+//                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("NeedLocations");
+//                        GeoFire geoFire = new GeoFire(ref);
+//
+//                        GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(currentlatLng.latitude, currentlatLng.longitude), 10);
+//
+//                        geoQuery.addGeoQueryDataEventListener(new GeoQueryDataEventListener() {
+//
+//                            @Override
+//                            public void onDataEntered(DataSnapshot dataSnapshot, GeoLocation location) {
+//
+//                                Needs marker = dataSnapshot.getValue(Needs.class);
+//                             String description = dataSnapshot.getKey().toString();
+//                             LatLng needlocation = new LatLng(location.latitude,location.longitude);
+//                             map.addMarker(new MarkerOptions().position(needlocation).title(description).snippet(description));
+//
+//
+//                            }
+//
+//                            @Override
+//                            public void onDataExited(DataSnapshot dataSnapshot) {
+//
+//                            }
+//
+//                            @Override
+//                            public void onDataMoved(DataSnapshot dataSnapshot, GeoLocation location) {
+//                                // ...
+//                            }
+//
+//                            @Override
+//                            public void onDataChanged(DataSnapshot dataSnapshot, GeoLocation location) {
+//
+//
+//                            }
+//
+//                            @Override
+//                            public void onGeoQueryReady() {
+//
+//                            }
+//
+//                            @Override
+//                            public void onGeoQueryError(DatabaseError error) {
+//
+//                            }
+//
+//
+//
+//                });
+
+//        mChildEventListener = mNeedsRef.addChildEventListener(new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+//                Needs marker = dataSnapshot.getValue(Needs.class);
+//                String description = marker.getDescription();
+//                String locationdetails = marker.getLocationdetails();
+//                String owner = marker.getOwner();
+//                Double latitude = marker.getLatitude();
+//                Double longitude = marker.getLongitude();
+//                Long timefrom = marker.getTimefrom();
+//                Long timeto = marker.getTimeto();
+//                LatLng location = new LatLng(latitude,longitude);
+//                map.addMarker(new MarkerOptions().position(location).title(description).snippet(locationdetails));
+//            }
+//
+//            @Override
+//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+//
+//            }
+//
+//            @Override
+//            public void onChildRemoved(DataSnapshot dataSnapshot) {
+//
+//            }
+//
+//            @Override
+//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
 
     }
 
@@ -197,8 +326,10 @@ public class MapActivity extends AppCompatActivity
 
             mLastLocation = LocationServices.FusedLocationApi
                     .getLastLocation(mGoogleApiClient);
-            LatLng latLng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,11));
+
+
+            LatLng currentlatLng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentlatLng,11));
 
         }
     }

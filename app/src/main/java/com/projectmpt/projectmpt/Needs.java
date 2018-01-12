@@ -1,7 +1,11 @@
 package com.projectmpt.projectmpt;
 
+import com.google.firebase.database.Exclude;
+
 public class Needs {
 
+        @Exclude
+        public String key;
         public String description;
         public String locationdetails;
         public String owner;
@@ -23,6 +27,12 @@ public class Needs {
                 this.longitude = longitude;
                 this.timefrom = timefrom;
                 this.timeto = timeto;
+        }
+
+        public String getKey() {return key;}
+
+        public void setKey(String key) {
+                this.key= key;
         }
 
         public String getDescription() {
@@ -79,6 +89,14 @@ public class Needs {
 
         public void setTimeto(long timeto) {
                 this.timeto = timeto;
+        }
+
+
+        @Override
+        public String toString() {
+
+                return getDescription();
+
         }
 
 }

@@ -135,14 +135,20 @@ public class MeetActivity extends AppCompatActivity implements OnMapReadyCallbac
                         @Override
                         public void onComplete(DatabaseError databaseError,
                                                DatabaseReference databaseReference) {
-                            String key = databaseReference.getKey();
 
-                            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("GeoFire");
-                            GeoFire geoFire = new GeoFire(ref);
+                            if (databaseError != null) {
+                                System.err.println("There was an error saving the location to GeoFire: " + databaseError);
+                            } else {
 
-                            geoFire.setLocation(key, new GeoLocation(llNeedLocation.latitude, llNeedLocation.longitude));
-                            
-                        }
+                                String key = databaseReference.getKey();
+
+                                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("NeedLocations");
+                                GeoFire geoFire = new GeoFire(ref);
+
+                                geoFire.setLocation(key, new GeoLocation(llNeedLocation.latitude, llNeedLocation.longitude));
+                            }
+
+                           }
                     });
 
 

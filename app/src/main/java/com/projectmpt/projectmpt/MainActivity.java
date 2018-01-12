@@ -2,14 +2,19 @@
 
 package com.projectmpt.projectmpt;
 
+import android.*;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.location.Location;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -22,10 +27,19 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 
+import com.firebase.geofire.GeoFire;
+import com.firebase.geofire.GeoLocation;
+import com.firebase.geofire.GeoQuery;
+import com.firebase.geofire.GeoQueryDataEventListener;
+import com.firebase.geofire.GeoQueryEventListener;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
 import com.firebase.ui.auth.ResultCodes;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -42,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private static final int RC_SIGN_IN = 123;
+    Integer i = 0;
 
     //private DatabaseReference mDatabase;
 
@@ -50,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
     DatabaseReference mWelcome = FirebaseDatabase.getInstance().getReference("WelcomeMessage");
 
+    private FusedLocationProviderClient mFusedLocationClient;
 
 
     @Override
@@ -61,42 +77,116 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        if (ContextCompat.checkSelfPermission(this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+
+            mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+            mFusedLocationClient.getLastLocation()
+                    .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+
+
+
+                            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("NeedLocations");
+                            GeoFire geoFire = new GeoFire(ref);
+
+                            GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(location.getLatitude(), location.getLongitude()), 10);
+
+                            i=0;
+
+                            geoQuery.addGeoQueryDataEventListener(new GeoQueryDataEventListener() {
+
+                                @Override
+                                public void onDataEntered(DataSnapshot dataSnapshot, GeoLocation location) {
+
+                                    i = i + 1;
+
+
+                                }
+
+                                @Override
+                                public void onDataExited(DataSnapshot dataSnapshot) {
+
+                                }
+
+                                @Override
+                                public void onDataMoved(DataSnapshot dataSnapshot, GeoLocation location) {
+                                    // ...
+                                }
+
+                                @Override
+                                public void onDataChanged(DataSnapshot dataSnapshot, GeoLocation location) {
+
+
+                                }
+
+                                @Override
+                                public void onGeoQueryReady() {
+                                    TextView tvNeeds = (TextView)findViewById(R.id.tvNeeds);
+                                    tvNeeds.setText(i.toString() + " needs in your area" );
+                                }
+
+                                @Override
+                                public void onGeoQueryError(DatabaseError error) {
+
+                                    TextView tvNeeds = (TextView) findViewById(R.id.tvNeeds);
+
+
+                                    tvNeeds.setText("Error finding needs");
+                                }
+
+                            });
+
+                            if (location != null) {
+                                // Logic to handle location object
+                            }
+                        }
+                    });
+
+        }
+
+
+
+
         //TextView tvTransportList = (TextView)findViewById(R.id.tvTransportList);
         //tvTransportList.setPaintFlags(tvTransportList.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
-        mNeedsRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Long numNeeds = dataSnapshot.getChildrenCount();
+//        mNeedsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                Long numNeeds = dataSnapshot.getChildrenCount();
+//
+//                TextView tvNeeds = (TextView)findViewById(R.id.tvNeeds);
+//
+//                if (numNeeds != null) tvNeeds.setText(numNeeds.toString() + " needs in your area" );
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
 
-                TextView tvNeeds = (TextView)findViewById(R.id.tvNeeds);
-
-                if (numNeeds != null) tvNeeds.setText(numNeeds.toString() + " needs in your area" );
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-        mWelcome.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String strWelcome = dataSnapshot.getValue().toString();
-
-                TextView tvWelcome = (TextView)findViewById(R.id.tvWelcome);
-
-                if (tvWelcome != null) tvWelcome.setText(strWelcome);
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+//        mWelcome.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                String strWelcome = dataSnapshot.getValue().toString();
+//
+//                TextView tvWelcome = (TextView)findViewById(R.id.tvWelcome);
+//
+//                if (tvWelcome != null) tvWelcome.setText(strWelcome);
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
 
 
 
