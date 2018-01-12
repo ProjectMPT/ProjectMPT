@@ -150,19 +150,12 @@ public class MapActivity extends AppCompatActivity
                                     {
                                         Needs marker = item.getValue(Needs.class);
 
-                                        if(item.child("longitude").getValue(Double.class) > lowLong && item.child("longitude").getValue(Double.class) < highLong ) {
+                                        if(marker.getLongitude() > lowLong && marker.getLongitude() < highLong ) {
 
-                                            String description = marker.getDescription();
-                                            String locationdetails = marker.getLocationdetails();
-                                           // String owner = marker.getOwner();
-                                            Double latitude = marker.getLatitude();
-                                            Double longitude = marker.getLongitude();
-                                           // Long timefrom = marker.getTimefrom();
-                                           // Long timeto = marker.getTimeto();
-                                            LatLng mlocation = new LatLng(latitude,longitude);
-                                            map.addMarker(new MarkerOptions().position(mlocation).title(description).snippet(locationdetails));
+                                            LatLng mlocation = new LatLng(marker.getLatitude(),marker.getLongitude());
+                                            map.addMarker(new MarkerOptions().position(mlocation).title(marker.getDescription()).snippet(marker.getLocationdetails()));
 
-                                            Log.w(TAG, "AddMarker: " + mlocation.toString() + description);
+                                          //  Log.w(TAG, "AddMarker: " + mlocation.toString() + description);
 
                                         }
 
@@ -188,89 +181,6 @@ public class MapActivity extends AppCompatActivity
         }
 
 
-//                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("NeedLocations");
-//                        GeoFire geoFire = new GeoFire(ref);
-//
-//                        GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(currentlatLng.latitude, currentlatLng.longitude), 10);
-//
-//                        geoQuery.addGeoQueryDataEventListener(new GeoQueryDataEventListener() {
-//
-//                            @Override
-//                            public void onDataEntered(DataSnapshot dataSnapshot, GeoLocation location) {
-//
-//                                Needs marker = dataSnapshot.getValue(Needs.class);
-//                             String description = dataSnapshot.getKey().toString();
-//                             LatLng needlocation = new LatLng(location.latitude,location.longitude);
-//                             map.addMarker(new MarkerOptions().position(needlocation).title(description).snippet(description));
-//
-//
-//                            }
-//
-//                            @Override
-//                            public void onDataExited(DataSnapshot dataSnapshot) {
-//
-//                            }
-//
-//                            @Override
-//                            public void onDataMoved(DataSnapshot dataSnapshot, GeoLocation location) {
-//                                // ...
-//                            }
-//
-//                            @Override
-//                            public void onDataChanged(DataSnapshot dataSnapshot, GeoLocation location) {
-//
-//
-//                            }
-//
-//                            @Override
-//                            public void onGeoQueryReady() {
-//
-//                            }
-//
-//                            @Override
-//                            public void onGeoQueryError(DatabaseError error) {
-//
-//                            }
-//
-//
-//
-//                });
-
-//        mChildEventListener = mNeedsRef.addChildEventListener(new ChildEventListener() {
-//            @Override
-//            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-//                Needs marker = dataSnapshot.getValue(Needs.class);
-//                String description = marker.getDescription();
-//                String locationdetails = marker.getLocationdetails();
-//                String owner = marker.getOwner();
-//                Double latitude = marker.getLatitude();
-//                Double longitude = marker.getLongitude();
-//                Long timefrom = marker.getTimefrom();
-//                Long timeto = marker.getTimeto();
-//                LatLng location = new LatLng(latitude,longitude);
-//                map.addMarker(new MarkerOptions().position(location).title(description).snippet(locationdetails));
-//            }
-//
-//            @Override
-//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-//
-//            }
-//
-//            @Override
-//            public void onChildRemoved(DataSnapshot dataSnapshot) {
-//
-//            }
-//
-//            @Override
-//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
 
     }
 
@@ -329,7 +239,8 @@ public class MapActivity extends AppCompatActivity
 
 
             LatLng currentlatLng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentlatLng,11));
+            mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentlatLng,13));
 
         }
     }
