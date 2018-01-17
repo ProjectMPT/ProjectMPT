@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -61,7 +62,7 @@ public class MeetActivity extends AppCompatActivity implements OnMapReadyCallbac
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
 
-    FragmentPagerAdapter adapterViewPager;
+    //FragmentPagerAdapter adapterViewPager;
 
     public Button cmdOutput;
     String strDateTime;
@@ -84,9 +85,13 @@ public class MeetActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meet);
 
-        ViewPager vpPager = (ViewPager) findViewById(R.id.vpPager);
-        adapterViewPager = new MyPagerAdapter(getSupportFragmentManager());
-        vpPager.setAdapter(adapterViewPager);
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        viewPager.setAdapter(new SampleFragmentPagerAdapter(getSupportFragmentManager(),
+                MeetActivity.this));
+
+        // Give the TabLayout the ViewPager
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+        tabLayout.setupWithViewPager(viewPager);
 
 //        mapFrag = (WorkaroundMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
 //       mapFrag.getMapAsync(this);
@@ -439,40 +444,31 @@ public class MeetActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
-    public static class MyPagerAdapter extends FragmentPagerAdapter {
-        private static int NUM_ITEMS = 3;
+    public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
+        final int PAGE_COUNT = 3;
+        private String tabTitles[] = new String[] { "Tab1", "Tab2", "Tab3" };
+        private Context context;
 
-        public MyPagerAdapter(FragmentManager fragmentManager) {
-            super(fragmentManager);
+        public SampleFragmentPagerAdapter(FragmentManager fm, Context context) {
+            super(fm);
+            this.context = context;
         }
 
-        // Returns total number of pages
         @Override
         public int getCount() {
-            return NUM_ITEMS;
+            return PAGE_COUNT;
         }
 
-        // Returns the fragment to display for that page
         @Override
         public Fragment getItem(int position) {
-            switch (position) {
-                case 0: // Fragment # 0 - This will show FirstFragment
-                    return FirstFragment.newInstance(0, "Page # 1");
-                case 1: // Fragment # 0 - This will show FirstFragment different title
-                    return FirstFragment.newInstance(1, "Page # 2");
-                case 2: // Fragment # 1 - This will show SecondFragment
-                    return SecondFragment.newInstance(2, "Page # 3");
-                default:
-                    return null;
-            }
+            return FirstFragment.newInstance(position + 1);
         }
 
-        // Returns the page title for the top indicator
         @Override
         public CharSequence getPageTitle(int position) {
-            return "Page " + position;
+            // Generate title based on item position
+            return tabTitles[position];
         }
-
     }
 
 
