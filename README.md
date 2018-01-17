@@ -34,4 +34,4 @@ See also the list of [contributors](https://github.com/ProjectMPT/ProjectMPT/gra
 
 ## License
 
-This project and all contributions are copyright 2018 Project MPT LLC.
+This project and all contributions are copyright 2017-2018 Project MPT LLC.
