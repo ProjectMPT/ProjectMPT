@@ -28,7 +28,7 @@ We use [SemVer](http://semver.org/) for versioning.
 
 ## Authors
 
-* **[MadSwede](https://github.com/MadSwede)** - *Initial work* 
+* [MadSwede](https://github.com/MadSwede) - *Initial work* 
 
 See also the list of [contributors](https://github.com/ProjectMPT/ProjectMPT/graphs/contributors) who participates in this project.
 
