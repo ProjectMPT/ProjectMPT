@@ -4,6 +4,7 @@ import android.*;
 import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -13,7 +14,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -56,6 +61,8 @@ public class MeetActivity extends AppCompatActivity implements OnMapReadyCallbac
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
 
+    FragmentPagerAdapter adapterViewPager;
+
     public Button cmdOutput;
     String strDateTime;
     Long epTimeFrom;
@@ -77,20 +84,24 @@ public class MeetActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meet);
 
-        mapFrag = (WorkaroundMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-       mapFrag.getMapAsync(this);
+        ViewPager vpPager = (ViewPager) findViewById(R.id.vpPager);
+        adapterViewPager = new MyPagerAdapter(getSupportFragmentManager());
+        vpPager.setAdapter(adapterViewPager);
+
+//        mapFrag = (WorkaroundMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+//       mapFrag.getMapAsync(this);
 
 
-        mScrollView = (ScrollView) findViewById(R.id.meet_scroll); //parent scrollview in xml, give your scrollview id value
-
-        ((WorkaroundMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
-                .setListener(new WorkaroundMapFragment.OnTouchListener() {
-                    @Override
-                    public void onTouch() {
-                        mScrollView.requestDisallowInterceptTouchEvent(true);
-                    }
-                });
-
+//        mScrollView = (ScrollView) findViewById(R.id.meet_scroll); //parent scrollview in xml, give your scrollview id value
+//
+//        ((WorkaroundMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
+//                .setListener(new WorkaroundMapFragment.OnTouchListener() {
+//                    @Override
+//                    public void onTouch() {
+//                        mScrollView.requestDisallowInterceptTouchEvent(true);
+//                    }
+//                });
+//
 
 
 
@@ -108,76 +119,76 @@ public class MeetActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public void saveNeed(View view) {
 
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-
-
-
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-
-        if (auth.getCurrentUser() != null) {
-
-            EditText txtNeed = (EditText) findViewById(R.id.txtNeed);
-            String strNeed = txtNeed.getText().toString();
-
-            EditText txtLocationDetails = (EditText) findViewById(R.id.txtLocation);
-            String strLocationDetails = txtLocationDetails.getText().toString();
-
-
-            DatabaseReference mNeedsRef = FirebaseDatabase.getInstance().getReference("Needs");
-            Needs marker = new Needs(strNeed, strLocationDetails, user.getEmail(), llNeedLocation.latitude, llNeedLocation.longitude, epTimeFrom, epTimeTo);
-
-
-
-            //mNeedsRef.push().setValue(marker);
-
-            mNeedsRef.push().setValue(marker, new DatabaseReference.CompletionListener() {
-                        @Override
-                        public void onComplete(DatabaseError databaseError,
-                                               DatabaseReference databaseReference) {
-
-                            if (databaseError != null) {
-                                System.err.println("There was an error saving the location to GeoFire: " + databaseError);
-                            } else {
-
-                                String key = databaseReference.getKey();
-
-                                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("NeedLocations");
-                                GeoFire geoFire = new GeoFire(ref);
-
-                                geoFire.setLocation(key, new GeoLocation(llNeedLocation.latitude, llNeedLocation.longitude));
-                            }
-
-                           }
-                    });
-
-
-
-
-
-            final Intent intent = new Intent(this, MainActivity.class);
-
-            AlertDialog alertDialog = new AlertDialog.Builder(MeetActivity.this).create();
-            alertDialog.setTitle("Saved");
-            alertDialog.setMessage("New need saved successfully");
-            alertDialog.setIcon(R.drawable.done_check_mark);
-
-            alertDialog.setButton(DialogInterface.BUTTON_POSITIVE,"OK", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-
-
-                    startActivity(intent);
-
-                }
-            });
-
-            alertDialog.show();
-
-
-
-        } else {
-
-        }
+//        mDatabase = FirebaseDatabase.getInstance().getReference();
+//
+//
+//
+//        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+//        FirebaseAuth auth = FirebaseAuth.getInstance();
+//
+//        if (auth.getCurrentUser() != null) {
+//
+//            EditText txtNeed = (EditText) findViewById(R.id.txtNeed);
+//            String strNeed = txtNeed.getText().toString();
+//
+//            EditText txtLocationDetails = (EditText) findViewById(R.id.txtLocation);
+//            String strLocationDetails = txtLocationDetails.getText().toString();
+//
+//
+//            DatabaseReference mNeedsRef = FirebaseDatabase.getInstance().getReference("Needs");
+//            Needs marker = new Needs(strNeed, strLocationDetails, user.getEmail(), llNeedLocation.latitude, llNeedLocation.longitude, epTimeFrom, epTimeTo);
+//
+//
+//
+//            //mNeedsRef.push().setValue(marker);
+//
+//            mNeedsRef.push().setValue(marker, new DatabaseReference.CompletionListener() {
+//                        @Override
+//                        public void onComplete(DatabaseError databaseError,
+//                                               DatabaseReference databaseReference) {
+//
+//                            if (databaseError != null) {
+//                                System.err.println("There was an error saving the location to GeoFire: " + databaseError);
+//                            } else {
+//
+//                                String key = databaseReference.getKey();
+//
+//                                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("NeedLocations");
+//                                GeoFire geoFire = new GeoFire(ref);
+//
+//                                geoFire.setLocation(key, new GeoLocation(llNeedLocation.latitude, llNeedLocation.longitude));
+//                            }
+//
+//                           }
+//                    });
+//
+//
+//
+//
+//
+//            final Intent intent = new Intent(this, MainActivity.class);
+//
+//            AlertDialog alertDialog = new AlertDialog.Builder(MeetActivity.this).create();
+//            alertDialog.setTitle("Saved");
+//            alertDialog.setMessage("New need saved successfully");
+//            alertDialog.setIcon(R.drawable.done_check_mark);
+//
+//            alertDialog.setButton(DialogInterface.BUTTON_POSITIVE,"OK", new DialogInterface.OnClickListener() {
+//                public void onClick(DialogInterface dialog, int which) {
+//
+//
+//                    startActivity(intent);
+//
+//                }
+//            });
+//
+//            alertDialog.show();
+//
+//
+//
+//        } else {
+//
+//        }
 
 
     }
@@ -296,60 +307,60 @@ public class MeetActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public void showTimePickerDialog(View v) {
 
-        final Calendar c = Calendar.getInstance();
-
-        Integer mYear = Calendar.getInstance().get(Calendar.YEAR);
-        Integer mMonth = Calendar.getInstance().get(Calendar.MONTH);
-        Integer mDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-
-
-        cmdOutput = (Button) findViewById(v.getId());
-
-        DatePickerDialog datePickerDialog = new DatePickerDialog(MeetActivity.this, new DatePickerDialog.OnDateSetListener() {
-
-
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-
-                Integer mHour = Calendar.getInstance().get(Calendar.HOUR);
-                Integer mMinute = Calendar.getInstance().get(Calendar.MINUTE);
-
-                if (cmdOutput.getId() == R.id.cmdTo) mHour = mHour + 2;
-
-                strDateTime = (monthOfYear + 1) + "/" + dayOfMonth  + "/" + year;
-
-                TimePickerDialog timePickerDialog = new TimePickerDialog(MeetActivity.this, new TimePickerDialog.OnTimeSetListener() {
-
-                    @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-
-                       strDateTime = strDateTime + " " + hourOfDay + ":" + minute;
-
-                        cmdOutput.setText(strDateTime);
-
-                        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-                        try {
-
-                            Date date = df.parse(strDateTime);
-
-                            if (cmdOutput.getId() == R.id.cmdTo) {
-                                epTimeTo = date.getTime(); }
-                            else {
-                                epTimeFrom = date.getTime();
-                            }
-
-                        } catch (java.text.ParseException e) {
-                            // TODO
-
-                        }
-
-                    }
-                }, mHour, mMinute, false);
-                timePickerDialog.show();
-            }
-        },  mYear, mMonth, mDay);
-        datePickerDialog.show();
-
+//        final Calendar c = Calendar.getInstance();
+//
+//        Integer mYear = Calendar.getInstance().get(Calendar.YEAR);
+//        Integer mMonth = Calendar.getInstance().get(Calendar.MONTH);
+//        Integer mDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+//
+//
+//        cmdOutput = (Button) findViewById(v.getId());
+//
+//        DatePickerDialog datePickerDialog = new DatePickerDialog(MeetActivity.this, new DatePickerDialog.OnDateSetListener() {
+//
+//
+//            @Override
+//            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+//
+//                Integer mHour = Calendar.getInstance().get(Calendar.HOUR);
+//                Integer mMinute = Calendar.getInstance().get(Calendar.MINUTE);
+//
+//                if (cmdOutput.getId() == R.id.cmdTo) mHour = mHour + 2;
+//
+//                strDateTime = (monthOfYear + 1) + "/" + dayOfMonth  + "/" + year;
+//
+//                TimePickerDialog timePickerDialog = new TimePickerDialog(MeetActivity.this, new TimePickerDialog.OnTimeSetListener() {
+//
+//                    @Override
+//                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+//
+//                       strDateTime = strDateTime + " " + hourOfDay + ":" + minute;
+//
+//                        cmdOutput.setText(strDateTime);
+//
+//                        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+//                        try {
+//
+//                            Date date = df.parse(strDateTime);
+//
+//                            if (cmdOutput.getId() == R.id.cmdTo) {
+//                                epTimeTo = date.getTime(); }
+//                            else {
+//                                epTimeFrom = date.getTime();
+//                            }
+//
+//                        } catch (java.text.ParseException e) {
+//                            // TODO
+//
+//                        }
+//
+//                    }
+//                }, mHour, mMinute, false);
+//                timePickerDialog.show();
+//            }
+//        },  mYear, mMonth, mDay);
+//        datePickerDialog.show();
+//
 
 
     }
@@ -427,6 +438,43 @@ public class MeetActivity extends AppCompatActivity implements OnMapReadyCallbac
             // permissions this app might request
         }
     }
+
+    public static class MyPagerAdapter extends FragmentPagerAdapter {
+        private static int NUM_ITEMS = 3;
+
+        public MyPagerAdapter(FragmentManager fragmentManager) {
+            super(fragmentManager);
+        }
+
+        // Returns total number of pages
+        @Override
+        public int getCount() {
+            return NUM_ITEMS;
+        }
+
+        // Returns the fragment to display for that page
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0: // Fragment # 0 - This will show FirstFragment
+                    return FirstFragment.newInstance(0, "Page # 1");
+                case 1: // Fragment # 0 - This will show FirstFragment different title
+                    return FirstFragment.newInstance(1, "Page # 2");
+                case 2: // Fragment # 1 - This will show SecondFragment
+                    return SecondFragment.newInstance(2, "Page # 3");
+                default:
+                    return null;
+            }
+        }
+
+        // Returns the page title for the top indicator
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return "Page " + position;
+        }
+
+    }
+
 
 
 }
