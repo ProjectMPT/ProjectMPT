@@ -11,7 +11,7 @@ Download latest version of Android Studio and SDK
 
 In Android Studio select New project from version control and enter :
 
-```https://github.com/MadSwede/ProjectMPT.git```
+```https://github.com/ProjectMPT/ProjectMPT.git```
 
 Download any SDKs requested by Android Studio
 
@@ -20,7 +20,7 @@ Coming soon
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](https://github.com/MadSwede/ProjectMPT/blob/master/Contributing.md) for details on our code of conduct, and the process for submitting pull requests to us.
+Please read [CONTRIBUTING.md](https://github.com/ProjectMPT/ProjectMPT/blob/master/Contributing.md) for details on our code of conduct, and the process for submitting pull requests to us.
 
 ## Versioning
 
@@ -28,9 +28,9 @@ We use [SemVer](http://semver.org/) for versioning.
 
 ## Authors
 
-* **Urban Larsson** - *Initial work* 
+* **MadSwede** - *Initial work* 
 
-See also the list of [contributors](https://github.com/MadSwede/ProjectMPT/graphs/contributors) who participates in this project.
+See also the list of [contributors](https://github.com/ProjectMPT/ProjectMPT/graphs/contributors) who participates in this project.
 
 ## License
 
