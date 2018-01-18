@@ -1,5 +1,5 @@
 
-![Project MPT Logo](https://raw.githubusercontent.com/MadSwede/ProjectMPT/master/app/src/main/res/drawable-hdpi/logompt.png)
+![Project MPT Logo](https://raw.githubusercontent.com/ProjectMPT/ProjectMPT/master/app/src/main/res/drawable-hdpi/logompt.png)
 
 
 Across the globe, a disheartening amount of people suffer from poverty. While many in society wish to help, they do not know how; turned off by large aid organizations and inconvenient volunteering locations or times, people seeking to aid those in need require a different kind of platform. Project MPT is that platform, providing a decentralized network for people to help people. Taking part by meeting, providing, or transporting, users can see first-hand where their contributions are going. The aid process has three steps. First, a seeker will meet with a person in need and establish a need request on the mobile app. Second, a provider will provide the requested materials and request transport. Third, a transporter will transport the materials from the provider to the person in need. Making a difference in someone's life is as simple as downloading the mobile app and requesting a blanket for a person in need, buying it, or simply bringing the blanket to them!
