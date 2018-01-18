@@ -15,6 +15,8 @@ In Android Studio select New project from version control and enter :
 
 Download any SDKs requested by Android Studio
 
+Project MPT is using Firebase real-time database. To be able to fully test your build we need to add your computers SHA1 key to the console. Find your SHA1 key in Android Studio by running the signingReport under Gradle Projects. E-mail the key to any contributer to get added. 
+
 ### IOS: 
 Coming soon
 
