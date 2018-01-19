@@ -22,6 +22,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -96,20 +97,6 @@ public class MeetActivity extends AppCompatActivity {
         // Give the TabLayout the ViewPager
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
-
-
-
-
-       // mScrollView = (ScrollView) findViewById(R.id.meet_scroll); //parent scrollview in xml, give your scrollview id value
-
-       // ((WorkaroundMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
-//                .setListener(new WorkaroundMapFragment.OnTouchListener() {
-//                    @Override
-//                    public void onTouch() {
-//                        mScrollView.requestDisallowInterceptTouchEvent(true);
-//                    }
-//                });
-
 
 
 
@@ -231,7 +218,7 @@ public class MeetActivity extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 
-                Integer mHour = Calendar.getInstance().get(Calendar.HOUR);
+                Integer mHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
                 Integer mMinute = Calendar.getInstance().get(Calendar.MINUTE);
 
                 if (cmdOutput.getId() == R.id.cmdTo) mHour = mHour + 2;
@@ -264,7 +251,7 @@ public class MeetActivity extends AppCompatActivity {
                         }
 
                     }
-                }, mHour, mMinute, false);
+                }, mHour, mMinute, DateFormat.is24HourFormat(MeetActivity.this));
                 timePickerDialog.show();
             }
         },  mYear, mMonth, mDay);
