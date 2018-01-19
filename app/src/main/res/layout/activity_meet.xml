@@ -2,15 +2,30 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorwhite"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
+
+    <TextView android:id="@+id/txtHeader"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="New request"
+        android:paddingLeft="@dimen/text_marginLeft"
+        android:paddingRight="@dimen/text_marginRight"
+        style="@style/headerText"
+     />
 
 
     <android.support.design.widget.TabLayout
         android:id="@+id/sliding_tabs"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        app:tabMode="fixed" />
+        app:tabMode="fixed"
+        android:background="@color/colortoolbarbackground"
+        app:tabSelectedTextColor="@color/colorlinktext"
+        app:tabTextAppearance="@style/tabText" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"

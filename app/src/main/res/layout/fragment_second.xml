@@ -1,5 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center" />
+    android:background="@color/colorwhite">
+
+
+
+
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:map="http://schemas.android.com/apk/res-auto"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:id="@+id/map"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias=".5"
+        app:layout_constraintBottom_toTopOf="@id/txtLocation"
+        android:name="com.google.android.gms.maps.SupportMapFragment"/>
+
+
+
+
+<EditText
+android:id="@+id/txtLocation"
+android:layout_width="fill_parent"
+android:layout_height="0dp"
+android:layout_marginBottom="10dp"
+android:layout_marginTop="10dp"
+android:breakStrategy="balanced"
+android:fitsSystemWindows="true"
+android:hint="Drag the marker to the precise location and then provide detailed location information here"
+android:inputType="textMultiLine"
+android:paddingLeft="@dimen/text_marginLeft"
+android:paddingRight="@dimen/text_marginRight"
+app:layout_constraintTop_toBottomOf="@id/map"
+    app:layout_constraintVertical_bias=".5"
+    app:layout_constraintBottom_toTopOf="@id/cmdCancel2"/>
+
+
+    <Button
+        android:id="@+id/cmdCancel2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:elevation="1dp"
+        android:onClick="cancelNeed"
+        android:text="Cancel"
+        android:textAppearance="@style/standardText"
+        android:textColor="@color/colorwhite"
+        android:background="@color/colortoolbarbackground"
+        app:layout_constraintEnd_toStartOf="@+id/cmdNext2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"/>
+
+    <Button
+        android:id="@+id/cmdNext2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:elevation="1dp"
+        android:onClick="cmdNext2"
+        android:text="Next"
+        android:textAppearance="@style/standardText"
+        android:textColor="@color/colorwhite"
+        android:background="@color/colortoolbarbackground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/cmdCancel2"
+        app:layout_constraintStart_toEndOf="@+id/cmdCancel2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"/>
+
+</android.support.constraint.ConstraintLayout>

@@ -22,7 +22,18 @@
         <item name="android:textSize">16dp</item>
     </style>
 
+    <style name="headerText" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:textColor">@color/colorblack</item>
+        <item name="android:fontFamily">@font/robotomedium</item>
+        <item name="android:textSize">20dp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
 
+    <style name="tabText" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/colorwhite</item>
+    </style>
 
 
 
