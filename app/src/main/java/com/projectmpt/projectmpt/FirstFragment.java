@@ -1,14 +1,19 @@
 package com.projectmpt.projectmpt;
 
+import android.app.Activity;
 import android.app.TabActivity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TabHost;
 import android.widget.TextView;
@@ -26,6 +31,8 @@ public class FirstFragment extends Fragment {
         return fragment;
     }
 
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +43,20 @@ public class FirstFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_first, container, false);
-        ((EditText)view.findViewById(R.id.txtNeed)).addTextChangedListener(new TextWatcher() {
+
+        EditText editTextShort = (EditText) view.findViewById(R.id.txtNeedShort);
+
+        editTextShort.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        editTextShort.setRawInputType(InputType.TYPE_CLASS_TEXT);
+
+
+        EditText editText = (EditText) view.findViewById(R.id.txtNeed);
+
+        editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        editText.setRawInputType(InputType.TYPE_CLASS_TEXT);
+
+
+        editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
@@ -48,9 +68,10 @@ public class FirstFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {}
         });
-        //TextView textView = (TextView) view;
-        //textView.setText("Fragment #" + mPage);
-        return view;
+
+
+
+     return view;
     }
 
 

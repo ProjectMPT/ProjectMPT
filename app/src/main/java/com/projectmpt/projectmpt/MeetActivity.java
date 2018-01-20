@@ -2,6 +2,7 @@ package com.projectmpt.projectmpt;
 
 import android.*;
 import android.Manifest;
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
@@ -26,10 +27,12 @@ import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ScrollView;
+import android.widget.TabHost;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -199,8 +202,6 @@ public class MeetActivity extends AppCompatActivity {
     }
 
 
-
-
     public void showTimePickerDialog(View v) {
 
         final Calendar c = Calendar.getInstance();
@@ -322,6 +323,7 @@ public class MeetActivity extends AppCompatActivity {
             switch (position) {
                 case 0: // Fragment # 0 - This will show FirstFragment
                     return FirstFragment.newInstance(0);
+
                 case 1: // Fragment # 0 - This will show FirstFragment different title
 
                     return SecondFragment.newInstance(1);
