@@ -74,7 +74,9 @@ public class MeetActivity extends AppCompatActivity {
     Long epTimeTo;
     LatLng llNeedLocation;
     String needTxt;
+    String headingTxt;
     String locTxt;
+    Integer intTab = 2;
 
     //ScrollView mScrollView;
     //GoogleMap mGoogleMap;
@@ -128,8 +130,74 @@ public class MeetActivity extends AppCompatActivity {
 
     }
 
+    public void showTab(Integer intTab ) {
 
-    public void saveNeed(View view) {
+        TabLayout tabhost = (TabLayout)  this.findViewById(R.id.sliding_tabs);
+        tabhost.getTabAt(intTab).select();
+
+    }
+
+    public void saveNeed(View view){
+
+        Boolean bolFail = false;
+        String strMessage = "";
+        intTab = 2;
+
+        if (epTimeFrom==null){
+            bolFail=true;
+            strMessage = strMessage + "Please enter a from time\n";
+        }
+
+        if (epTimeTo==null){
+            bolFail=true;
+            strMessage = strMessage + "Please enter a to time\n";
+        }
+
+        String strLocation = "";
+        if (this.locTxt!=null) strLocation = this.locTxt;
+        if (strLocation.length()<4) {
+            bolFail=true;
+            strMessage = strMessage + "Please enter location details\n";
+            intTab = 1;
+        }
+
+        String strHeading = "";
+        if (this.headingTxt != null) strHeading = this.headingTxt;
+        if (strHeading.length()<4) {
+            bolFail=true;
+            strMessage = strMessage + "Please enter a short description";
+            intTab = 0;
+        }
+
+
+        if (bolFail) {
+
+            AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+            builder1.setMessage(strMessage);
+            //builder1.setCancelable(true);
+
+            builder1.setPositiveButton(
+                    "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                            showTab(intTab);
+                        }
+                    });
+
+            AlertDialog alert11 = builder1.create();
+            alert11.show();
+
+        }else{
+
+            saveNeedtoDataBase();
+
+        }
+
+
+    }
+
+    public void saveNeedtoDataBase() {
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
@@ -138,14 +206,19 @@ public class MeetActivity extends AppCompatActivity {
 
         if (auth.getCurrentUser() != null) {
 
+
+            String strNeedHeader = this.headingTxt;
+
             String strNeed = this.needTxt;
-            Log.i("unique tag 0996", this.needTxt);
+
+
+            //Log.i("unique tag 0996", this.headingTxt);
 
             String strLocationDetails = this.locTxt;
-            Log.i("unique tag 0996", this.locTxt);
+            //Log.i("unique tag 2 0996", this.locTxt);
 
             DatabaseReference mNeedsRef = FirebaseDatabase.getInstance().getReference("Needs");
-            Needs marker = new Needs(strNeed, strLocationDetails, user.getEmail(), llNeedLocation.latitude, llNeedLocation.longitude, epTimeFrom, epTimeTo);
+            Needs marker = new Needs(strNeedHeader, strNeed, strLocationDetails, user.getEmail(), llNeedLocation.latitude, llNeedLocation.longitude, epTimeFrom, epTimeTo);
 
 
             //mNeedsRef.push().setValue(marker);

@@ -44,10 +44,7 @@ public class FirstFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_first, container, false);
 
-        EditText editTextShort = (EditText) view.findViewById(R.id.txtNeedShort);
 
-        editTextShort.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        editTextShort.setRawInputType(InputType.TYPE_CLASS_TEXT);
 
 
         EditText editText = (EditText) view.findViewById(R.id.txtNeed);
@@ -69,6 +66,25 @@ public class FirstFragment extends Fragment {
             public void afterTextChanged(Editable s) {}
         });
 
+
+        EditText editTextShort = (EditText) view.findViewById(R.id.txtNeedShort);
+
+        editTextShort.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        editTextShort.setRawInputType(InputType.TYPE_CLASS_TEXT);
+
+
+        editTextShort.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                ((MeetActivity)FirstFragment.this.getActivity()).headingTxt = s.toString();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
 
 
      return view;

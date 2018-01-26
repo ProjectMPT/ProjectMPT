@@ -6,6 +6,7 @@ public class Needs {
 
         @Exclude
         public String key;
+        public String heading;
         public String description;
         public String locationdetails;
         public String owner;
@@ -19,7 +20,8 @@ public class Needs {
         public Needs() {
         }
 
-        public Needs(String description, String locationdetails, String owner, double latitude, double longitude, long timefrom, long timeto) {
+        public Needs(String heading, String description, String locationdetails, String owner, double latitude, double longitude, long timefrom, long timeto) {
+                this.heading = heading;
                 this.description = description;
                 this.locationdetails = locationdetails;
                 this.owner = owner;
@@ -33,6 +35,14 @@ public class Needs {
 
         public void setKey(String key) {
                 this.key= key;
+        }
+
+        public String getHeading() {
+                return heading;
+        }
+
+        public void setHeading(String heading) {
+                this.description = heading;
         }
 
         public String getDescription() {
