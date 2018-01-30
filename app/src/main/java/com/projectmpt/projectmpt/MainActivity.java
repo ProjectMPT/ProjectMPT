@@ -171,22 +171,22 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
 
-//        mWelcome.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                String strWelcome = dataSnapshot.getValue().toString();
-//
-//                TextView tvWelcome = (TextView)findViewById(R.id.tvWelcome);
-//
-//                if (tvWelcome != null) tvWelcome.setText(strWelcome);
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
+        mWelcome.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String strWelcome = dataSnapshot.getValue().toString();
+
+                TextView tvWelcome = (TextView)findViewById(R.id.tvWelcome);
+
+                if (tvWelcome != null) tvWelcome.setText(strWelcome);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
 
 

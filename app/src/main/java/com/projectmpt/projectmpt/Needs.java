@@ -42,7 +42,7 @@ public class Needs {
         }
 
         public void setHeading(String heading) {
-                this.description = heading;
+                this.heading = heading;
         }
 
         public String getDescription() {

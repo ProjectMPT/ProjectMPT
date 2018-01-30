@@ -81,7 +81,7 @@ public class SecondFragment extends Fragment implements OnMapReadyCallback,
         EditText editText = (EditText) view.findViewById(R.id.txtLocation);
 
         editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        editText.setRawInputType(InputType.TYPE_CLASS_TEXT);
+        editText.setRawInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
 
         editText.addTextChangedListener(new TextWatcher() {
 

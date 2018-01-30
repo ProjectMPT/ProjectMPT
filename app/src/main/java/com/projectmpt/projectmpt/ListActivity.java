@@ -9,6 +9,10 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -17,6 +21,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -51,11 +58,16 @@ public class ListActivity extends AppCompatActivity implements BottomNavigationV
     private static final int RC_SIGN_IN = 123;
     private static final String TAG = "MPTMapActivity";
     private FusedLocationProviderClient mFusedLocationClient;
+    List<Needs> list;
+    RecyclerView recycle;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
+
+        recycle = (RecyclerView) findViewById(R.id.recycle);
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
@@ -65,9 +77,7 @@ public class ListActivity extends AppCompatActivity implements BottomNavigationV
 
 
 
-        final ListView lstNeeds = (ListView) findViewById(R.id.lstNeeds);
 
-        //final ArrayList<String> myStringArray = new ArrayList<String>();
 
         if (ContextCompat.checkSelfPermission(this,
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
@@ -87,40 +97,72 @@ public class ListActivity extends AppCompatActivity implements BottomNavigationV
 
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                               Log.d(TAG, "datasnaphot " + dataSnapshot.toString());
 
-                                final List<Needs> listNeeds = new ArrayList<Needs>();
+                                list = new ArrayList<Needs>();
+                                for(DataSnapshot dataSnapshot1 :dataSnapshot.getChildren()){
 
-                                for(DataSnapshot item: dataSnapshot.getChildren())
-                                {
-                                    Needs N = item.getValue(Needs.class);
-
-                                    if(item.child("longitude").getValue(Double.class) > location.getLongitude()-gridSize && item.child("longitude").getValue(Double.class) < location.getLongitude()+gridSize ) {
-                                        Log.d(TAG, "key " + item.getKey());
-                                        N.setKey(item.getKey());
-                                        listNeeds.add(N);
-                                    }
+                                    Needs value = dataSnapshot1.getValue(Needs.class);
+                                    Needs need = new Needs();
+                                    String name = value.getHeading();
+                                    String address = value.getDescription();
+                                    String email = value.getOwner();
+                                    need.setHeading(name);
+                                    need.setOwner(email);
+                                    need.setDescription(address);
+                                    list.add(need);
 
                                 }
 
 
-                                ArrayAdapter myAdapter = new ArrayAdapter<Needs>(ListActivity.this, android.R.layout.simple_list_item_1, listNeeds){
-                                @Override
-                                public View getView(int position, View convertView, ViewGroup parent) {
-                                    View view = super.getView(position, convertView, parent);
-                                    TextView text1 = (TextView) view.findViewById(android.R.id.text1);
-                                    //TextView text2 = (TextView) view.findViewById(android.R.id.text2);
+                                RecyclerAdapter recyclerAdapter = new RecyclerAdapter(list,ListActivity.this);
+                                RecyclerView.LayoutManager recyce = new LinearLayoutManager(ListActivity.this);
+                                /// RecyclerView.LayoutManager recyce = new LinearLayoutManager(MainActivity.this);
+                                // recycle.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
+                                recycle.setLayoutManager(recyce);
+                                recycle.setItemAnimator( new DefaultItemAnimator());
+                                recycle.setAdapter(recyclerAdapter);
 
-                                    text1.setText(listNeeds.get(position).getDescription());
-                                   // text2.setText(listNeeds.get(position).getLocationdetails());
-                                    return view;
-                                }};
+                                //  Log.d(TAG, "datasnaphot " + dataSnapshot.toString());
+
+                                //final List<Needs> listNeeds = new ArrayList<Needs>();
+                               // final List<String> listNeeds2 = new ArrayList<String>();
+
+//                                for(DataSnapshot item: dataSnapshot.getChildren())
+//                                {
+//                                    Needs N = item.getValue(Needs.class);
+//
+//                                    if(item.child("longitude").getValue(Double.class) > location.getLongitude()-gridSize && item.child("longitude").getValue(Double.class) < location.getLongitude()+gridSize ) {
+//                                        Log.d(TAG, "key " + item.getKey());
+//                                        N.setKey(item.getKey());
+//                                        listNeeds.add(N);
+//
+//
+//                                      //  listNeeds2.add(item.child("heading").getValue(String.class));
+//
+//                                    }
+//
+//                                }
+
+                               // expandableListAdapter = new CustomexpandableListAdapter(ListActivity.this, listNeeds2, expandableListDetail);
+
+
+//                                ArrayAdapter myAdapter = new ArrayAdapter<Needs>(ListActivity.this, android.R.layout.simple_list_item_1, listNeeds){
+//                                @Override
+//                                public View getView(int position, View convertView, ViewGroup parent) {
+//                                    View view = super.getView(position, convertView, parent);
+//                                    TextView text1 = (TextView) view.findViewById(android.R.id.text1);
+//                                    TextView text2 = (TextView) view.findViewById(android.R.id.text2);
+//
+//                                    text1.setText(listNeeds.get(position).getHeading());
+//                                   //text2.setText(listNeeds.get(position).getDescription());
+//                                    return view;
+//                                }};
 
 
 
                // Log.d(TAG, "List: " + listNeeds.size());
 
-                lstNeeds.setAdapter(myAdapter);
+              //  lstNeeds.setAdapter(expandableListAdapter);
 
 
             }
@@ -131,6 +173,27 @@ public class ListActivity extends AppCompatActivity implements BottomNavigationV
              //   Log.w(TAG, "getUser:onCancelled", databaseError.toException());
             }
         });
+
+//           view.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//
+//
+//
+//                RecyclerAdapter recyclerAdapter = new RecyclerAdapter(list,ListActivity.this);
+//                RecyclerView.LayoutManager recyce = new GridLayoutManager(ListActivity.this,1);
+//                /// RecyclerView.LayoutManager recyce = new LinearLayoutManager(MainActivity.this);
+//                // recycle.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
+//                recycle.setLayoutManager(recyce);
+//                recycle.setItemAnimator( new DefaultItemAnimator());
+//                recycle.setAdapter(recyclerAdapter);
+//
+//
+//
+//
+//                                }
+//                            });
 
 
 

@@ -35,7 +35,7 @@
         android:paddingLeft="@dimen/text_marginLeft"
         android:paddingRight="@dimen/text_marginRight"
         android:paddingTop="@dimen/text_marginTop"
-        android:text="Very Long welcomeWelcome message sssssss pulled from FireDB!"
+        android:text="Please check your internet connectivity"
         android:textAlignment="center"
         android:textAppearance="@style/standardText"
         app:layout_constraintHorizontal_bias="0.0"

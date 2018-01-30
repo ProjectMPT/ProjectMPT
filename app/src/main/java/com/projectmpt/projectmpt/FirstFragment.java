@@ -50,7 +50,7 @@ public class FirstFragment extends Fragment {
         EditText editText = (EditText) view.findViewById(R.id.txtNeed);
 
         editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        editText.setRawInputType(InputType.TYPE_CLASS_TEXT);
+        editText.setRawInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
 
 
         editText.addTextChangedListener(new TextWatcher() {
@@ -70,7 +70,7 @@ public class FirstFragment extends Fragment {
         EditText editTextShort = (EditText) view.findViewById(R.id.txtNeedShort);
 
         editTextShort.setImeOptions(EditorInfo.IME_ACTION_DONE);
-        editTextShort.setRawInputType(InputType.TYPE_CLASS_TEXT);
+        editTextShort.setRawInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
 
 
         editTextShort.addTextChangedListener(new TextWatcher() {
