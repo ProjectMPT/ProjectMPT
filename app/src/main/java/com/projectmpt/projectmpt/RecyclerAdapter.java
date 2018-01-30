@@ -1,7 +1,9 @@
 package com.projectmpt.projectmpt;
 
 import android.content.Context;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +23,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyHold
     List<Needs> list;
     Context context;
     private static int currentPosition = 0;
+    private  ClickListener clicklistener = null;
 
     public RecyclerAdapter(List<Needs> list, Context context) {
         this.list = list;
@@ -45,29 +48,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyHold
         holder.heading.setText(mylist.getHeading());
         holder.description.setText(mylist.getDescription());
 
-
-//    if (currentPosition == position) {
-//        //creating an animation
-//        Animation slideDown = AnimationUtils.loadAnimation(context, R.anim.slide_down);
-//
-//        //toggling visibility
-//        holder.linearLayout.setVisibility(View.VISIBLE);
-//
-//        //adding sliding effect
-//        holder.linearLayout.startAnimation(slideDown);
-//    }
-//
-//        holder.heading.setOnClickListener(new View.OnClickListener() {
-//        @Override
-//        public void onClick(View view) {
-//
-//            //getting the position of the item to expand it
-//            currentPosition = position;
-//
-//            //reloding the list
-//            notifyDataSetChanged();
-//        }
-//    });
 }
 
     @Override
@@ -98,17 +78,33 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyHold
 
     }
 
+
     class MyHolder extends RecyclerView.ViewHolder{
         TextView heading,description;
+        private ConstraintLayout main;
         //LinearLayout linearLayout;
 
         public MyHolder(View itemView) {
             super(itemView);
             heading = (TextView) itemView.findViewById(R.id.heading);
             description= (TextView) itemView.findViewById(R.id.description);
+            main = (ConstraintLayout) itemView.findViewById(R.id.cardmain);
 
-          //  linearLayout = (LinearLayout) itemView.findViewById(R.id.linearLayout);
+            main.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d("urb", "Click 2:");
+                    if(clicklistener !=null){
+                        clicklistener.itemClicked(v,getAdapterPosition());
+                    }
+                }
+            });
         }
+    }
+    public void setClickListener(ClickListener clickListener){
+        this.clicklistener = clickListener;
     }
 
 }
+
+

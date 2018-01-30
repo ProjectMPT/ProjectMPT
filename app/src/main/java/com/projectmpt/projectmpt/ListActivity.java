@@ -50,7 +50,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class ListActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+public class ListActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, ClickListener {
 
     ChildEventListener mChildEventListener;
     DatabaseReference mNeedsRef = FirebaseDatabase.getInstance().getReference("Needs");
@@ -122,6 +122,8 @@ public class ListActivity extends AppCompatActivity implements BottomNavigationV
                                 recycle.setItemAnimator( new DefaultItemAnimator());
                                 recycle.setAdapter(recyclerAdapter);
 
+                                recyclerAdapter.setClickListener(ListActivity.this);
+
                                 //  Log.d(TAG, "datasnaphot " + dataSnapshot.toString());
 
                                 //final List<Needs> listNeeds = new ArrayList<Needs>();
@@ -173,28 +175,6 @@ public class ListActivity extends AppCompatActivity implements BottomNavigationV
              //   Log.w(TAG, "getUser:onCancelled", databaseError.toException());
             }
         });
-
-//           view.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//
-//
-//
-//                RecyclerAdapter recyclerAdapter = new RecyclerAdapter(list,ListActivity.this);
-//                RecyclerView.LayoutManager recyce = new GridLayoutManager(ListActivity.this,1);
-//                /// RecyclerView.LayoutManager recyce = new LinearLayoutManager(MainActivity.this);
-//                // recycle.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
-//                recycle.setLayoutManager(recyce);
-//                recycle.setItemAnimator( new DefaultItemAnimator());
-//                recycle.setAdapter(recyclerAdapter);
-//
-//
-//
-//
-//                                }
-//                            });
-
 
 
                             if (location != null) {
@@ -281,6 +261,14 @@ public class ListActivity extends AppCompatActivity implements BottomNavigationV
         }
     }
 
+    @Override
+    public void itemClicked(View view, int position) {
+
+            Log.d("urb", "Click:" + position);
+            Intent intent = new Intent(ListActivity.this, listDetailActivity.class);
+            intent.putExtra("ItemPosition", position);
+            startActivity(intent);
+    }
 
 
 }
