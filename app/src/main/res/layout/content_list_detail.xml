@@ -8,4 +8,40 @@
     tools:context="com.projectmpt.projectmpt.listDetailActivity"
     tools:showIn="@layout/activity_list_detail">
 
+           <TextView
+            android:id="@+id/headingDetail"
+            android:layout_width="wrap_content"
+            android:text="Heading"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/text_marginLeft"
+            android:paddingTop="@dimen/text_marginTop"
+            android:paddingBottom="@dimen/text_marginBottom"
+            style="@style/headerText" />
+
+        <TextView
+            android:id="@+id/distanceDetail"
+            android:layout_width="wrap_content"
+            android:text="2.6 miles"
+            android:layout_height="wrap_content"
+            app:layout_constraintRight_toRightOf="parent"
+            android:paddingRight="@dimen/text_marginRight"
+            android:paddingTop="@dimen/text_marginTop"
+            android:paddingBottom="@dimen/text_marginBottom"
+            style="@style/standardText" />
+
+        <TextView
+            android:id="@+id/descriptionDetail"
+            android:text="email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/headingDetail"
+            android:paddingLeft="@dimen/text_marginLeft"
+
+            android:paddingBottom="@dimen/text_marginBottom"
+            style="@style/standardText"
+            />
+
+
+
 </android.support.constraint.ConstraintLayout>

@@ -266,8 +266,20 @@ public class ListActivity extends AppCompatActivity implements BottomNavigationV
 
             Log.d("urb", "Click:" + position);
             Intent intent = new Intent(ListActivity.this, listDetailActivity.class);
-            intent.putExtra("ItemPosition", position);
+            intent.putExtra("Key", list.get(position).getKey());
+            intent.putExtra("Heading", list.get(position).getHeading());
+            intent.putExtra("Description", list.get(position).getDescription());
+            intent.putExtra("LocationDetails", list.get(position).getLocationdetails());
+            intent.putExtra("Owner", list.get(position).getOwner());
+            intent.putExtra("Latitude", list.get(position).getLatitude());
+            intent.putExtra("Longitude", list.get(position).getLongitude());
+            intent.putExtra("TimeFrom", list.get(position).getTimefrom());
+            intent.putExtra("TimeTo", list.get(position).getTimeto());
+
+
             startActivity(intent);
+
+
     }
 
 
