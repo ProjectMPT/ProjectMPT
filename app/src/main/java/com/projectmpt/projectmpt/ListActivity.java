@@ -58,7 +58,7 @@ public class ListActivity extends AppCompatActivity implements BottomNavigationV
     private static final int RC_SIGN_IN = 123;
     private static final String TAG = "MPTMapActivity";
     private FusedLocationProviderClient mFusedLocationClient;
-    List<Needs> list;
+    List<Transports> list;
     RecyclerView recycle;
 
 
@@ -98,18 +98,36 @@ public class ListActivity extends AppCompatActivity implements BottomNavigationV
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                                list = new ArrayList<Needs>();
+                                list = new ArrayList<Transports>();
                                 for(DataSnapshot dataSnapshot1 :dataSnapshot.getChildren()){
 
                                     Needs value = dataSnapshot1.getValue(Needs.class);
-                                    Needs need = new Needs();
-                                    String name = value.getHeading();
-                                    String address = value.getDescription();
+                                    Transports transports = new Transports();
+
+                                    String needkey = dataSnapshot1.getKey();
+                                    String heading = value.getHeading();
+                                    String description = value.getDescription();
+                                    String locationdetails = value.getLocationdetails();
                                     String email = value.getOwner();
-                                    need.setHeading(name);
-                                    need.setOwner(email);
-                                    need.setDescription(address);
-                                    list.add(need);
+                                    Double latitude = value.getLatitude();
+                                    Double longitude = value.getLongitude();
+                                    Long timefrom = value.getTimefrom();
+                                    Long timeto = value.getTimeto();
+
+                                    Log.d("Urb","Hello: " + needkey);
+
+
+                                    transports.setNeedkey(needkey);
+                                    transports.setHeading(heading);
+                                    transports.setOwner(email);
+                                    transports.setDescription(description);
+                                    transports.setLocationdetails(locationdetails);
+                                    transports.setLatitude(latitude);
+                                    transports.setLongitude(longitude);
+                                    transports.setTimefrom(timefrom);
+                                    transports.setTimeto(timeto);
+
+                                    list.add(transports);
 
                                 }
 
@@ -266,7 +284,7 @@ public class ListActivity extends AppCompatActivity implements BottomNavigationV
 
             Log.d("urb", "Click:" + position);
             Intent intent = new Intent(ListActivity.this, listDetailActivity.class);
-            intent.putExtra("Key", list.get(position).getKey());
+            intent.putExtra("Key", list.get(position).getNeedkey());
             intent.putExtra("Heading", list.get(position).getHeading());
             intent.putExtra("Description", list.get(position).getDescription());
             intent.putExtra("LocationDetails", list.get(position).getLocationdetails());
@@ -276,6 +294,7 @@ public class ListActivity extends AppCompatActivity implements BottomNavigationV
             intent.putExtra("TimeFrom", list.get(position).getTimefrom());
             intent.putExtra("TimeTo", list.get(position).getTimeto());
 
+            Log.d("urb", "What:" + list.get(position).getNeedkey());
 
             startActivity(intent);
 

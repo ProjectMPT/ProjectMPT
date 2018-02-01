@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.projectmpt.projectmpt.ProvideActivity"
+    tools:showIn="@layout/activity_provide">
+
+
+        <TextView android:id="@+id/txtProvideHeader"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="Provide Need"
+            android:paddingLeft="@dimen/text_marginLeft"
+            android:paddingRight="@dimen/text_marginRight"
+            style="@style/headerText"
+            />
+
+
+
+
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            xmlns:map="http://schemas.android.com/apk/res-auto"
+            android:layout_width="fill_parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            android:layout_height="150dp"
+            android:id="@+id/providemap"
+            app:layout_constraintTop_toBottomOf="@id/txtProvideHeader"
+            app:layout_constraintBottom_toTopOf="@id/txtProvideLocation"
+            android:name="com.google.android.gms.maps.SupportMapFragment"/>
+
+
+        <EditText
+            android:id="@+id/txtProvideLocation"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:breakStrategy="balanced"
+            android:fitsSystemWindows="true"
+            android:hint="Drag the marker your location and then provide detailed pickup instructions here"
+            android:inputType="textCapSentences|textMultiLine"
+            android:paddingLeft="@dimen/text_marginLeft"
+            android:paddingRight="@dimen/text_marginRight"
+            app:layout_constraintTop_toBottomOf="@id/providemap"/>
+
+        <TextView
+            android:id="@+id/txtFromProvide"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginBottom="10dp"
+            android:text="Available From"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtProvideLocation"
+            android:paddingLeft="@dimen/text_marginLeft"
+            android:paddingRight="@dimen/text_marginRight"
+            android:paddingTop="@dimen/text_marginTop"
+            style="@style/headerText"
+            />
+
+
+        <Button
+            android:id="@+id/cmdFromProvide"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@android:color/white"
+            android:elevation="1dp"
+            android:onClick="showTimePickerDialogProvide"
+            android:text="Click to set"
+            android:textAppearance="@style/standardText"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="@dimen/text_marginLeft"
+            android:layout_marginRight="@dimen/text_marginRight"
+            app:layout_constraintTop_toBottomOf="@id/txtFromProvide"
+            android:layout_marginTop="@dimen/activity_vertical_margin" />
+
+        <TextView
+            android:id="@+id/txtToProvide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/text_marginTop"
+            android:layout_marginBottom="10dp"
+            android:text="To"
+            app:layout_constraintTop_toBottomOf="@id/cmdFromProvide"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:paddingLeft="@dimen/text_marginLeft"
+            android:paddingRight="@dimen/text_marginRight"
+            style="@style/headerText"
+            />
+
+        <Button
+            android:id="@+id/cmdToProvide"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@android:color/white"
+            android:elevation="1dp"
+            android:onClick="showTimePickerDialogProvide"
+            android:text="Click to set"
+            android:textAppearance="@style/standardText"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="@dimen/text_marginLeft"
+            android:layout_marginRight="@dimen/text_marginRight"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtToProvide"
+            android:layout_marginTop="@dimen/activity_vertical_margin" />
+
+
+        <Button
+            android:id="@+id/cmdCancelProvide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:elevation="1dp"
+            android:onClick="cancelProvide"
+            android:text="Cancel"
+            android:textAppearance="@style/standardText"
+            android:textColor="@color/colorwhite"
+            android:background="@color/colortoolbarbackground"
+            app:layout_constraintEnd_toStartOf="@+id/cmdSaveProvide"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cmdToProvide"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"/>
+
+
+        <Button
+            android:id="@+id/cmdSaveProvide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:elevation="1dp"
+            android:onClick="saveProvide"
+            android:text="Save"
+            android:textAppearance="@style/standardText"
+            android:textColor="@color/colorwhite"
+            android:background="@color/colortoolbarbackground"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/cmdCancelProvide"
+            app:layout_constraintStart_toEndOf="@+id/cmdCancelProvide"
+            app:layout_constraintTop_toBottomOf="@id/cmdToProvide"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"/>
+
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/bottom_navigationProvide"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:itemBackground="@color/colortoolbarbackground"
+        app:itemIconTint="@color/colorwhite"
+        app:itemTextColor="@color/colorwhite"
+        app:menu="@menu/bottomnav_menu"
+        />
+
+
+
+</android.support.constraint.ConstraintLayout>

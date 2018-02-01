@@ -20,12 +20,12 @@ import java.util.List;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyHolder>{
 
-    List<Needs> list;
+    List<Transports> list;
     Context context;
     private static int currentPosition = 0;
     private  ClickListener clicklistener = null;
 
-    public RecyclerAdapter(List<Needs> list, Context context) {
+    public RecyclerAdapter(List<Transports> list, Context context) {
         this.list = list;
         this.context = context;
     }
@@ -44,7 +44,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyHold
 
     @Override
     public void onBindViewHolder(MyHolder holder, final int position) {
-        Needs mylist = list.get(position);
+        Transports mylist = list.get(position);
         holder.heading.setText(mylist.getHeading());
         holder.description.setText(mylist.getDescription());
 

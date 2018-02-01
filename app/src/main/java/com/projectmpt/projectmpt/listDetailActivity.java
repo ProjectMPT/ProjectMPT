@@ -9,8 +9,10 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class listDetailActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
@@ -41,6 +43,9 @@ public class listDetailActivity extends AppCompatActivity implements BottomNavig
         final BottomNavigationView mBtmView = (BottomNavigationView) findViewById(R.id.bottom_navigationDetail);
         mBtmView.setOnNavigationItemSelectedListener(listDetailActivity.this);
 
+        Button cmdProvide = (Button) findViewById(R.id.cmdProvide);
+
+
         String newString;
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
@@ -51,6 +56,10 @@ public class listDetailActivity extends AppCompatActivity implements BottomNavig
                 Textv = (TextView)findViewById(R.id.headingDetail);
                 Textv.setText(newString);
 
+
+                cmdProvide.setText("Provide " + newString);
+
+
                 newString= extras.getString("Description");
                 Textv = (TextView)findViewById(R.id.descriptionDetail);
                 Textv.setText(newString);
@@ -59,15 +68,6 @@ public class listDetailActivity extends AppCompatActivity implements BottomNavig
             newString= (String) savedInstanceState.getSerializable("Description");
         }
 
-
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
     }
 
     @Override
@@ -95,6 +95,20 @@ public class listDetailActivity extends AppCompatActivity implements BottomNavig
         }
         return true;
     }
+
+    public void provideItem(View view) {
+        Intent intent = new Intent(this, ProvideActivity.class);
+
+        //Log.d("urb", "Click:" + position);
+        //Intent intent = new Intent(ListActivity.this, listDetailActivity.class);
+
+        Bundle needsBundle = getIntent().getExtras();
+
+        intent.putExtras(needsBundle);
+
+        startActivity(intent);
+    }
+
 
 
 }

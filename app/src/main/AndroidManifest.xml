@@ -44,6 +44,10 @@
         <activity
             android:name=".listDetailActivity"
             android:label="@string/title_activity_list_detail"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".ProvideActivity"
+            android:label="@string/title_activity_provide"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
     </application>
 

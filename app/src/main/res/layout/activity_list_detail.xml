@@ -21,6 +21,9 @@
 
     <include layout="@layout/content_list_detail" />
 
+
+
+
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_navigationDetail"
         android:layout_width="match_parent"

@@ -42,6 +42,23 @@
             style="@style/standardText"
             />
 
+    <Button
+        android:id="@+id/cmdProvide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="Button"
+        android:elevation="1dp"
+        android:onClick="provideItem"
+        android:text="Provide this item"
+        android:paddingLeft="@dimen/text_marginLeft"
+        android:paddingRight="@dimen/text_marginRight"
+        android:textAppearance="@style/standardText"
+        android:textColor="@color/colorwhite"
+        android:background="@color/colortoolbarbackground"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/descriptionDetail" />
+
 
 
 </android.support.constraint.ConstraintLayout>
