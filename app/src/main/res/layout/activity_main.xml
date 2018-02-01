@@ -125,6 +125,7 @@
         android:paddingTop="@dimen/text_marginTop"
         android:paddingBottom="@dimen/text_marginBottom"
         android:textAppearance="@style/linkText"
+        android:onClick="startTransport"
         app:layout_constraintLeft_toRightOf="@id/tvTransportMap"
         app:layout_constraintTop_toBottomOf="@id/tvNeeds" />
 

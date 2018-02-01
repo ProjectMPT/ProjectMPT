@@ -93,6 +93,11 @@ public class ProvideActivity extends AppCompatActivity implements OnMapReadyCall
         mapFrag = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.providemap);
         mapFrag.getMapAsync(this);
 
+        EditText editText = (EditText) this.findViewById(R.id.txtProvideLocation);
+
+        editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        editText.setRawInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+
     }
 
 
@@ -417,6 +422,10 @@ public class ProvideActivity extends AppCompatActivity implements OnMapReadyCall
                     needsBundle.getString("Heading"), needsBundle.getString("Description"), needsBundle.getString("LocationDetails"),
                     needsBundle.getString("Owner"), needsBundle.getDouble("Latitude"), needsBundle.getDouble("Longitude"),
                     needsBundle.getLong("TimeFrom"), needsBundle.getLong("TimeTo"));
+
+            DatabaseReference mNeedsRef = FirebaseDatabase.getInstance().getReference("Needs");
+
+            mNeedsRef.child(needsBundle.getString("Key")).removeValue();
 
 
             mTransportsRef.push().setValue(marker, new DatabaseReference.CompletionListener() {

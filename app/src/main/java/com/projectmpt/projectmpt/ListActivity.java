@@ -101,88 +101,46 @@ public class ListActivity extends AppCompatActivity implements BottomNavigationV
                                 list = new ArrayList<Transports>();
                                 for(DataSnapshot dataSnapshot1 :dataSnapshot.getChildren()){
 
-                                    Needs value = dataSnapshot1.getValue(Needs.class);
-                                    Transports transports = new Transports();
+                                    if(dataSnapshot1.child("longitude").getValue(Double.class) > location.getLongitude()-gridSize && dataSnapshot1.child("longitude").getValue(Double.class) < location.getLongitude()+gridSize ) {
 
-                                    String needkey = dataSnapshot1.getKey();
-                                    String heading = value.getHeading();
-                                    String description = value.getDescription();
-                                    String locationdetails = value.getLocationdetails();
-                                    String email = value.getOwner();
-                                    Double latitude = value.getLatitude();
-                                    Double longitude = value.getLongitude();
-                                    Long timefrom = value.getTimefrom();
-                                    Long timeto = value.getTimeto();
+                                        Needs value = dataSnapshot1.getValue(Needs.class);
+                                        Transports transports = new Transports();
 
-                                    Log.d("Urb","Hello: " + needkey);
+                                        String needkey = dataSnapshot1.getKey();
+                                        String heading = value.getHeading();
+                                        String description = value.getDescription();
+                                        String locationdetails = value.getLocationdetails();
+                                        String email = value.getOwner();
+                                        Double latitude = value.getLatitude();
+                                        Double longitude = value.getLongitude();
+                                        Long timefrom = value.getTimefrom();
+                                        Long timeto = value.getTimeto();
 
+                                        transports.setNeedkey(needkey);
+                                        transports.setHeading(heading);
+                                        transports.setOwner(email);
+                                        transports.setDescription(description);
+                                        transports.setLocationdetails(locationdetails);
+                                        transports.setLatitude(latitude);
+                                        transports.setLongitude(longitude);
+                                        transports.setTimefrom(timefrom);
+                                        transports.setTimeto(timeto);
 
-                                    transports.setNeedkey(needkey);
-                                    transports.setHeading(heading);
-                                    transports.setOwner(email);
-                                    transports.setDescription(description);
-                                    transports.setLocationdetails(locationdetails);
-                                    transports.setLatitude(latitude);
-                                    transports.setLongitude(longitude);
-                                    transports.setTimefrom(timefrom);
-                                    transports.setTimeto(timeto);
+                                        list.add(transports);
 
-                                    list.add(transports);
+                                    }
 
                                 }
 
 
                                 RecyclerAdapter recyclerAdapter = new RecyclerAdapter(list,ListActivity.this);
                                 RecyclerView.LayoutManager recyce = new LinearLayoutManager(ListActivity.this);
-                                /// RecyclerView.LayoutManager recyce = new LinearLayoutManager(MainActivity.this);
-                                // recycle.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
+
                                 recycle.setLayoutManager(recyce);
                                 recycle.setItemAnimator( new DefaultItemAnimator());
                                 recycle.setAdapter(recyclerAdapter);
 
                                 recyclerAdapter.setClickListener(ListActivity.this);
-
-                                //  Log.d(TAG, "datasnaphot " + dataSnapshot.toString());
-
-                                //final List<Needs> listNeeds = new ArrayList<Needs>();
-                               // final List<String> listNeeds2 = new ArrayList<String>();
-
-//                                for(DataSnapshot item: dataSnapshot.getChildren())
-//                                {
-//                                    Needs N = item.getValue(Needs.class);
-//
-//                                    if(item.child("longitude").getValue(Double.class) > location.getLongitude()-gridSize && item.child("longitude").getValue(Double.class) < location.getLongitude()+gridSize ) {
-//                                        Log.d(TAG, "key " + item.getKey());
-//                                        N.setKey(item.getKey());
-//                                        listNeeds.add(N);
-//
-//
-//                                      //  listNeeds2.add(item.child("heading").getValue(String.class));
-//
-//                                    }
-//
-//                                }
-
-                               // expandableListAdapter = new CustomexpandableListAdapter(ListActivity.this, listNeeds2, expandableListDetail);
-
-
-//                                ArrayAdapter myAdapter = new ArrayAdapter<Needs>(ListActivity.this, android.R.layout.simple_list_item_1, listNeeds){
-//                                @Override
-//                                public View getView(int position, View convertView, ViewGroup parent) {
-//                                    View view = super.getView(position, convertView, parent);
-//                                    TextView text1 = (TextView) view.findViewById(android.R.id.text1);
-//                                    TextView text2 = (TextView) view.findViewById(android.R.id.text2);
-//
-//                                    text1.setText(listNeeds.get(position).getHeading());
-//                                   //text2.setText(listNeeds.get(position).getDescription());
-//                                    return view;
-//                                }};
-
-
-
-               // Log.d(TAG, "List: " + listNeeds.size());
-
-              //  lstNeeds.setAdapter(expandableListAdapter);
 
 
             }

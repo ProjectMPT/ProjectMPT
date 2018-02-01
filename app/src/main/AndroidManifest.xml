@@ -48,7 +48,9 @@
         <activity
             android:name=".ProvideActivity"
             android:label="@string/title_activity_provide"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".ListTransportActivity" />
+        <activity android:name=".ListTransportDetailActivity"></activity>
     </application>
 
 </manifest>

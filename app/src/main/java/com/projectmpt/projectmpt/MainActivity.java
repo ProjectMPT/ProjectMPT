@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 123;
     Integer i = 0;
+    Integer count = 0;
 
     //private DatabaseReference mDatabase;
 
@@ -88,8 +89,6 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(Location location) {
 
-
-
                             DatabaseReference ref = FirebaseDatabase.getInstance().getReference("NeedLocations");
                             GeoFire geoFire = new GeoFire(ref);
 
@@ -101,15 +100,11 @@ public class MainActivity extends AppCompatActivity {
 
                                 @Override
                                 public void onDataEntered(DataSnapshot dataSnapshot, GeoLocation location) {
-
                                     i = i + 1;
-
-
                                 }
 
                                 @Override
                                 public void onDataExited(DataSnapshot dataSnapshot) {
-
                                 }
 
                                 @Override
@@ -119,8 +114,6 @@ public class MainActivity extends AppCompatActivity {
 
                                 @Override
                                 public void onDataChanged(DataSnapshot dataSnapshot, GeoLocation location) {
-
-
                                 }
 
                                 @Override
@@ -133,9 +126,50 @@ public class MainActivity extends AppCompatActivity {
                                 public void onGeoQueryError(DatabaseError error) {
 
                                     TextView tvNeeds = (TextView) findViewById(R.id.tvNeeds);
-
-
                                     tvNeeds.setText("Error finding needs");
+                                }
+
+                            });
+
+
+                            ref = FirebaseDatabase.getInstance().getReference("TransportLocations");
+                            GeoFire geoFireTransport = new GeoFire(ref);
+
+                            GeoQuery geoQueryTransport = geoFireTransport.queryAtLocation(new GeoLocation(location.getLatitude(), location.getLongitude()), 10);
+
+                            count=0;
+
+                            geoQueryTransport.addGeoQueryDataEventListener(new GeoQueryDataEventListener() {
+
+                                @Override
+                                public void onDataEntered(DataSnapshot dataSnapshot, GeoLocation location) {
+                                    count = count + 1;
+                                }
+
+                                @Override
+                                public void onDataExited(DataSnapshot dataSnapshot) {
+                                }
+
+                                @Override
+                                public void onDataMoved(DataSnapshot dataSnapshot, GeoLocation location) {
+                                    // ...
+                                }
+
+                                @Override
+                                public void onDataChanged(DataSnapshot dataSnapshot, GeoLocation location) {
+                                }
+
+                                @Override
+                                public void onGeoQueryReady() {
+                                    TextView tvTransports = (TextView)findViewById(R.id.tvTransports);
+                                    tvTransports.setText(count.toString() + " transport requests" );
+                                }
+
+                                @Override
+                                public void onGeoQueryError(DatabaseError error) {
+
+                                    TextView tvTransports = (TextView) findViewById(R.id.tvTransports);
+                                    tvTransports.setText("Error finding transports");
                                 }
 
                             });
@@ -149,27 +183,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-
-
-        //TextView tvTransportList = (TextView)findViewById(R.id.tvTransportList);
-        //tvTransportList.setPaintFlags(tvTransportList.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-
-//        mNeedsRef.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                Long numNeeds = dataSnapshot.getChildrenCount();
-//
-//                TextView tvNeeds = (TextView)findViewById(R.id.tvNeeds);
-//
-//                if (numNeeds != null) tvNeeds.setText(numNeeds.toString() + " needs in your area" );
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
 
         mWelcome.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -352,7 +365,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startTransport(View view) {
-        Intent intent = new Intent(this, ListActivity.class);
+        Intent intent = new Intent(this, ListTransportActivity.class);
         startActivity(intent);
     }
 
