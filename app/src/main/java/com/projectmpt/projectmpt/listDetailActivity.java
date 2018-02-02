@@ -13,6 +13,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.security.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class listDetailActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
 
     private TextView Textv;
@@ -45,6 +49,11 @@ public class listDetailActivity extends AppCompatActivity implements BottomNavig
 
 
         String newString;
+        Double newDouble;
+        Long newLong;
+
+        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if(extras == null) {
@@ -54,13 +63,29 @@ public class listDetailActivity extends AppCompatActivity implements BottomNavig
                 Textv = (TextView)findViewById(R.id.headingDetail);
                 Textv.setText(newString);
 
-
                 cmdProvide.setText("Provide " + newString);
-
 
                 newString= extras.getString("Description");
                 Textv = (TextView)findViewById(R.id.descriptionDetail);
                 Textv.setText(newString);
+
+                newLong= extras.getLong("TimeFrom");
+                Textv = (TextView)findViewById(R.id.timeEntered);
+                Date date=new Date(newLong);
+                Textv.setText("Entered: " +  df.format(date));
+
+                newLong= extras.getLong("TimeTo");
+                date=new Date(newLong);
+                Textv = (TextView)findViewById(R.id.timeExpire);
+                Textv.setText("Expires: " + df.format(date));
+
+                newDouble= extras.getDouble("DistanceTo");
+                Textv = (TextView)findViewById(R.id.distanceDetail);
+                Textv.setText(String.format("%.1f",(newDouble*0.00062137)) + " miles away");
+
+
+
+
             }
         } else {
             newString= (String) savedInstanceState.getSerializable("Description");

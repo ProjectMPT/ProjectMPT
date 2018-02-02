@@ -27,19 +27,7 @@
             android:paddingBottom="@dimen/text_marginBottom"
             style="@style/headerText" />
 
-        <TextView
-            android:id="@+id/distanceDetail"
-            android:layout_width="wrap_content"
-            android:text="2.6 miles"
-            android:layout_height="wrap_content"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
-            android:paddingRight="@dimen/text_marginRight"
-            android:paddingTop="@dimen/text_marginTop"
-            android:paddingBottom="@dimen/text_marginBottom"
-            style="@style/standardText" />
-
-        <TextView
+           <TextView
             android:id="@+id/descriptionDetail"
             android:text="email"
             android:layout_width="match_parent"
@@ -52,7 +40,48 @@
             style="@style/standardText"
             />
 
-        <Button
+
+    <TextView
+        android:id="@+id/distanceDetail"
+        android:layout_width="wrap_content"
+        android:text="2.6 miles"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/descriptionDetail"
+        android:paddingRight="@dimen/text_marginRight"
+        android:paddingTop="24dp"
+        android:paddingBottom="@dimen/text_marginBottom"
+        android:paddingLeft="@dimen/text_marginLeft"
+        style="@style/headerText" />
+
+    <TextView
+        android:id="@+id/timeEntered"
+        android:layout_width="wrap_content"
+        android:text="Entered"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/distanceDetail"
+        android:paddingRight="@dimen/text_marginRight"
+        android:paddingTop="24dp"
+        android:paddingBottom="@dimen/text_marginBottom"
+        android:paddingLeft="@dimen/text_marginLeft"
+        style="@style/headerText" />
+
+    <TextView
+        android:id="@+id/timeExpire"
+        android:layout_width="wrap_content"
+        android:text="Expires"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/timeEntered"
+        android:paddingRight="@dimen/text_marginRight"
+        android:paddingTop="24dp"
+        android:paddingBottom="@dimen/text_marginBottom"
+        android:paddingLeft="@dimen/text_marginLeft"
+        style="@style/headerText" />
+
+
+    <Button
             android:id="@+id/cmdProvide"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -67,7 +96,7 @@
             android:background="@color/colortoolbarbackground"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/descriptionDetail" />
+            app:layout_constraintTop_toBottomOf="@id/timeExpire" />
 
         <android.support.design.widget.BottomNavigationView
             android:id="@+id/bottom_navigationDetail"

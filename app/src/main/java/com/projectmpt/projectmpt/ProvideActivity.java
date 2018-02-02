@@ -421,12 +421,15 @@ public class ProvideActivity extends AppCompatActivity implements OnMapReadyCall
             Transports marker = new Transports(needsBundle.getString("Key"), strLocationDetails, user.getEmail().toString(), llNeedLocation.latitude, llNeedLocation.longitude, epTimeFrom, epTimeTo,
                     needsBundle.getString("Heading"), needsBundle.getString("Description"), needsBundle.getString("LocationDetails"),
                     needsBundle.getString("Owner"), needsBundle.getDouble("Latitude"), needsBundle.getDouble("Longitude"),
-                    needsBundle.getLong("TimeFrom"), needsBundle.getLong("TimeTo"));
+                    needsBundle.getLong("TimeFrom"), needsBundle.getLong("TimeTo"),0);
+
+            String strKey = needsBundle.getString("Key");
 
             DatabaseReference mNeedsRef = FirebaseDatabase.getInstance().getReference("Needs");
+            mNeedsRef.child(strKey).removeValue();
 
-            mNeedsRef.child(needsBundle.getString("Key")).removeValue();
-
+            DatabaseReference mNeedsLocationRef = FirebaseDatabase.getInstance().getReference("NeedLocations");
+            mNeedsLocationRef.child(strKey).removeValue();
 
             mTransportsRef.push().setValue(marker, new DatabaseReference.CompletionListener() {
                 @Override

@@ -21,6 +21,7 @@ import android.view.View;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -45,7 +46,6 @@ public class ListTransportActivity extends AppCompatActivity implements BottomNa
     private FusedLocationProviderClient mFusedLocationClient;
     List<Transports> list;
     RecyclerView recycle;
-
 
 
     @Override
@@ -83,7 +83,7 @@ public class ListTransportActivity extends AppCompatActivity implements BottomNa
                                     list = new ArrayList<Transports>();
                                     for(DataSnapshot dataSnapshot1 :dataSnapshot.getChildren()){
 
-                                        if(dataSnapshot1.child("longitude").getValue(Double.class) > location.getLongitude()-gridSize && dataSnapshot1.child("longitude").getValue(Double.class) < location.getLongitude()+gridSize ) {
+                                      //  if(dataSnapshot1.child("longitude").getValue(Double.class) > location.getLongitude()-gridSize && dataSnapshot1.child("longitude").getValue(Double.class) < location.getLongitude()+gridSize ) {
 
                                             Transports value = dataSnapshot1.getValue(Transports.class);
 
@@ -105,6 +105,20 @@ public class ListTransportActivity extends AppCompatActivity implements BottomNa
                                             Long timefrom = value.getTimefrom();
                                             Long timeto = value.getTimeto();
 
+                                            Location dest = new Location("dummyprovider");
+
+                                            dest.setLatitude(providelatitude);
+                                            dest.setLongitude(providelongitude);
+                                            float [] dist = new float[1];
+                                            Float totDistance = location.distanceTo(dest);
+
+                                            Location.distanceBetween(providelatitude,providelongitude,latitude,longitude,dist);
+
+                                            totDistance = totDistance + dist[0];
+
+                                            transports.setDistanceto(totDistance);
+                                            Log.d("urb", "Distance: " +location.distanceTo(dest) + " transport distance=" + dist[0] );
+
                                             transports.setNeedkey(needkey);
                                             transports.setProvidelocationdetails(providelocationdetails);
                                             transports.setProvideowner(provideemail);
@@ -121,11 +135,13 @@ public class ListTransportActivity extends AppCompatActivity implements BottomNa
                                             transports.setTimefrom(timefrom);
                                             transports.setTimeto(timeto);
 
+
+
                                             list.add(transports);
 
                                         }
 
-                                    }
+                                  //  }
 
 
                                     RecyclerAdapterTransports recyclerAdapter = new RecyclerAdapterTransports(list,ListTransportActivity.this);
@@ -246,7 +262,7 @@ public class ListTransportActivity extends AppCompatActivity implements BottomNa
         intent.putExtra("Longitude", list.get(position).getLongitude());
         intent.putExtra("TimeFrom", list.get(position).getTimefrom());
         intent.putExtra("TimeTo", list.get(position).getTimeto());
-
+        intent.putExtra("DistanceTo", list.get(position).getDistanceto());
        // Log.d("urb", "What:" + list.get(position).getNeedkey());
 
         startActivity(intent);

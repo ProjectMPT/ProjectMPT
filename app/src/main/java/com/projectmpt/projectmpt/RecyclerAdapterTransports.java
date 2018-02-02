@@ -44,6 +44,17 @@ public class RecyclerAdapterTransports extends RecyclerView.Adapter<RecyclerAdap
         Transports mylist = list.get(position);
         holder.heading.setText(mylist.getHeading());
         holder.description.setText(mylist.getDescription());
+        holder.distance.setText(String.format("%.1f",(mylist.getDistanceto()*0.00062137)) + " miles total");
+
+        Integer hours = 0;
+        Integer minutes = 0;
+        Long timeLeft = mylist.getTimeto() - System.currentTimeMillis();
+
+        hours = (int)(timeLeft/60000/60);
+        minutes = (int)((timeLeft/60000)-hours*60);
+
+        holder.timeleft.setText(hours + "h " + minutes + "m left");
+
 
     }
 
@@ -77,7 +88,7 @@ public class RecyclerAdapterTransports extends RecyclerView.Adapter<RecyclerAdap
 
 
     class MyHolder extends RecyclerView.ViewHolder {
-        TextView heading,description;
+        TextView heading,description,distance,timeleft;
         private ConstraintLayout main;
         //LinearLayout linearLayout;
 
@@ -85,6 +96,8 @@ public class RecyclerAdapterTransports extends RecyclerView.Adapter<RecyclerAdap
             super(itemView);
             heading = (TextView) itemView.findViewById(R.id.heading_transport);
             description= (TextView) itemView.findViewById(R.id.description_transport);
+            timeleft= (TextView) itemView.findViewById(R.id.description_timeleft);
+            distance= (TextView) itemView.findViewById(R.id.distance_transport);
             main = (ConstraintLayout) itemView.findViewById(R.id.cardmaintransport);
 
             main.setOnClickListener(new View.OnClickListener() {

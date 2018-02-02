@@ -41,6 +41,20 @@
                 android:paddingBottom="@dimen/text_marginBottom"
                 style="@style/standardText" />
 
+
+            <TextView
+                android:id="@+id/description_timeleft"
+                android:text="timeleft"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/distance_transport"
+                android:paddingLeft="@dimen/text_marginLeft"
+                android:paddingRight="@dimen/text_marginRight"
+                android:paddingBottom="@dimen/text_marginBottom"
+                style="@style/standardText"
+                />
+
             <TextView
                 android:id="@+id/description_transport"
                 android:text="email"

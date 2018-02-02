@@ -21,6 +21,8 @@ public class Transports {
         public double longitude;
         public long timefrom;
         public long timeto;
+        public double distanceto;
+
 
 
         //required empty constructor
@@ -28,7 +30,8 @@ public class Transports {
         }
 
         public Transports(String needkey, String providelocationdetails, String provideowner, double providelatitude, double providelongitude, long providetimefrom,
-                          long providetimeto, String heading, String description, String locationdetails, String owner, double latitude, double longitude, long timefrom, long timeto) {
+                          long providetimeto, String heading, String description, String locationdetails, String owner, double latitude, double longitude, long timefrom, long timeto,
+                          double distanceto) {
 
             this.needkey = needkey;
             this.providelocationdetails = providelocationdetails;
@@ -45,6 +48,9 @@ public class Transports {
             this.longitude = longitude;
             this.timefrom = timefrom;
             this.timeto = timeto;
+            this.distanceto = distanceto;
+
+
         }
 
         public String getKey() {return key;}
@@ -170,6 +176,14 @@ public class Transports {
 
         public void setTimeto(long timeto) {
             this.timeto = timeto;
+        }
+
+        public double getDistanceto() {
+            return distanceto;
+        }
+
+        public void setDistanceto(double distanceto) {
+            this.distanceto = distanceto;
         }
 
 

@@ -3,6 +3,7 @@ package com.projectmpt.projectmpt;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.icu.text.SimpleDateFormat;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -45,6 +46,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -115,6 +117,13 @@ public class ListActivity extends AppCompatActivity implements BottomNavigationV
                                         Double longitude = value.getLongitude();
                                         Long timefrom = value.getTimefrom();
                                         Long timeto = value.getTimeto();
+
+                                        Location dest = new Location("dummyprovider");
+                                        dest.setLatitude(latitude);
+                                        dest.setLongitude(longitude);
+
+                                        transports.setDistanceto(location.distanceTo(dest));
+                                        //Log.d("urb", "Distance: " +location.distanceTo(dest) );
 
                                         transports.setNeedkey(needkey);
                                         transports.setHeading(heading);
@@ -240,7 +249,7 @@ public class ListActivity extends AppCompatActivity implements BottomNavigationV
     @Override
     public void itemClicked(View view, int position) {
 
-            Log.d("urb", "Click:" + position);
+         //   Log.d("urb", "Click:" + position);
             Intent intent = new Intent(ListActivity.this, listDetailActivity.class);
             intent.putExtra("Key", list.get(position).getNeedkey());
             intent.putExtra("Heading", list.get(position).getHeading());
@@ -251,8 +260,10 @@ public class ListActivity extends AppCompatActivity implements BottomNavigationV
             intent.putExtra("Longitude", list.get(position).getLongitude());
             intent.putExtra("TimeFrom", list.get(position).getTimefrom());
             intent.putExtra("TimeTo", list.get(position).getTimeto());
+            intent.putExtra("DistanceTo", list.get(position).getDistanceto());
 
-            Log.d("urb", "What:" + list.get(position).getNeedkey());
+
+           // Log.d("urb", "What:" + list.get(position).getNeedkey());
 
             startActivity(intent);
 
