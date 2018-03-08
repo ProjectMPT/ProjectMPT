@@ -59,6 +59,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 
 public class MapActivity extends AppCompatActivity
@@ -152,8 +153,12 @@ public class MapActivity extends AppCompatActivity
 
                                         if(marker.getLongitude() > lowLong && marker.getLongitude() < highLong ) {
 
+                                            Long millis =  marker.getTimeto() - System.currentTimeMillis();
+                                            Long hours = TimeUnit.MILLISECONDS.toHours(millis);
+                                            Long mins = TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis));
+
                                             LatLng mlocation = new LatLng(marker.getLatitude(),marker.getLongitude());
-                                            map.addMarker(new MarkerOptions().position(mlocation).title(marker.getDescription()).snippet(marker.getLocationdetails()));
+                                            map.addMarker(new MarkerOptions().position(mlocation).title(marker.getHeading()).snippet("Expires: " + hours + ":" + mins));
 
                                           //  Log.w(TAG, "AddMarker: " + mlocation.toString() + description);
 

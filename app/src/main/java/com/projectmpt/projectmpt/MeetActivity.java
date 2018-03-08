@@ -292,6 +292,10 @@ public class MeetActivity extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 
+                c.set(Calendar.YEAR, year);
+                c.set(Calendar.MONTH, monthOfYear);
+                c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
                 Integer mHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
                 Integer mMinute = Calendar.getInstance().get(Calendar.MINUTE);
 
@@ -308,21 +312,30 @@ public class MeetActivity extends AppCompatActivity {
 
                         cmdOutput.setText(strDateTime);
 
+                        c.set(Calendar.HOUR_OF_DAY,hourOfDay);
+                        c.set(Calendar.MINUTE,minute);
+
                         SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm");
                         try {
 
                             Date date = df.parse(strDateTime);
+                            date.getTime();
+
+                            Log.d("Urban", c.getTimeInMillis() + ", " + date.getTime());
 
                             if (cmdOutput.getId() == R.id.cmdTo) {
-                                epTimeTo = date.getTime(); }
+
+                                epTimeTo = c.getTimeInMillis(); }
                             else {
-                                epTimeFrom = date.getTime();
+                                epTimeFrom = c.getTimeInMillis();
                             }
 
                         } catch (java.text.ParseException e) {
                             // TODO
 
                         }
+
+
 
                     }
                 }, mHour, mMinute, DateFormat.is24HourFormat(MeetActivity.this));

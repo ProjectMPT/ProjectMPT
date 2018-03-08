@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by csa on 3/7/2017.
@@ -58,19 +59,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyHold
         holder.description.setText(mylist.getDescription());
         holder.distance.setText(String.format("%.1f",(mylist.getDistanceto()*0.00062137)) + " miles");
 
-        Integer hours = 0;
-        Integer minutes = 0;
-        Long timeLeft = mylist.getTimeto() - System.currentTimeMillis();
+        Long millis =  mylist.getTimeto() - System.currentTimeMillis();
+        Long hours = TimeUnit.MILLISECONDS.toHours(millis);
+        Long mins = TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis));
 
-        hours = (int)(timeLeft/60000/60);
-        minutes = (int)((timeLeft/60000)-hours*60);
+        holder.timeleft.setText(hours + ":" + mins);
 
-        holder.timeleft.setText(hours + "h " + minutes + "m left");
-
-       // Log.d("urb", "Time: " + mylist.getTimeto() + ", " + System.currentTimeMillis()+ ", " + timeLeft);
-
-
-    }
+      }
 
 
     @Override
