@@ -58,12 +58,13 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 
 public class MapActivity extends AppCompatActivity
-        implements OnMapReadyCallback,
+        implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener, BottomNavigationView.OnNavigationItemSelectedListener {
@@ -79,6 +80,8 @@ public class MapActivity extends AppCompatActivity
 
     private static final String TAG = "MPTMapActivity";
 
+
+    HashMap<String, Transports> markerData = new HashMap<String, Transports>();
     private DatabaseReference mDatabase;
 
     ChildEventListener mChildEventListener;
@@ -86,8 +89,7 @@ public class MapActivity extends AppCompatActivity
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
@@ -97,9 +99,9 @@ public class MapActivity extends AppCompatActivity
         BottomNavigationView mBtmView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         mBtmView.setOnNavigationItemSelectedListener(this);
 
+
+
     }
-
-
 
 
     @Override
@@ -113,16 +115,14 @@ public class MapActivity extends AppCompatActivity
     }
 
 
-
-
     @Override
-    public void onStop(){
-        if(mChildEventListener != null)
+    public void onStop() {
+        if (mChildEventListener != null)
             mNeedsRef.removeEventListener(mChildEventListener);
         super.onStop();
     }
 
-    private void addMarkersToMap(final GoogleMap map){
+    private void addMarkersToMap(final GoogleMap map) {
 
         if (ContextCompat.checkSelfPermission(this,
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
@@ -133,34 +133,46 @@ public class MapActivity extends AppCompatActivity
             mFusedLocationClient.getLastLocation()
                     .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                         @Override
-                        public void onSuccess(Location location) {
+                        public void onSuccess(final Location location) {
+
 
                             DatabaseReference ref = FirebaseDatabase.getInstance().getReference("NeedLocations");
 
                             final Double gridSize = 0.20;
-                            final Double lowLong =  location.getLongitude()-gridSize;
-                            final Double highLong =  location.getLongitude()+gridSize;
+                            final Double lowLong = location.getLongitude() - gridSize;
+                            final Double highLong = location.getLongitude() + gridSize;
 
-                            Query query = mNeedsRef.orderByChild("latitude").startAt(location.getLatitude()-gridSize).endAt(location.getLatitude()+gridSize);
+                            Query query = mNeedsRef.orderByChild("latitude").startAt(location.getLatitude() - gridSize).endAt(location.getLatitude() + gridSize);
                             query.addListenerForSingleValueEvent(new ValueEventListener() {
 
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
 
-                                    for(DataSnapshot item: dataSnapshot.getChildren())
-                                    {
-                                        Needs marker = item.getValue(Needs.class);
+                                    for (DataSnapshot item : dataSnapshot.getChildren()) {
+                                       // Needs marker = item.getValue(Needs.class);
+                                        Transports markerdata = item.getValue(Transports.class);
 
-                                        if(marker.getLongitude() > lowLong && marker.getLongitude() < highLong ) {
+                                        if (markerdata.getLongitude() > lowLong && markerdata.getLongitude() < highLong) {
 
-                                            Long millis =  marker.getTimeto() - System.currentTimeMillis();
+                                            Long millis = markerdata.getTimeto() - System.currentTimeMillis();
                                             Long hours = TimeUnit.MILLISECONDS.toHours(millis);
                                             Long mins = TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis));
 
-                                            LatLng mlocation = new LatLng(marker.getLatitude(),marker.getLongitude());
-                                            map.addMarker(new MarkerOptions().position(mlocation).title(marker.getHeading()).snippet("Expires: " + hours + ":" + mins));
 
-                                          //  Log.w(TAG, "AddMarker: " + mlocation.toString() + description);
+                                            Location dest = new Location("dummyprovider");
+                                            dest.setLatitude(markerdata.getLatitude());
+                                            dest.setLongitude(markerdata.getLongitude());
+
+                                            float distanceTo = location.distanceTo(dest);
+
+                                            markerdata.setDistanceto(distanceTo);
+
+                                            LatLng mlocation = new LatLng(markerdata.getLatitude(), markerdata.getLongitude());
+                                            Marker newMarker = map.addMarker(new MarkerOptions().position(mlocation).title(markerdata.getHeading()).snippet(String.format("%.1f",(distanceTo*0.00062137)) + " miles away, expires: " + hours + ":" + mins));
+
+                                            markerData.put(newMarker.getId(),markerdata);
+
+                                            //  Log.w(TAG, "AddMarker: " + mlocation.toString() + description);
 
                                         }
 
@@ -168,13 +180,13 @@ public class MapActivity extends AppCompatActivity
 
 
                                 }
+
                                 @Override
                                 public void onCancelled(DatabaseError databaseError) {
                                     // Getting Post failed, log a message
                                     //   Log.w(TAG, "getUser:onCancelled", databaseError.toException());
                                 }
                             });
-
 
 
                             if (location != null) {
@@ -187,12 +199,14 @@ public class MapActivity extends AppCompatActivity
 
 
 
+
+
+
     }
 
 
-    public void onMapReady(GoogleMap googleMap)
-    {
-        mGoogleMap=googleMap;
+    public void onMapReady(GoogleMap googleMap) {
+        mGoogleMap = googleMap;
         mGoogleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
 
         //Initialize Google Play Services
@@ -207,8 +221,7 @@ public class MapActivity extends AppCompatActivity
                 //Request Location Permission
                 checkLocationPermission();
             }
-        }
-        else {
+        } else {
             buildGoogleApiClient();
             mGoogleMap.setMyLocationEnabled(true);
         }
@@ -216,7 +229,11 @@ public class MapActivity extends AppCompatActivity
         addMarkersToMap(googleMap);
 
 
-    }
+        googleMap.setOnInfoWindowClickListener(MapActivity.this);
+
+
+
+}
 
     protected synchronized void buildGoogleApiClient() {
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -241,6 +258,7 @@ public class MapActivity extends AppCompatActivity
 
             mLastLocation = LocationServices.FusedLocationApi
                     .getLastLocation(mGoogleApiClient);
+
 
 
             LatLng currentlatLng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
@@ -378,5 +396,33 @@ public class MapActivity extends AppCompatActivity
             // permissions this app might request
         }
     }
+
+    @Override
+    public void onInfoWindowClick(final Marker marker) {
+
+        Transports markervalues = markerData.get(marker.getId());
+
+
+
+         if (marker.equals(marker)) {
+             Intent intent = new Intent(MapActivity.this, listDetailActivity.class);
+             intent.putExtra("Key", markervalues.getNeedkey());
+            intent.putExtra("Heading", markervalues.getHeading());
+             intent.putExtra("Description", markervalues.getDescription());
+             intent.putExtra("LocationDetails", markervalues.getLocationdetails());
+             intent.putExtra("Owner", markervalues.getOwner());
+             intent.putExtra("Latitude", markervalues.getLatitude());
+            intent.putExtra("Longitude", markervalues.getLongitude());
+             intent.putExtra("TimeFrom", markervalues.getTimefrom());
+            intent.putExtra("TimeTo", markervalues.getTimeto());
+             intent.putExtra("DistanceTo", markervalues.getDistanceto());
+
+
+             // Log.d("urb", "What:" + list.get(position).getNeedkey());
+
+             startActivity(intent);
+         }
+
+      }
 
 }
