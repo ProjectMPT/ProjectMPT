@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/ProjectMPT.iml" filepath="$PROJECT_DIR$/.idea/ProjectMPT.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ProjectMPT.iml" filepath="$PROJECT_DIR$/ProjectMPT.iml" />
+      <module fileurl="file://C:\Users\urban\Google Drive\ProjectMPT\AndroidNew\ProjectMPT\.idea\ProjectMPT.iml" filepath="C:\Users\urban\Google Drive\ProjectMPT\AndroidNew\ProjectMPT\.idea\ProjectMPT.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:\Users\urban\Google Drive\ProjectMPT\AndroidNew\ProjectMPT\app\app.iml" filepath="C:\Users\urban\Google Drive\ProjectMPT\AndroidNew\ProjectMPT\app\app.iml" />
     </modules>
   </component>
 </project>

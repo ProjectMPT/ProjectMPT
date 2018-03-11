@@ -359,6 +359,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void startTransportMap(View view) {
+        Intent intent = new Intent(this, MapTransportActivity.class);
+        startActivity(intent);
+    }
+
     public void startList(View view) {
         Intent intent = new Intent(this, ListActivity.class);
         startActivity(intent);
