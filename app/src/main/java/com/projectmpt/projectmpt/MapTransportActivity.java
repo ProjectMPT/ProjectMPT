@@ -2,10 +2,14 @@ package com.projectmpt.projectmpt;
 
 import android.Manifest;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 
 import android.os.Build;
@@ -15,6 +19,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
@@ -80,6 +85,7 @@ public class MapTransportActivity extends AppCompatActivity
     private FusedLocationProviderClient mFusedLocationClient;
 
     private static final String TAG = "MPTMapTransportActivity";
+
 
 
     HashMap<String, Transports> markerData = new HashMap<String, Transports>();
@@ -174,9 +180,11 @@ public class MapTransportActivity extends AppCompatActivity
                                             markerData.put(newMarker.getId(),markerdata);
 
                                             LatLng mprovidelocation = new LatLng(markerdata.getProvidelatitude(), markerdata.getProvidelongitude());
-                                            Marker newProvideMarker = map.addMarker(new MarkerOptions().position(mprovidelocation).title(markerdata.getHeading()).snippet(String.format("%.1f",(distanceTo*0.00062137)) + " miles away, expires: " + hours + ":" + mins));
+                                            Marker newProvideMarker = map.addMarker(new MarkerOptions().position(mprovidelocation).title(markerdata.getHeading()).snippet(String.format("%.1f",(distanceTo*0.00062137)) +
+                                                    " miles away, expires: " + hours + ":" + mins).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_help)));
 
                                             markerData.put(newMarker.getId(),markerdata);
+
 
                                             map.addPolyline(new PolylineOptions().add(mprovidelocation, mlocation).width(7).color(Color.MAGENTA));
 
