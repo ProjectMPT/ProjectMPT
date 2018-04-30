@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorbackground"
+    android:background="@color/colorbackgroundteal"
     tools:context="com.projectmpt.projectmpt.MainActivity">
 
     <android.support.v7.widget.Toolbar
@@ -17,15 +17,36 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="200dp"
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         app:layout_constraintTop_toBottomOf="@id/my_toolbar"
-        app:srcCompat="@drawable/logompt" />
+        android:text="Project MPT"
+        android:textAlignment="center"
+        android:textAppearance="@style/titleText"
+        app:layout_constraintHorizontal_bias="0.0"
+        />
+
+    <TextView
+        android:id="@+id/tvSubTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:text="Helping Humans Help Humans"
+        android:textAlignment="center"
+        android:textAppearance="@style/subtitleText"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle"
+        />
+
+
 
     <TextView
         android:id="@+id/tvWelcome"
@@ -41,7 +62,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageView" />
+        app:layout_constraintTop_toBottomOf="@id/tvSubTitle" />
 
 
     <TextView

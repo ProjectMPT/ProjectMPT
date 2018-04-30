@@ -29,6 +29,20 @@
         <item name="android:textStyle">normal</item>
     </style>
 
+    <style name="titleText" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:textColor">@color/colorwhite</item>
+        <item name="android:fontFamily">@font/robotolight</item>
+        <item name="android:textSize">50dp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="subtitleText" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:textColor">@color/colorwhite</item>
+        <item name="android:fontFamily">@font/robotolight</item>
+        <item name="android:textSize">20dp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
     <style name="tabText" parent="TextAppearance.Design.Tab">
         <item name="textAllCaps">false</item>
         <item name="android:textAllCaps">false</item>

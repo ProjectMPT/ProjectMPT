@@ -9,5 +9,6 @@
     <color name="colorlinktext">#2ce080</color>
     <color name="colorbackground">#f2f3f5</color>
     <color name="colortoolbarbackground">#03314b</color>
+    <color name="colorbackgroundteal">#00cdcf</color>
 
 </resources>
