@@ -20,9 +20,8 @@
     <string name="nav_help">Help</string>
     <string name="title_activity_time_picker_fragment">TimePickerFragment</string>
 
-    <string name="map"><![CDATA[This is an <u>underline</u>]]></string>
+    <string name="map">Map</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_list_detail">listDetailActivity</string>
     <string name="title_activity_provide">ProvideActivity</string>
