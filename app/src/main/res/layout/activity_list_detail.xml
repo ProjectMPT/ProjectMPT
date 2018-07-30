@@ -82,6 +82,27 @@
 
 
     <Button
+        android:id="@+id/provideMap"
+        style="@style/FirebaseUI.Button"
+        app:layout_constraintTop_toBottomOf="@id/timeExpire"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="provideMap"
+        android:text="Map"
+        />
+
+    <Button
+        android:id="@+id/provideDirections"
+        style="@style/FirebaseUI.Button"
+        app:layout_constraintTop_toBottomOf="@id/provideMap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="provideDirections"
+        android:text="Directions"
+        />
+
+
+    <Button
             android:id="@+id/cmdProvide"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -96,7 +117,9 @@
             android:background="@color/colortoolbarbackground"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/timeExpire" />
+            app:layout_constraintTop_toBottomOf="@id/provideDirections" />
+
+
 
         <android.support.design.widget.BottomNavigationView
             android:id="@+id/bottom_navigationDetail"
@@ -110,4 +133,6 @@
             />
 
 
-    </android.support.constraint.ConstraintLayout>
+
+
+</android.support.constraint.ConstraintLayout>

@@ -2,6 +2,7 @@ package com.projectmpt.projectmpt;
 
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -17,9 +18,14 @@ import java.security.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static android.net.Uri.parse;
+
 public class listDetailActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
 
     private TextView Textv;
+    private String strURI;
+    private String strURIDirections;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +89,12 @@ public class listDetailActivity extends AppCompatActivity implements BottomNavig
                 Textv = (TextView)findViewById(R.id.distanceDetail);
                 Textv.setText(String.format("%.1f",(newDouble*0.00062137)) + " miles away");
 
+                strURI = "geo:0,0?q=" + extras.getDouble("Latitude") + ","
+                 + extras.getDouble("Longitude") + "(" + extras.getString("Heading")
+                 + ")&z=18";
 
+                strURIDirections = "google.navigation:q=" + extras.getDouble("Latitude") + ","
+                        + extras.getDouble("Longitude");
 
 
             }
@@ -118,6 +129,25 @@ public class listDetailActivity extends AppCompatActivity implements BottomNavig
         }
         return true;
     }
+
+    public void provideMap(View view) {
+
+        Uri gmmIntentUri = Uri.parse(strURI);
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        mapIntent.setPackage("com.google.android.apps.maps");
+        startActivity(mapIntent);
+
+    }
+
+    public void provideDirections(View view) {
+
+        Uri gmmIntentUri = Uri.parse(strURIDirections);
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        mapIntent.setPackage("com.google.android.apps.maps");
+        startActivity(mapIntent);
+
+    }
+
 
     public void provideItem(View view) {
         Intent intent = new Intent(this, ProvideActivity.class);

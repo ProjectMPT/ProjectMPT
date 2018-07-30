@@ -39,7 +39,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class SecondFragment extends Fragment implements OnMapReadyCallback,
+public class SecondFragment extends Fragment implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener{
@@ -48,12 +48,12 @@ public class SecondFragment extends Fragment implements OnMapReadyCallback,
 
 
     private int mPage;
-    GoogleMap mGoogleMap;
-    SupportMapFragment mapFrag;
+ //   GoogleMap mGoogleMap;
+  //  SupportMapFragment mapFrag;
     LocationRequest mLocationRequest;
     GoogleApiClient mGoogleApiClient;
     Location mLastLocation;
-    Marker mCurrLocationMarker;
+    //Marker mCurrLocationMarker;
 
     public static SecondFragment newInstance(int page) {
         Bundle args = new Bundle();
@@ -97,13 +97,13 @@ public class SecondFragment extends Fragment implements OnMapReadyCallback,
             public void afterTextChanged(Editable s) {}
         });
 
-        SupportMapFragment mapFrag = (SupportMapFragment) this.getChildFragmentManager()
-                .findFragmentById(R.id.map);
+      //  SupportMapFragment mapFrag = (SupportMapFragment) this.getChildFragmentManager()
+    //            .findFragmentById(R.id.map);
 
-        if (mapFrag != null) mapFrag.getMapAsync(this);
+     //   if (mapFrag != null) mapFrag.getMapAsync(this);
 
-        return view;
-    }
+    //    return view;
+ //   }
 //    @Override
 //    public void onMapReady(GoogleMap googleMap) {
 //        mGoogleMap = googleMap;
@@ -114,31 +114,31 @@ public class SecondFragment extends Fragment implements OnMapReadyCallback,
 //        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 //    }
 
-        @Override
-    public void onMapReady(GoogleMap googleMap)
-    {
-        mGoogleMap=googleMap;
-        mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        mGoogleMap.getUiSettings().setZoomControlsEnabled(true);
-        mGoogleMap.getUiSettings().setMapToolbarEnabled(false);
+   //     @Override
+ //   public void onMapReady(GoogleMap googleMap)
+ //   {
+   //     mGoogleMap=googleMap;
+   //     mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+     //   mGoogleMap.getUiSettings().setZoomControlsEnabled(true);
+ //       mGoogleMap.getUiSettings().setMapToolbarEnabled(false);
 
-        mGoogleMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
+    //    mGoogleMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
 
-            @Override
-            public void onMarkerDragStart(Marker marker) {
+         //   @Override
+        //    public void onMarkerDragStart(Marker marker) {
 
-            }
+      //      }
 
-            @Override
-            public void onMarkerDragEnd(Marker marker) {
-                ((MeetActivity)SecondFragment.this.getActivity()).llNeedLocation = marker.getPosition();
-            }
+         //   @Override
+        //    public void onMarkerDragEnd(Marker marker) {
+        //        ((MeetActivity)SecondFragment.this.getActivity()).llNeedLocation = marker.getPosition();
+         //   }
+//
+        //    @Override
+         //   public void onMarkerDrag(Marker marker) {
 
-            @Override
-            public void onMarkerDrag(Marker marker) {
-
-            }
-        });
+      //     }
+  //      });
 
 
         //Initialize Google Play Services
@@ -148,7 +148,7 @@ public class SecondFragment extends Fragment implements OnMapReadyCallback,
                     == PackageManager.PERMISSION_GRANTED) {
                 //Location Permission already granted
                 buildGoogleApiClient();
-                mGoogleMap.setMyLocationEnabled(true);
+             //   mGoogleMap.setMyLocationEnabled(true);
             } else {
                 //Request Location Permission
                 checkLocationPermission();
@@ -156,10 +156,12 @@ public class SecondFragment extends Fragment implements OnMapReadyCallback,
         }
         else {
             buildGoogleApiClient();
-            mGoogleMap.setMyLocationEnabled(true);
+      //      mGoogleMap.setMyLocationEnabled(true);
         }
 
-    }
+        return view;
+        
+  }
 
     protected synchronized void buildGoogleApiClient() {
         mGoogleApiClient = new GoogleApiClient.Builder(this.getContext())
@@ -185,12 +187,12 @@ public class SecondFragment extends Fragment implements OnMapReadyCallback,
             mLastLocation = LocationServices.FusedLocationApi
                     .getLastLocation(mGoogleApiClient);
             ((MeetActivity)SecondFragment.this.getActivity()).llNeedLocation = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(((MeetActivity)SecondFragment.this.getActivity()).llNeedLocation,18));
+       //     mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(((MeetActivity)SecondFragment.this.getActivity()).llNeedLocation,18));
 
-            mGoogleMap.addMarker(new MarkerOptions()
-                    .position(((MeetActivity)SecondFragment.this.getActivity()).llNeedLocation)
-                    .title("Location, hold and drag to fine tune")
-                    .draggable(true));
+        //    mGoogleMap.addMarker(new MarkerOptions()
+       //             .position(((MeetActivity)SecondFragment.this.getActivity()).llNeedLocation)
+        //            .title("Location, hold and drag to fine tune")
+        //            .draggable(true));
         }
     }
 
