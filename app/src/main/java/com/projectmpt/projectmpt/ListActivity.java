@@ -8,7 +8,12 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -52,7 +57,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class ListActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, ClickListener {
+public class ListActivity extends AppCompatActivity implements ClickListener {
 
     ChildEventListener mChildEventListener;
     DatabaseReference mNeedsRef = FirebaseDatabase.getInstance().getReference("Needs");
@@ -63,6 +68,8 @@ public class ListActivity extends AppCompatActivity implements BottomNavigationV
     List<Transports> list;
     RecyclerView recycle;
 
+    private DrawerLayout mDrawerLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,11 +78,57 @@ public class ListActivity extends AppCompatActivity implements BottomNavigationV
 
         recycle = (RecyclerView) findViewById(R.id.recycle);
 
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        setSupportActionBar(myToolbar);
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), MeetActivity.class);
+                startActivity(intent);
+                //return true;
+            }
+        });
 
-        final BottomNavigationView mBtmView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
-        mBtmView.setOnNavigationItemSelectedListener(this);
+
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.listtoolbar);
+        setSupportActionBar(myToolbar);
+        ActionBar actionbar = getSupportActionBar();
+        actionbar.setDisplayHomeAsUpEnabled(true);
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
+
+        mDrawerLayout = findViewById(R.id.list_drawer_layout);
+
+        NavigationView navigationView = findViewById(R.id.list_nav_view);
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        // set item as selected to persist highlight
+                        menuItem.setChecked(true);
+
+
+                        switch (menuItem.getItemId()) {
+
+                            case R.id.settings:
+                                Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+                                startActivity(intent);
+                                return true;
+                        }
+
+
+
+
+                        // close drawer when item is tapped
+                        mDrawerLayout.closeDrawers();
+
+                        // Add code here to update the UI based on the item selected
+                        // For example, swap UI fragments here
+
+                        return true;
+                    }
+                });
+
+
 
 
 
@@ -174,76 +227,18 @@ public class ListActivity extends AppCompatActivity implements BottomNavigationV
 
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.appbar_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-        switch (item.getItemId()) {
-
-            case R.id.action_home:
-
-                Intent intentMain = new Intent(this, MainActivity.class);
-                startActivity(intentMain);
-                break;
-
-            case R.id.action_add_new:
-
-                Intent intentList = new Intent(this, MeetActivity.class);
-                startActivity(intentList);
-                break;
-
-            case R.id.action_help:
-
-
-                break;
-
-        }
-        return true;
-    }
-
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_settings:
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
+
+            case R.id.settings:
                 Intent intent = new Intent(this, SettingsActivity.class);
                 startActivity(intent);
                 return true;
-
-            case R.id.action_profile:
-
-                FirebaseAuth auth = FirebaseAuth.getInstance();
-                if (auth.getCurrentUser() != null) {
-
-                    Intent intentp = new Intent(this, ProfileActivity.class);
-                    startActivity(intentp);
-
-                } else {
-
-                    startActivityForResult(
-                            AuthUI.getInstance()
-                                    .createSignInIntentBuilder()
-                                    //.setLogo(@DrawableRes)
-                                    .setAvailableProviders(
-                                            Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build(),
-                                                    new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build()))
-                                    .build(),
-                            RC_SIGN_IN);
-                }
-                return true;
-
-
-            default:
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
-                return super.onOptionsItemSelected(item);
-
         }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
