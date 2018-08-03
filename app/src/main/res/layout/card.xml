@@ -1,5 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:id="@+id/linearLayout"
     android:layout_height="wrap_content">
@@ -10,64 +11,88 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:layout_margin="4dp"
-        android:elevation="1dp"
+        android:elevation="2dp"
         card_view:cardCornerRadius="2dp">
 
         <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/cardmain"
+            android:layout_margin="2dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/heading"
+            <ImageView
+                android:id="@+id/imgType"
+                android:layout_marginTop="2dp"
                 android:layout_width="wrap_content"
-                android:text="Heading"
                 android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/text_marginLeft"
-                android:paddingTop="@dimen/text_marginTop"
-                android:paddingBottom="@dimen/text_marginBottom"
-                style="@style/headerText" />
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:src="@drawable/ic_run"
+
+                 />
+
+            <TextView
+                android:id="@+id/tvType"
+                style="@style/headerText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Transport warm sleeping bag"
+                android:singleLine="false"
+                android:textColor="@color/colorPrimary"
+                app:layout_constraintBottom_toBottomOf="@+id/imgType"
+                app:layout_constraintEnd_toStartOf="@id/imgMap"
+                app:layout_constraintStart_toEndOf="@id/imgType"
+                app:layout_constraintTop_toTopOf="@+id/imgType"
+                 />
 
             <TextView
                 android:id="@+id/distance"
                 android:layout_width="wrap_content"
-                android:text="2.6 miles"
+                android:text="Distance 0.6 + 2.6 miles"
                 android:layout_height="wrap_content"
-                app:layout_constraintRight_toRightOf="parent"
-                android:paddingRight="@dimen/text_marginRight"
-                android:paddingTop="@dimen/text_marginTop"
+                app:layout_constraintLeft_toRightOf="@id/imgType"
+                app:layout_constraintTop_toBottomOf="@+id/tvDetails"
                 style="@style/standardText" />
 
+
+            <TextView
+                android:id="@+id/tvDetails"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Lorem ipsum All data are displayed in minLines count. What can I try now I am using custom textview in the xml"
+                app:layout_constraintStart_toEndOf="@id/imgType"
+                app:layout_constraintTop_toBottomOf="@+id/tvType"
+                app:layout_constraintEnd_toStartOf="@id/imgMap"
+                android:singleLine="false"
+                style="@style/standardText" />
+
+            />
             <TextView
                 android:id="@+id/timeleft"
                 android:layout_width="wrap_content"
-                android:text="Expires"
+                android:text="Expires in 2 hours and 10 minutes"
                 android:layout_height="wrap_content"
-                app:layout_constraintRight_toRightOf="parent"
-                android:paddingRight="@dimen/text_marginRight"
-                android:paddingTop="@dimen/text_marginTop"
-                android:paddingBottom="@dimen/text_marginBottom"
-                app:layout_constraintTop_toBottomOf="@id/distance"
+                app:layout_constraintLeft_toRightOf="@id/imgType"
+                app:layout_constraintTop_toBottomOf="@+id/distance"
                 style="@style/standardText" />
 
-
-            <TextView
-                android:id="@+id/description"
-                android:text="email"
-                android:layout_width="match_parent"
+            <ImageButton
+                android:id="@+id/imgMap"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/heading"
-                android:paddingLeft="@dimen/text_marginLeft"
+                android:background="@null"
+                card_view:srcCompat="@drawable/map"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@id/distance"
+                style="@style/standardText" />
 
-                android:paddingBottom="@dimen/text_marginBottom"
-                style="@style/standardText"
-                />
 
         </android.support.constraint.ConstraintLayout>
 
     </android.support.v7.widget.CardView>
+
+
 
 </RelativeLayout>

@@ -28,12 +28,11 @@
             android:name=".MeetActivity"
             android:parentActivityName=".MainActivity" />
         <activity
-            android:name=".MapActivity"
-            android:parentActivityName=".MainActivity" />
-        <activity
             android:name=".ListActivity"
             android:parentActivityName=".MainActivity" />
-
+        <activity
+            android:name=".GPSTrackerActivity"
+            android:parentActivityName=".MainActivity" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAItqYZdfn88goKDHp3_4gGa7jNJMhzDRM" />
@@ -52,8 +51,8 @@
         <activity android:name=".ListTransportActivity" />
         <activity android:name=".ListTransportDetailActivity" />
         <activity
-            android:name=".MapTransportActivity"
-            android:label="@string/title_activity_map_transport"
+            android:name=".AddNewActivity"
+            android:label="@string/title_activity_add_new"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
     </application>
 

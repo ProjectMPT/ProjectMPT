@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 27
-   // buildToolsVersion '27.0.1'
+    // buildToolsVersion '27.0.1'
 
 
     defaultConfig {
@@ -37,7 +37,7 @@ dependencies {
 
 
     implementation 'com.google.firebase:firebase-core:15.0.0'
-   implementation 'com.google.firebase:firebase-auth:15.0.0'
+    implementation 'com.google.firebase:firebase-auth:15.0.0'
     implementation 'com.firebase:geofire-android:2.3.1'
 
 

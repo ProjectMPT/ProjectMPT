@@ -88,6 +88,8 @@ public class MeetActivity extends AppCompatActivity {
 
    private DatabaseReference mDatabase;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,15 +100,12 @@ public class MeetActivity extends AppCompatActivity {
                 MeetActivity.this));
 
 
-
         // Give the TabLayout the ViewPager
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(viewPager);
 
 
-
     }
-
 
     public void cancelNeed(View view) {
 
@@ -138,6 +137,9 @@ public class MeetActivity extends AppCompatActivity {
     }
 
     public void saveNeed(View view){
+
+
+
 
         Boolean bolFail = false;
         String strMessage = "";

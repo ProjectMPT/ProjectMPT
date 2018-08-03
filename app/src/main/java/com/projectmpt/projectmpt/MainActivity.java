@@ -127,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(this,
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
+    /*
 
             mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -164,15 +165,15 @@ public class MainActivity extends AppCompatActivity {
 
                                 @Override
                                 public void onGeoQueryReady() {
-                                    TextView tvNeeds = (TextView)findViewById(R.id.tvNeeds);
-                                    tvNeeds.setText(i.toString() + " needs in your area" );
+                             //       TextView tvNeeds = (TextView)findViewById(R.id.tvNeeds);
+                              //      tvNeeds.setText(i.toString() + " needs in your area" );
                                 }
 
                                 @Override
                                 public void onGeoQueryError(DatabaseError error) {
 
-                                    TextView tvNeeds = (TextView) findViewById(R.id.tvNeeds);
-                                    tvNeeds.setText("Error finding needs");
+                              //      TextView tvNeeds = (TextView) findViewById(R.id.tvNeeds);
+                              //      tvNeeds.setText("Error finding needs");
                                 }
 
                             });
@@ -225,6 +226,8 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
                     });
+
+            */
 
         }
 
@@ -417,21 +420,21 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void startMeet(View view) {
-        Intent intent = new Intent(this, MeetActivity.class);
-        startActivity(intent);
-    }
-
-
     public void startList(View view) {
         Intent intent = new Intent(this, ListActivity.class);
         startActivity(intent);
     }
 
-    public void startTransport(View view) {
-        Intent intent = new Intent(this, ListTransportActivity.class);
-        startActivity(intent);
-    }
+
+  //  public void startList(View view) {
+    //    Intent intent = new Intent(this, ListActivity.class);
+     //   startActivity(intent);
+   // }
+
+   // public void startTransport(View view) {
+  //      Intent intent = new Intent(this, ListTransportActivity.class);
+   //     startActivity(intent);
+  //  }
 
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageButton bmImage;

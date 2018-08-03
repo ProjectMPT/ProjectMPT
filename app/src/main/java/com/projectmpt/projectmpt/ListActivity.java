@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.icu.text.SimpleDateFormat;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -69,6 +70,7 @@ public class ListActivity extends AppCompatActivity implements ClickListener {
     RecyclerView recycle;
 
     private DrawerLayout mDrawerLayout;
+    private String strURI;
 
 
     @Override
@@ -82,7 +84,7 @@ public class ListActivity extends AppCompatActivity implements ClickListener {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), MeetActivity.class);
+                Intent intent = new Intent(getApplicationContext(), AddNewActivity.class);
                 startActivity(intent);
                 //return true;
             }
@@ -109,10 +111,11 @@ public class ListActivity extends AppCompatActivity implements ClickListener {
 
                         switch (menuItem.getItemId()) {
 
+
                             case R.id.settings:
                                 Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
                                 startActivity(intent);
-                                return true;
+                                 return true;
                         }
 
 
@@ -244,25 +247,41 @@ public class ListActivity extends AppCompatActivity implements ClickListener {
     @Override
     public void itemClicked(View view, int position) {
 
-         //   Log.d("urb", "Click:" + position);
-            Intent intent = new Intent(ListActivity.this, listDetailActivity.class);
-            intent.putExtra("Key", list.get(position).getNeedkey());
-            intent.putExtra("Heading", list.get(position).getHeading());
-            intent.putExtra("Description", list.get(position).getDescription());
-            intent.putExtra("LocationDetails", list.get(position).getLocationdetails());
-            intent.putExtra("Owner", list.get(position).getOwner());
-            intent.putExtra("Latitude", list.get(position).getLatitude());
-            intent.putExtra("Longitude", list.get(position).getLongitude());
-            intent.putExtra("TimeFrom", list.get(position).getTimefrom());
-            intent.putExtra("TimeTo", list.get(position).getTimeto());
-            intent.putExtra("DistanceTo", list.get(position).getDistanceto());
+        switch(view.getId()  ) {
+
+            case R.id.imgMap:
+                strURI = "geo:0,0?q=" + list.get(position).getLatitude() + ","
+                        + list.get(position).getLongitude() + "(" + list.get(position).getHeading()
+                        + ")&z=18";
+
+                Uri gmmIntentUri = Uri.parse(strURI);
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                startActivity(mapIntent);
+
+                break;
+
+            default:
+
+                //   Log.d("urb", "Click:" + position);
+                Intent intent = new Intent(ListActivity.this, listDetailActivity.class);
+                intent.putExtra("Key", list.get(position).getNeedkey());
+                intent.putExtra("Heading", list.get(position).getHeading());
+                intent.putExtra("Description", list.get(position).getDescription());
+                intent.putExtra("LocationDetails", list.get(position).getLocationdetails());
+                intent.putExtra("Owner", list.get(position).getOwner());
+                intent.putExtra("Latitude", list.get(position).getLatitude());
+                intent.putExtra("Longitude", list.get(position).getLongitude());
+                intent.putExtra("TimeFrom", list.get(position).getTimefrom());
+                intent.putExtra("TimeTo", list.get(position).getTimeto());
+                intent.putExtra("DistanceTo", list.get(position).getDistanceto());
 
 
-           // Log.d("urb", "What:" + list.get(position).getNeedkey());
+                // Log.d("urb", "What:" + list.get(position).getNeedkey());
 
-            startActivity(intent);
+                startActivity(intent);
 
-
+        }
     }
 
 

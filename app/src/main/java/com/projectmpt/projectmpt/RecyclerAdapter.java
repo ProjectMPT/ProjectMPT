@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -55,15 +56,15 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyHold
     @Override
     public void onBindViewHolder(MyHolder holder, final int position) {
         Transports mylist = list.get(position);
-        holder.heading.setText(mylist.getHeading());
+        holder.heading.setText("Transport " + mylist.getHeading());
         holder.description.setText(mylist.getDescription());
-        holder.distance.setText(String.format("%.1f",(mylist.getDistanceto()*0.00062137)) + " miles");
+        //holder.distance.setText(String.format("%.1f",(mylist.getDistanceto()*0.00062137)) + " miles");
 
         Long millis =  mylist.getTimeto() - System.currentTimeMillis();
         Long hours = TimeUnit.MILLISECONDS.toHours(millis);
         Long mins = TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis));
 
-        holder.timeleft.setText(hours + ":" + mins);
+       // holder.timeleft.setText(hours + ":" + mins);
 
       }
 
@@ -100,14 +101,30 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyHold
     class MyHolder extends RecyclerView.ViewHolder{
         TextView heading,description,distance,timeleft;
         private ConstraintLayout main;
+        private ImageButton imgMap;
         //LinearLayout linearLayout;
 
         public MyHolder(View itemView) {
             super(itemView);
-            heading = (TextView) itemView.findViewById(R.id.heading);
-            description= (TextView) itemView.findViewById(R.id.description);
-            distance= (TextView) itemView.findViewById(R.id.distance);
-            timeleft= (TextView) itemView.findViewById(R.id.timeleft);
+            heading = (TextView) itemView.findViewById(R.id.tvType);
+            description= (TextView) itemView.findViewById(R.id.tvDetails);
+          //  distance= (TextView) itemView.findViewById(R.id.distance);
+          //  timeleft= (TextView) itemView.findViewById(R.id.timeleft);
+
+            imgMap = (ImageButton) itemView.findViewById(R.id.imgMap);
+
+            imgMap.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d("urb", "Map:");
+                    if(clicklistener !=null){
+                        clicklistener.itemClicked(v,getAdapterPosition());
+                    }
+                }
+            });
+
+
+
             main = (ConstraintLayout) itemView.findViewById(R.id.cardmain);
 
             main.setOnClickListener(new View.OnClickListener() {

@@ -26,4 +26,17 @@
     <string name="title_activity_list_detail">listDetailActivity</string>
     <string name="title_activity_provide">ProvideActivity</string>
     <string name="title_activity_map_transport">MapTransportActivity</string>
+    <string name="title_activity_add_new">AddNewActivity</string>
+
+    <string-array name="expire_array">
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>12</item>
+        <item>24</item>
+    </string-array>
+
+
 </resources>
