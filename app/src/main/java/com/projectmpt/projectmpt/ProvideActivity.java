@@ -418,7 +418,7 @@ public class ProvideActivity extends AppCompatActivity implements OnMapReadyCall
 
             DatabaseReference mTransportsRef = FirebaseDatabase.getInstance().getReference("Transports");
 
-            Transports marker = new Transports(needsBundle.getString("Key"), strLocationDetails, user.getEmail().toString(), llNeedLocation.latitude, llNeedLocation.longitude, epTimeFrom, epTimeTo,
+            Transports marker = new Transports(needsBundle.getString("Key"),needsBundle.getString("Type"), strLocationDetails, user.getEmail().toString(), llNeedLocation.latitude, llNeedLocation.longitude, epTimeFrom, epTimeTo,
                     needsBundle.getString("Heading"), needsBundle.getString("Description"), needsBundle.getString("LocationDetails"),
                     needsBundle.getString("Owner"), needsBundle.getDouble("Latitude"), needsBundle.getDouble("Longitude"),
                     needsBundle.getLong("TimeFrom"), needsBundle.getLong("TimeTo"),0);

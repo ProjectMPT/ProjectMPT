@@ -6,6 +6,7 @@ public class Transports {
 
         @Exclude
         public String key;
+        public String type;
         public String needkey;
         public String providelocationdetails;
         public String provideowner;
@@ -29,11 +30,12 @@ public class Transports {
         public Transports() {
         }
 
-        public Transports(String needkey, String providelocationdetails, String provideowner, double providelatitude, double providelongitude, long providetimefrom,
+        public Transports(String needkey, String type, String providelocationdetails, String provideowner, double providelatitude, double providelongitude, long providetimefrom,
                           long providetimeto, String heading, String description, String locationdetails, String owner, double latitude, double longitude, long timefrom, long timeto,
                           double distanceto) {
 
             this.needkey = needkey;
+            this.type = type;
             this.providelocationdetails = providelocationdetails;
             this.provideowner = provideowner;
             this.providelatitude = providelatitude;
@@ -58,6 +60,12 @@ public class Transports {
         public void setKey(String key) {
             this.key= key;
         }
+
+        public String getType() {return type;}
+
+        public void setType(String type) {
+        this.type= type;
+    }
 
         public String getNeedkey() {return needkey;}
 

@@ -219,8 +219,13 @@ public class MeetActivity extends AppCompatActivity {
             String strLocationDetails = this.locTxt;
             //Log.i("unique tag 2 0996", this.locTxt);
 
-            DatabaseReference mNeedsRef = FirebaseDatabase.getInstance().getReference("Needs");
-            Needs marker = new Needs(strNeedHeader, strNeed, strLocationDetails, user.getEmail(), llNeedLocation.latitude, llNeedLocation.longitude, epTimeFrom, epTimeTo);
+            DatabaseReference mNeedsRef = FirebaseDatabase.getInstance().getReference("Transports");
+            //Transports marker = new Transports(strNeedHeader, strNeed, strLocationDetails, user.getEmail(), llNeedLocation.latitude, llNeedLocation.longitude, epTimeFrom, epTimeTo);
+
+            Transports marker = new Transports("","Provide", "", "",0 , 0, 0, 0,
+                    strNeedHeader, strNeed, strLocationDetails,
+                    user.getEmail().toString(), llNeedLocation.latitude, llNeedLocation.longitude,
+                    epTimeFrom, epTimeTo,0);
 
 
             //mNeedsRef.push().setValue(marker);

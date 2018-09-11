@@ -61,7 +61,7 @@ import java.util.Map;
 public class ListActivity extends AppCompatActivity implements ClickListener {
 
     ChildEventListener mChildEventListener;
-    DatabaseReference mNeedsRef = FirebaseDatabase.getInstance().getReference("Needs");
+    DatabaseReference mNeedsRef = FirebaseDatabase.getInstance().getReference("Transports");
 
     private static final int RC_SIGN_IN = 123;
     private static final String TAG = "MPTMapActivity";
@@ -161,10 +161,11 @@ public class ListActivity extends AppCompatActivity implements ClickListener {
 
                                     if(dataSnapshot1.child("longitude").getValue(Double.class) > location.getLongitude()-gridSize && dataSnapshot1.child("longitude").getValue(Double.class) < location.getLongitude()+gridSize ) {
 
-                                        Needs value = dataSnapshot1.getValue(Needs.class);
+                                        Transports value = dataSnapshot1.getValue(Transports.class);
                                         Transports transports = new Transports();
 
                                         String needkey = dataSnapshot1.getKey();
+                                        String type = value.getType();
                                         String heading = value.getHeading();
                                         String description = value.getDescription();
                                         String locationdetails = value.getLocationdetails();
@@ -182,6 +183,7 @@ public class ListActivity extends AppCompatActivity implements ClickListener {
                                         //Log.d("urb", "Distance: " +location.distanceTo(dest) );
 
                                         transports.setNeedkey(needkey);
+                                        transports.setType(type);
                                         transports.setHeading(heading);
                                         transports.setOwner(email);
                                         transports.setDescription(description);

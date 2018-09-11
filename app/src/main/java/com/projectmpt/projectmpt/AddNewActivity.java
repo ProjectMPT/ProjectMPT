@@ -186,8 +186,15 @@ public class AddNewActivity extends AppCompatActivity {
 
             Long lngExpire = System.currentTimeMillis() + (dblExpire*360000);
 
-            DatabaseReference mNeedsRef = FirebaseDatabase.getInstance().getReference("Needs");
-            Needs marker = new Needs(strHeading, strNeed, strLocation, user.getEmail(), dblLatitude, dblLongitude, System.currentTimeMillis(), lngExpire);
+            DatabaseReference mNeedsRef = FirebaseDatabase.getInstance().getReference("Transports");
+            //Needs marker = new Needs(strHeading, strNeed, strLocation, user.getEmail(), dblLatitude, dblLongitude, System.currentTimeMillis(), lngExpire);
+
+            Transports marker = new Transports("","Provide", "", "",0 , 0, 0, 0,
+                    strHeading, strNeed, strLocation,
+                    user.getEmail().toString(), dblLatitude, dblLongitude,
+                    System.currentTimeMillis(), lngExpire,0);
+
+
 
             mNeedsRef.push().setValue(marker, new DatabaseReference.CompletionListener() {
                 @Override
