@@ -29,9 +29,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -39,6 +41,7 @@ import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -57,18 +60,21 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 
-
-public class ProvideActivity extends AppCompatActivity implements OnMapReadyCallback,
-        GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, BottomNavigationView.OnNavigationItemSelectedListener {
+public class ProvideActivity extends AppCompatActivity  {
 
     public Button cmdOutput;
     String strDateTime;
     Long epTimeFrom;
     Long epTimeTo;
-    LatLng llNeedLocation;
+
+    public Double dblLatitude = 0.0;
+    public Double dblLongitude = 0.0;
+
+    LatLng llProvideLocation;
 
     public static final String ARG_PAGE = "ARG_PAGE";
 
@@ -80,6 +86,7 @@ public class ProvideActivity extends AppCompatActivity implements OnMapReadyCall
     Location mLastLocation;
     Marker mCurrLocationMarker;
     private DatabaseReference mDatabase;
+    private FusedLocationProviderClient mFusedLocationClient;
 
 
     @Override
@@ -87,190 +94,54 @@ public class ProvideActivity extends AppCompatActivity implements OnMapReadyCall
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_provide);
 
-        final BottomNavigationView mBtmView = (BottomNavigationView) findViewById(R.id.bottom_navigationProvide);
-        mBtmView.setOnNavigationItemSelectedListener(this);
 
-        mapFrag = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.providemap);
-        mapFrag.getMapAsync(this);
+        Spinner spinner = (Spinner) findViewById(R.id.available_spinner);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.expire_array, android.R.layout.simple_spinner_item);
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinner.setAdapter(adapter);
+
 
         EditText editText = (EditText) this.findViewById(R.id.txtProvideLocation);
 
         editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
         editText.setRawInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
 
-    }
+
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
 
-
-
-    public void showTimePickerDialogProvide(View v) {
-
-        final Calendar c = Calendar.getInstance();
-
-        Integer mYear = Calendar.getInstance().get(Calendar.YEAR);
-        Integer mMonth = Calendar.getInstance().get(Calendar.MONTH);
-        Integer mDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-
-
-        cmdOutput = (Button) findViewById(v.getId());
-
-        DatePickerDialog datePickerDialog = new DatePickerDialog(ProvideActivity.this, new DatePickerDialog.OnDateSetListener() {
-
-
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-
-                Integer mHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
-                Integer mMinute = Calendar.getInstance().get(Calendar.MINUTE);
-
-                if (cmdOutput.getId() == R.id.cmdTo) mHour = mHour + 2;
-
-                strDateTime = (monthOfYear + 1) + "/" + dayOfMonth  + "/" + year;
-
-                TimePickerDialog timePickerDialog = new TimePickerDialog(ProvideActivity.this, new TimePickerDialog.OnTimeSetListener() {
-
-                    @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-
-                        strDateTime = strDateTime + " " + hourOfDay + ":" + minute;
-
-                        cmdOutput.setText(strDateTime);
-
-                        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-                        try {
-
-                            Date date = df.parse(strDateTime);
-
-                            if (cmdOutput.getId() == R.id.cmdToProvide) {
-                                epTimeTo = date.getTime(); }
-                            else {
-                                epTimeFrom = date.getTime();
-                            }
-
-                        } catch (java.text.ParseException e) {
-                            // TODO
-
-                        }
-
-                    }
-                }, mHour, mMinute, DateFormat.is24HourFormat(ProvideActivity.this));
-                timePickerDialog.show();
-            }
-        },  mYear, mMonth, mDay);
-        datePickerDialog.show();
-
-
-
-    }
-
-    @Override
-    public void onMapReady(GoogleMap googleMap)
-    {
-        mGoogleMap=googleMap;
-        mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        mGoogleMap.getUiSettings().setZoomControlsEnabled(true);
-        mGoogleMap.getUiSettings().setMapToolbarEnabled(false);
-
-        mGoogleMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
-
-            @Override
-            public void onMarkerDragStart(Marker marker) {
-
-            }
-
-            @Override
-            public void onMarkerDragEnd(Marker marker) {
-                llNeedLocation = marker.getPosition();
-            }
-
-            @Override
-            public void onMarkerDrag(Marker marker) {
-
-            }
-        });
-
-
-        //Initialize Google Play Services
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(getApplicationContext(),
-                    android.Manifest.permission.ACCESS_FINE_LOCATION)
-                    == PackageManager.PERMISSION_GRANTED) {
-                //Location Permission already granted
-                buildGoogleApiClient();
-                mGoogleMap.setMyLocationEnabled(true);
-            } else {
-                //Request Location Permission
-                checkLocationPermission();
-            }
-        }
-        else {
-            buildGoogleApiClient();
-            mGoogleMap.setMyLocationEnabled(true);
-        }
-
-    }
-
-    protected synchronized void buildGoogleApiClient() {
-        mGoogleApiClient = new GoogleApiClient.Builder(getApplicationContext())
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
-        mGoogleApiClient.connect();
-    }
-
-    @Override
-    public void onConnected(Bundle bundle) {
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(1000);
-        mLocationRequest.setFastestInterval(1000);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-        if (ContextCompat.checkSelfPermission(getApplicationContext(),
+        if (ContextCompat.checkSelfPermission(this,
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
 
-            //LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+            Intent intent = new Intent(this, GPSTrackerActivity.class);
+            startActivityForResult(intent,1);
 
-            mLastLocation = LocationServices.FusedLocationApi
-                    .getLastLocation(mGoogleApiClient);
-            llNeedLocation = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(llNeedLocation,18));
+            Log.i("GPS", "REQUEST");
 
-            mGoogleMap.addMarker(new MarkerOptions()
-                    .position(llNeedLocation)
-                    .title("Location, hold and drag to fine tune")
-                    .draggable(true));
+        } else {
+
+
+        }
+
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 1){
+            Bundle extras = data.getExtras();
+            dblLongitude = extras.getDouble("Longitude");
+            dblLatitude = extras.getDouble("Latitude");
+
+            Log.i("GPS", dblLongitude.toString() + " " + dblLatitude.toString());
+
         }
     }
 
-    @Override
-    public void onConnectionSuspended(int i) {}
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {}
-
-
-
-  //  @Override
- //   public void onLocationChanged(Location location)
- //   {
-//          mLastLocation = location;
-//           if (mCurrLocationMarker != null) {
-//               mCurrLocationMarker.remove();
-//          }
-//
-//       // Place current location marker
-//         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-//         MarkerOptions markerOptions = new MarkerOptions();
-//         markerOptions.position(latLng);
-//        markerOptions.title("Current Position");
-//         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
-//        mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
-//
-//        //move map camera
-//        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,11));
-
-   // }
 
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     private void checkLocationPermission() {
@@ -309,35 +180,11 @@ public class ProvideActivity extends AppCompatActivity implements OnMapReadyCall
         }
     }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-        switch (item.getItemId()) {
-
-            case R.id.action_home:
-
-                Intent intentMain = new Intent(this, MainActivity.class);
-                startActivity(intentMain);
-                break;
-
-            case R.id.action_add_new:
-
-                Intent intentList = new Intent(this, MeetActivity.class);
-                startActivity(intentList);
-                break;
-
-            case R.id.action_help:
-
-
-                break;
-
-        }
-        return true;
-    }
+    
 
     public void cancelProvide(View view) {
 
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, ListActivity.class);
         startActivity(intent);
 
     }
@@ -348,15 +195,6 @@ public class ProvideActivity extends AppCompatActivity implements OnMapReadyCall
         String strMessage = "";
 
 
-        if (epTimeFrom==null){
-            bolFail=true;
-            strMessage = strMessage + "Please enter a from time\n";
-        }
-
-        if (epTimeTo==null){
-            bolFail=true;
-            strMessage = strMessage + "Please enter a to time\n";
-        }
 
         TextView locText = (TextView) findViewById(R.id.txtProvideLocation);
 
@@ -388,14 +226,14 @@ public class ProvideActivity extends AppCompatActivity implements OnMapReadyCall
 
         }else{
 
-            saveProvidetoDataBase();
+            updateProvidetoDataBase();
 
         }
 
 
     }
 
-    public void saveProvidetoDataBase() {
+    public void updateProvidetoDataBase() {
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
@@ -409,6 +247,12 @@ public class ProvideActivity extends AppCompatActivity implements OnMapReadyCall
 
             String strLocationDetails = locText.getText().toString();
 
+            Spinner spExpire = findViewById(R.id.available_spinner);
+
+            Long dblExpire = Long.valueOf(spExpire.getSelectedItem().toString());
+
+            Long lngExpire = System.currentTimeMillis() + (dblExpire*360000);
+
             //Intent intent = new Intent(this, listDetailActivity.class);
 
             Bundle needsBundle = getIntent().getExtras();
@@ -418,20 +262,21 @@ public class ProvideActivity extends AppCompatActivity implements OnMapReadyCall
 
             DatabaseReference mTransportsRef = FirebaseDatabase.getInstance().getReference("Transports");
 
-            Transports marker = new Transports(needsBundle.getString("Key"),needsBundle.getString("Type"), strLocationDetails, user.getEmail().toString(), llNeedLocation.latitude, llNeedLocation.longitude, epTimeFrom, epTimeTo,
-                    needsBundle.getString("Heading"), needsBundle.getString("Description"), needsBundle.getString("LocationDetails"),
-                    needsBundle.getString("Owner"), needsBundle.getDouble("Latitude"), needsBundle.getDouble("Longitude"),
-                    needsBundle.getLong("TimeFrom"), needsBundle.getLong("TimeTo"),0);
+            DatabaseReference provideRef = mTransportsRef.child(needsBundle.getString("Key"));
+            Map<String, Object> provideUpdates = new HashMap<>();
+            provideUpdates.put("type", "Transport");
+            provideUpdates.put("providelocationdetails", strLocationDetails);
+            provideUpdates.put("providelatitude", dblLatitude);
+            provideUpdates.put("providelongitude", dblLongitude);
+            provideUpdates.put("provideowner", user.getEmail());
+            provideUpdates.put("providetimefrom", System.currentTimeMillis());
+            provideUpdates.put("providetimeto", lngExpire);
 
-            String strKey = needsBundle.getString("Key");
+           // provideRef.updateChildren(provideUpdates, new DatabaseReference.CompletionListener() (
 
-            DatabaseReference mNeedsRef = FirebaseDatabase.getInstance().getReference("Needs");
-            mNeedsRef.child(strKey).removeValue();
 
-            DatabaseReference mNeedsLocationRef = FirebaseDatabase.getInstance().getReference("NeedLocations");
-            mNeedsLocationRef.child(strKey).removeValue();
 
-            mTransportsRef.push().setValue(marker, new DatabaseReference.CompletionListener() {
+            provideRef.updateChildren(provideUpdates, new DatabaseReference.CompletionListener() {
                 @Override
                 public void onComplete(DatabaseError databaseError,
                                        DatabaseReference databaseReference) {
@@ -445,7 +290,15 @@ public class ProvideActivity extends AppCompatActivity implements OnMapReadyCall
                         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("TransportLocations");
                         GeoFire geoFire = new GeoFire(ref);
 
-                        geoFire.setLocation(key, new GeoLocation(llNeedLocation.latitude, llNeedLocation.longitude));
+                        geoFire.setLocation(key, new GeoLocation(dblLatitude, dblLongitude), new GeoFire.CompletionListener() {
+                            @Override
+                            public void onComplete(String key, DatabaseError error) {
+
+                            }
+
+                        });
+
+
                     }
 
                 }

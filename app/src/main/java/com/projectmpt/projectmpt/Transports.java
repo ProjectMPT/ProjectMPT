@@ -14,6 +14,7 @@ public class Transports {
         public double providelongitude;
         public long providetimefrom;
         public long providetimeto;
+        public String transportowner;
         public String heading;
         public String description;
         public String locationdetails;
@@ -31,7 +32,7 @@ public class Transports {
         }
 
         public Transports(String needkey, String type, String providelocationdetails, String provideowner, double providelatitude, double providelongitude, long providetimefrom,
-                          long providetimeto, String heading, String description, String locationdetails, String owner, double latitude, double longitude, long timefrom, long timeto,
+                          long providetimeto, String transportowner,  String heading, String description, String locationdetails, String owner, double latitude, double longitude, long timefrom, long timeto,
                           double distanceto) {
 
             this.needkey = needkey;
@@ -42,6 +43,7 @@ public class Transports {
             this.providelongitude = providelongitude;
             this.providetimefrom = providetimefrom;
             this.providetimeto = providetimeto;
+            this.transportowner = transportowner;
             this.heading = heading;
             this.description = description;
             this.locationdetails = locationdetails;
@@ -121,6 +123,13 @@ public class Transports {
             this.providetimeto = providetimeto;
         }
 
+        public String getTransportowner() {
+        return transportowner;
+    }
+
+        public void setTransportowner(String transportowner) {
+        this.transportowner = transportowner;
+    }
 
         public String getHeading() {
             return heading;

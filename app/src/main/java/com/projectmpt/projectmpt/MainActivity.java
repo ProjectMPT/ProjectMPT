@@ -63,10 +63,7 @@ public class MainActivity extends AppCompatActivity {
     Integer i = 0;
     Integer count = 0;
 
-    //private DatabaseReference mDatabase;
-
-    //ChildEventListener mChildEventListener;
-    DatabaseReference mNeedsRef = FirebaseDatabase.getInstance().getReference("Needs");
+    DatabaseReference mNeedsRef = FirebaseDatabase.getInstance().getReference("Transports");
 
     DatabaseReference mWelcome = FirebaseDatabase.getInstance().getReference("WelcomeMessage");
 
@@ -108,14 +105,8 @@ public class MainActivity extends AppCompatActivity {
                                     return true;
                             }
 
-
-
-
-                        // close drawer when item is tapped
                         mDrawerLayout.closeDrawers();
 
-                        // Add code here to update the UI based on the item selected
-                        // For example, swap UI fragments here
 
                         return true;
                     }
@@ -127,107 +118,7 @@ public class MainActivity extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(this,
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-    /*
 
-            mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-
-            mFusedLocationClient.getLastLocation()
-                    .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                        @Override
-                        public void onSuccess(Location location) {
-
-                            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("NeedLocations");
-                            GeoFire geoFire = new GeoFire(ref);
-
-                            GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(location.getLatitude(), location.getLongitude()), 10);
-
-                            i=0;
-
-                            geoQuery.addGeoQueryDataEventListener(new GeoQueryDataEventListener() {
-
-                                @Override
-                                public void onDataEntered(DataSnapshot dataSnapshot, GeoLocation location) {
-                                    i = i + 1;
-                                }
-
-                                @Override
-                                public void onDataExited(DataSnapshot dataSnapshot) {
-                                }
-
-                                @Override
-                                public void onDataMoved(DataSnapshot dataSnapshot, GeoLocation location) {
-                                    // ...
-                                }
-
-                                @Override
-                                public void onDataChanged(DataSnapshot dataSnapshot, GeoLocation location) {
-                                }
-
-                                @Override
-                                public void onGeoQueryReady() {
-                             //       TextView tvNeeds = (TextView)findViewById(R.id.tvNeeds);
-                              //      tvNeeds.setText(i.toString() + " needs in your area" );
-                                }
-
-                                @Override
-                                public void onGeoQueryError(DatabaseError error) {
-
-                              //      TextView tvNeeds = (TextView) findViewById(R.id.tvNeeds);
-                              //      tvNeeds.setText("Error finding needs");
-                                }
-
-                            });
-
-
-                            ref = FirebaseDatabase.getInstance().getReference("TransportLocations");
-                            GeoFire geoFireTransport = new GeoFire(ref);
-
-                            GeoQuery geoQueryTransport = geoFireTransport.queryAtLocation(new GeoLocation(location.getLatitude(), location.getLongitude()), 10);
-
-                            count=0;
-
-                            geoQueryTransport.addGeoQueryDataEventListener(new GeoQueryDataEventListener() {
-
-                                @Override
-                                public void onDataEntered(DataSnapshot dataSnapshot, GeoLocation location) {
-                                    count = count + 1;
-                                }
-
-                                @Override
-                                public void onDataExited(DataSnapshot dataSnapshot) {
-                                }
-
-                                @Override
-                                public void onDataMoved(DataSnapshot dataSnapshot, GeoLocation location) {
-                                    // ...
-                                }
-
-                                @Override
-                                public void onDataChanged(DataSnapshot dataSnapshot, GeoLocation location) {
-                                }
-
-                                @Override
-                                public void onGeoQueryReady() {
-                                    TextView tvTransports = (TextView)findViewById(R.id.tvTransports);
-                                    tvTransports.setText(count.toString() + " transport requests" );
-                                }
-
-                                @Override
-                                public void onGeoQueryError(DatabaseError error) {
-
-                                    TextView tvTransports = (TextView) findViewById(R.id.tvTransports);
-                                    tvTransports.setText("Error finding transports");
-                                }
-
-                            });
-
-                            if (location != null) {
-                                // Logic to handle location object
-                            }
-                        }
-                    });
-
-            */
 
         }
 

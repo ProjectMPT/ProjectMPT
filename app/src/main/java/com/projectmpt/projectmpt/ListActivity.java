@@ -41,6 +41,7 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -168,8 +169,10 @@ public class ListActivity extends AppCompatActivity implements ClickListener {
                                         String type = value.getType();
                                         String heading = value.getHeading();
                                         String description = value.getDescription();
+                                        String provideowner = value.getProvideowner();
                                         String locationdetails = value.getLocationdetails();
                                         String email = value.getOwner();
+                                        String transportowner = value.getTransportowner();
                                         Double latitude = value.getLatitude();
                                         Double longitude = value.getLongitude();
                                         Long timefrom = value.getTimefrom();
@@ -186,6 +189,8 @@ public class ListActivity extends AppCompatActivity implements ClickListener {
                                         transports.setType(type);
                                         transports.setHeading(heading);
                                         transports.setOwner(email);
+                                        transports.setProvideowner(provideowner);
+                                        transports.setTransportowner(transportowner);
                                         transports.setDescription(description);
                                         transports.setLocationdetails(locationdetails);
                                         transports.setLatitude(latitude);
@@ -265,13 +270,46 @@ public class ListActivity extends AppCompatActivity implements ClickListener {
 
             default:
 
-                //   Log.d("urb", "Click:" + position);
-                Intent intent = new Intent(ListActivity.this, listDetailActivity.class);
+                FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
+
+                Intent intent = new Intent();
+
+                   Log.d("urb", "Click: " + list.get(position).getType().toString());
+
+                if(list.get(position).getType().equals("Transport")) {
+
+                    Log.d("urb", "Transport: " + fUser.getEmail());
+
+                    if (list.get(position).getProvideowner().equals(fUser.getEmail())) {
+                        intent = new Intent(ListActivity.this, listDetailActivity.class);
+                    } else {
+                        intent = new Intent(ListActivity.this, ListTransportActivity.class);
+                    }
+
+                }else if(list.get(position).getType().equals("In progress ")) {
+
+                    Log.d("urb", "Progress: " + fUser.getEmail());
+
+                        if(list.get(position).getTransportowner().equals(fUser.getEmail())){
+                            intent = new Intent(ListActivity.this, ListTransportDetailActivity.class);
+                        }else{
+                            intent = new Intent(ListActivity.this, ListActivity.class);
+                        }
+
+                }else {
+                    intent = new Intent(ListActivity.this, listDetailActivity.class);
+                }
+
+
+
+
                 intent.putExtra("Key", list.get(position).getNeedkey());
                 intent.putExtra("Heading", list.get(position).getHeading());
                 intent.putExtra("Description", list.get(position).getDescription());
                 intent.putExtra("LocationDetails", list.get(position).getLocationdetails());
                 intent.putExtra("Owner", list.get(position).getOwner());
+                intent.putExtra("ProvideOwner", list.get(position).getProvideowner());
+                intent.putExtra("TransportOwner", list.get(position).getTransportowner());
                 intent.putExtra("Latitude", list.get(position).getLatitude());
                 intent.putExtra("Longitude", list.get(position).getLongitude());
                 intent.putExtra("TimeFrom", list.get(position).getTimefrom());

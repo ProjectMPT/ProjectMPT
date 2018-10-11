@@ -15,6 +15,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -31,6 +34,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyHold
     private  ClickListener clicklistener = null;
     SimpleDateFormat df = new SimpleDateFormat("HH:mm");
 
+    public FirebaseUser fUser;
+    public TextView txtCommited;
+
 
     public RecyclerAdapter(List<Transports> list, Context context) {
         this.list = list;
@@ -40,10 +46,15 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyHold
     @Override
     public MyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
+
+
         //View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_list, parent, false);
+        fUser = FirebaseAuth.getInstance().getCurrentUser();
 
         View view = LayoutInflater.from(context).inflate(R.layout.card,parent,false);
         MyHolder myHolder = new MyHolder(view);
+
+        txtCommited = view.findViewById(R.id.tvCommited);
 
         return myHolder;
     }
@@ -56,17 +67,40 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyHold
 
     @Override
     public void onBindViewHolder(MyHolder holder, final int position) {
+
+
         Transports mylist = list.get(position);
 
         String strHeader = mylist.getType() + " " + mylist.getHeading();
-        Log.d("Urban", mylist.getType() + " output");
+        Log.d("Urban", mylist.getTransportowner() + " output");
+
+
+        //holder.distance.setText(String.format("%.1f",(mylist.getDistanceto()*0.00062137)) + " miles");
+
+        if(mylist.getType().equals("Provide")) {
+            holder.imgType.setImageResource(R.drawable.heart);
+        }else if(mylist.getType().equals("Transport")) {
+
+            if(mylist.getProvideowner().equals(fUser.getEmail())) {
+                txtCommited.setVisibility(View.VISIBLE);
+                strHeader = "Provide " + mylist.getHeading();
+            }
+
+            holder.imgType.setImageResource(R.drawable.ic_run);
+        }else {
+            holder.imgType.setImageResource(R.drawable.ic_delivery);
+
+            if(mylist.getTransportowner().equals(fUser.getEmail())) {
+                txtCommited.setVisibility(View.VISIBLE);
+                strHeader = "Transport " + mylist.getHeading();
+            }
+
+
+        }
+
 
         holder.heading.setText(strHeader);
         holder.description.setText(mylist.getDescription());
-        //holder.distance.setText(String.format("%.1f",(mylist.getDistanceto()*0.00062137)) + " miles");
-
-        if(mylist.getType().equals("Provide")) holder.imgType.setImageResource(R.drawable.ic_gift);
-
 
         Long millis =  mylist.getTimeto() - System.currentTimeMillis();
         Long hours = TimeUnit.MILLISECONDS.toHours(millis);

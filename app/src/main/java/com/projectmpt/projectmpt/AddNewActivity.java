@@ -189,7 +189,7 @@ public class AddNewActivity extends AppCompatActivity {
             DatabaseReference mNeedsRef = FirebaseDatabase.getInstance().getReference("Transports");
             //Needs marker = new Needs(strHeading, strNeed, strLocation, user.getEmail(), dblLatitude, dblLongitude, System.currentTimeMillis(), lngExpire);
 
-            Transports marker = new Transports("","Provide", "", "",0 , 0, 0, 0,
+            Transports marker = new Transports("","Provide", "", "",0 , 0, 0, 0, "",
                     strHeading, strNeed, strLocation,
                     user.getEmail().toString(), dblLatitude, dblLongitude,
                     System.currentTimeMillis(), lngExpire,0);

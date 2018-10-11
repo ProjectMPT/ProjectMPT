@@ -14,17 +14,22 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import java.security.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static android.net.Uri.parse;
 
-public class listDetailActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
+public class listDetailActivity extends AppCompatActivity {
 
     private TextView Textv;
     private String strURI;
     private String strURIDirections;
+
+    public Bundle needsBundle;
 
 
     @Override
@@ -32,27 +37,16 @@ public class listDetailActivity extends AppCompatActivity implements BottomNavig
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_detail);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Project MPT");
-        setSupportActionBar(toolbar);
-
-        if (getSupportActionBar() != null){
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-        }
-
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
-        final BottomNavigationView mBtmView = (BottomNavigationView) findViewById(R.id.bottom_navigationDetail);
-        mBtmView.setOnNavigationItemSelectedListener(listDetailActivity.this);
-
         Button cmdProvide = (Button) findViewById(R.id.cmdProvide);
 
+        needsBundle = getIntent().getExtras();
+        FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (needsBundle.getString("ProvideOwner").equals(fUser.getEmail())) {
+
+            cmdProvide.setVisibility(View.GONE);
+
+        };
 
         String newString;
         Double newDouble;
@@ -104,31 +98,7 @@ public class listDetailActivity extends AppCompatActivity implements BottomNavig
 
     }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-        switch (item.getItemId()) {
-
-            case R.id.action_home:
-
-                Intent intentMain = new Intent(this, MainActivity.class);
-                startActivity(intentMain);
-                break;
-
-            case R.id.action_add_new:
-
-                Intent intentList = new Intent(this, MeetActivity.class);
-                startActivity(intentList);
-                break;
-
-            case R.id.action_help:
-
-
-                break;
-
-        }
-        return true;
-    }
 
     public void provideMap(View view) {
 
