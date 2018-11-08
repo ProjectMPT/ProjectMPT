@@ -225,7 +225,7 @@ public class MeetActivity extends AppCompatActivity {
             Transports marker = new Transports("","Provide", "", "",0 , 0, 0, 0, "",
                     strNeedHeader, strNeed, strLocationDetails,
                     user.getEmail().toString(), llNeedLocation.latitude, llNeedLocation.longitude,
-                    epTimeFrom, epTimeTo,0);
+                    epTimeFrom, epTimeTo,"");
 
 
             //mNeedsRef.push().setValue(marker);

@@ -116,7 +116,7 @@ public class ListTransportActivity extends AppCompatActivity implements BottomNa
 
                                             totDistance = totDistance + dist[0];
 
-                                            transports.setDistanceto(totDistance);
+                                            //transports.setDistanceto(totDistance);
                                             Log.d("urb", "Distance: " +location.distanceTo(dest) + " transport distance=" + dist[0] );
 
                                             transports.setNeedkey(needkey);

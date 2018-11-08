@@ -1,5 +1,6 @@
 package com.projectmpt.projectmpt;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
@@ -16,13 +17,14 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.text.format.DateFormat;
+//import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -57,6 +59,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+
+import java.text.DateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -66,10 +72,12 @@ import java.util.Map;
 
 public class ProvideActivity extends AppCompatActivity  {
 
-    public Button cmdOutput;
-    String strDateTime;
-    Long epTimeFrom;
-    Long epTimeTo;
+    //public Button cmdOutput;
+
+    //String strDateTime;
+    //Long epTimeFrom;
+    //Long epTimeTo;
+
 
     public Double dblLatitude = 0.0;
     public Double dblLongitude = 0.0;
@@ -78,16 +86,17 @@ public class ProvideActivity extends AppCompatActivity  {
 
     public static final String ARG_PAGE = "ARG_PAGE";
 
-    private int mPage;
-    GoogleMap mGoogleMap;
-    SupportMapFragment mapFrag;
-    LocationRequest mLocationRequest;
-    GoogleApiClient mGoogleApiClient;
-    Location mLastLocation;
-    Marker mCurrLocationMarker;
+    //private int mPage;
+    //GoogleMap mGoogleMap;
+    //SupportMapFragment mapFrag;
+    //LocationRequest mLocationRequest;
+   // GoogleApiClient mGoogleApiClient;
+   // Location mLastLocation;
+    //Marker mCurrLocationMarker;
     private DatabaseReference mDatabase;
     private FusedLocationProviderClient mFusedLocationClient;
-
+    public Bundle needsBundle;
+    private TextView Textv;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -95,7 +104,7 @@ public class ProvideActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_provide);
 
 
-        Spinner spinner = (Spinner) findViewById(R.id.available_spinner);
+        Spinner spinner = (Spinner) findViewById(R.id.commit_spinner);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.expire_array, android.R.layout.simple_spinner_item);
@@ -103,6 +112,37 @@ public class ProvideActivity extends AppCompatActivity  {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinner.setAdapter(adapter);
+
+        needsBundle = getIntent().getExtras();
+
+        String newString;
+        Long newLong;
+
+
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if(extras == null) {
+                newString= null;
+            } else {
+                newString= extras.getString("Heading");
+                Textv = findViewById(R.id.txtCommitHeader);
+                Textv.setText(newString);
+
+                newString= extras.getString("Description");
+                Textv = (TextView)findViewById(R.id.txtProvideDetail);
+                Textv.setText(newString);
+
+                newLong= extras.getLong("TimeTo");
+                Textv = (TextView)findViewById(R.id.timeCommitExpire);
+                Date date=new Date(newLong);
+                final DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG,DateFormat.SHORT);
+                Textv.setText("Expires: " +  dateFormat.format(date));
+
+            }
+        } else {
+            newString= (String) savedInstanceState.getSerializable("Description");
+        }
+
 
 
         EditText editText = (EditText) this.findViewById(R.id.txtProvideLocation);
@@ -115,7 +155,7 @@ public class ProvideActivity extends AppCompatActivity  {
 
 
         if (ContextCompat.checkSelfPermission(this,
-                android.Manifest.permission.ACCESS_FINE_LOCATION)
+                Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
 
             Intent intent = new Intent(this, GPSTrackerActivity.class);
@@ -127,6 +167,9 @@ public class ProvideActivity extends AppCompatActivity  {
 
 
         }
+
+        Button btn =  findViewById(R.id.cmdCancelCommit);
+        btn.requestFocus();
 
     }
 
@@ -247,7 +290,7 @@ public class ProvideActivity extends AppCompatActivity  {
 
             String strLocationDetails = locText.getText().toString();
 
-            Spinner spExpire = findViewById(R.id.available_spinner);
+            Spinner spExpire = findViewById(R.id.commit_spinner);
 
             Long dblExpire = Long.valueOf(spExpire.getSelectedItem().toString());
 
@@ -308,7 +351,7 @@ public class ProvideActivity extends AppCompatActivity  {
 
 
 
-            final Intent intent = new Intent(this, MainActivity.class);
+            final Intent intent = new Intent(this, ListActivity.class);
 
             AlertDialog alertDialog = new AlertDialog.Builder(ProvideActivity.this).create();
             alertDialog.setTitle("Saved");

@@ -9,140 +9,177 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <ScrollView
+        android:id="@+id/addNewScroll"
+        android:fillViewport="true"
+        android:paddingBottom="24dp"
         android:background="@color/colorbackground"
-        tools:context="com.projectmpt.projectmpt.ListActivity">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-
-
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/addtoolbar"
+        <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="@color/colorbackground"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:paddingVertical="24dp"
+            tools:context="com.projectmpt.projectmpt.ListActivity">
 
 
-        <EditText android:id="@+id/txtNeedShort"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:layout_marginTop="10dp"
-            android:breakStrategy="balanced"
-            android:hint="Short description of the request"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:paddingLeft="@dimen/text_marginLeft"
-            android:paddingRight="@dimen/text_marginRight"
-            android:inputType="text"
-            app:layout_constraintTop_toBottomOf="@id/addtoolbar" />
+            <ImageView
+                android:id="@+id/imgType"
+                android:alpha="0.1"
+                android:layout_margin="6dp"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:paddingLeft="@dimen/text_marginLeft"
+                android:paddingTop="24dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvCommited"
+                android:src="@drawable/heart"
 
-        <EditText android:id="@+id/txtNeed"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
-            android:paddingLeft="@dimen/text_marginLeft"
-            android:paddingEnd="@dimen/text_marginRight"
-            android:paddingRight="@dimen/text_marginRight"
-            android:breakStrategy="balanced"
-            android:hint="Enter a detailed description if needed"
-            android:inputType="textMultiLine"
-            app:layout_constraintVertical_bias=".3"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txtNeedShort"
-            app:layout_constraintBottom_toTopOf="@id/cmdCancel1"/>
+                />
 
-        <EditText
-            android:id="@+id/txtLocation"
-            android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
-            android:breakStrategy="balanced"
-            android:fitsSystemWindows="true"
-            android:hint="The need will be marked at your present position, please provide further details about the location here."
-            android:inputType="textCapSentences|textMultiLine"
-            android:paddingLeft="@dimen/text_marginLeft"
-            android:paddingRight="@dimen/text_marginRight"
-            app:layout_constraintTop_toBottomOf="@id/txtNeed"
-            app:layout_constraintVertical_bias=".3"
-            app:layout_constraintBottom_toTopOf="@id/cmdCancel2"/>
+            <TextView
+                android:id="@+id/txtHeader"
+                style="@style/titleText"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:gravity="center_horizontal"
+                android:text="New Request" />
 
-        <TextView
-            android:id="@+id/etExpire"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:text="Expires in: "
-            app:layout_constraintTop_toBottomOf="@id/txtLocation"
-            app:layout_constraintLeft_toLeftOf="parent"
+            <EditText
+                android:id="@+id/txtNeedShort"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                style="@style/standardText"
+                android:layout_marginTop="10dp"
+                android:breakStrategy="balanced"
+                android:gravity="center_horizontal"
+                android:hint="Short description of the request"
+                android:inputType="text"
+                android:paddingLeft="@dimen/text_marginLeft"
+                android:paddingRight="@dimen/text_marginRight"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtHeader" />
 
-            />
+            <EditText
+                android:id="@+id/txtNeed"
+                style="@style/standardText"
+                android:layout_width="match_parent"
+                android:gravity="center_horizontal"
+                android:layout_height="120dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:breakStrategy="balanced"
+                android:hint="Detailed description"
+                android:paddingLeft="@dimen/text_marginLeft"
+                android:paddingRight="@dimen/text_marginRight"
+                app:layout_constraintBottom_toTopOf="@id/cmdCancel1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtNeedShort"
+                app:layout_constraintVertical_bias=".3" />
 
-        <Spinner
-            android:id="@+id/expire_spinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/txtLocation"
-            app:layout_constraintLeft_toRightOf="@id/etExpire"/>
+            <EditText
+                android:id="@+id/txtLocation"
+                android:layout_width="fill_parent"
+                android:gravity="center_horizontal"
+                style="@style/standardText"
+                android:layout_height="120dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:breakStrategy="balanced"
+                android:fitsSystemWindows="true"
+                android:hint="The request will be marked at your present position, provide detailed delivery instructions here."
+                android:inputType="textCapSentences|textMultiLine"
+                android:paddingLeft="@dimen/text_marginLeft"
+                android:paddingRight="@dimen/text_marginRight"
+                app:layout_constraintBottom_toTopOf="@id/cmdCancel2"
+                app:layout_constraintTop_toBottomOf="@id/txtNeed"
+                app:layout_constraintVertical_bias=".3" />
 
+            <TextView
+                android:id="@+id/etExpire"
+                style="@style/standardText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Expires in: "
+                app:layout_constraintEnd_toStartOf="@+id/expire_spinner"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtLocation" />
 
-        <TextView
-            android:id="@+id/etHours"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:text=" hours"
-            app:layout_constraintTop_toBottomOf="@id/txtLocation"
-            app:layout_constraintLeft_toRightOf="@id/expire_spinner"/>
-
-
-        <Button
-            android:id="@+id/cmdCancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:elevation="1dp"
-            android:onClick="cancelNeed"
-            android:text="Cancel"
-            android:textAppearance="@style/standardText"
-            android:textColor="@color/colorwhite"
-            android:background="@color/colortoolbarbackground"
-            app:layout_constraintEnd_toStartOf="@+id/cmdSave"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"/>
-
-
-        <Button
-            android:id="@+id/cmdSave"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:elevation="1dp"
-            android:onClick="saveNeed"
-            android:text="Save"
-            android:textAppearance="@style/standardText"
-            android:textColor="@color/colorwhite"
-            android:background="@color/colortoolbarbackground"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/cmdCancel"
-            app:layout_constraintStart_toEndOf="@+id/cmdCancel"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"/>
+            <Spinner
+                android:id="@+id/expire_spinner"
+                style="@style/standardText"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                app:layout_constraintEnd_toStartOf="@+id/etHours"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toEndOf="@+id/etExpire"
+                app:layout_constraintTop_toBottomOf="@id/txtLocation" />
 
 
+            <TextView
+                android:id="@+id/etHours"
+                style="@style/standardText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" hours"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/expire_spinner"
+                app:layout_constraintTop_toBottomOf="@id/txtLocation" />
 
-    </android.support.constraint.ConstraintLayout>
+
+            <Button
+                android:id="@+id/cmdCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="48dp"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:background="@color/colortoolbarbackground"
+                android:elevation="1dp"
+                android:onClick="cancelNeed"
+                android:text="Cancel"
+                android:textAppearance="@style/standardText"
+                android:textColor="@color/colorwhite"
+                app:layout_constraintEnd_toStartOf="@+id/cmdSave"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/etHours" />
+
+
+            <Button
+                android:id="@+id/cmdSave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="48dp"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:background="@color/colortoolbarbackground"
+                android:elevation="1dp"
+                android:onClick="saveNeed"
+                android:text="Save"
+                android:textAppearance="@style/standardText"
+                android:textColor="@color/colorwhite"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/cmdCancel"
+                app:layout_constraintStart_toEndOf="@+id/cmdCancel"
+                app:layout_constraintTop_toBottomOf="@id/etHours" />
+
+
+        </android.support.constraint.ConstraintLayout>
+
+    </ScrollView>
 
     <!-- Container for contents of drawer - use NavigationView to make configuration easier -->
     <android.support.design.widget.NavigationView

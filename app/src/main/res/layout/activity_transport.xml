@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.projectmpt.projectmpt.TransportActivity"
+    tools:showIn="@layout/activity_transport">
+
+
+    <ScrollView
+        android:id="@+id/addTransportScroll"
+        android:fillViewport="true"
+        android:paddingBottom="24dp"
+        android:paddingLeft="@dimen/text_marginLeft"
+        android:paddingRight="@dimen/text_marginRight"
+        android:background="@color/colorbackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorbackground"
+            android:paddingVertical="24dp"
+            tools:context="com.projectmpt.projectmpt.TransportActivity">
+
+            <ImageView
+                android:id="@+id/imgTransportType"
+                android:alpha="0.1"
+                android:layout_margin="6dp"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:paddingLeft="@dimen/text_marginLeft"
+                android:paddingTop="24dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvCommited"
+                android:src="@drawable/ic_run"
+
+                />
+
+            <TextView android:id="@+id/txtNeedTransportHeader"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Transport Need"
+                android:gravity="center_horizontal"
+                style="@style/titleText"
+                />
+
+            <TextView android:id="@+id/txtNeedTransportDetail"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Need location details"
+                android:layout_marginTop="@dimen/text_marginTop"
+                style="@style/standardText"
+                android:gravity="center_horizontal"
+                app:layout_constraintTop_toBottomOf="@id/txtNeedTransportHeader"
+                />
+
+            <TextView android:id="@+id/txtNeedLocationDetail"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Need location details"
+                android:layout_marginTop="@dimen/text_marginTop"
+                android:gravity="center_horizontal"
+                style="@style/standardText"
+                app:layout_constraintTop_toBottomOf="@id/txtNeedTransportDetail"
+                />
+
+
+            <TextView
+                android:id="@+id/timeNeedExpire"
+                android:layout_width="fill_parent"
+                android:text="Expires"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="@dimen/text_marginTop"
+                app:layout_constraintTop_toBottomOf="@id/txtNeedLocationDetail"
+                style="@style/standardText" />
+
+            <TextView android:id="@+id/txtProvideLocationDetail"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Need location details"
+                android:layout_marginTop="@dimen/text_marginTop"
+                android:gravity="center_horizontal"
+                style="@style/standardText"
+                app:layout_constraintTop_toBottomOf="@id/timeNeedExpire"
+                />
+
+
+            <TextView
+                android:id="@+id/timeProvideExpire"
+                android:layout_width="fill_parent"
+                android:text="Expires"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="@dimen/text_marginTop"
+                app:layout_constraintTop_toBottomOf="@id/txtProvideLocationDetail"
+                style="@style/standardText" />
+
+            <Button
+                android:id="@+id/transportDirections"
+                style="@style/FirebaseUI.Button"
+                android:onClick="transportDirections"
+                app:layout_constraintTop_toBottomOf="@id/timeProvideExpire"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintRight_toLeftOf="parent"
+                app:layout_constraintLeft_toRightOf="parent"
+                android:text="Directions"
+                />
+
+            <TextView
+                android:id="@+id/etTransportEstimate"
+                style="@style/standardText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pickup time estimate: "
+                app:layout_constraintEnd_toStartOf="@+id/transport_spinner"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/transportDirections" />
+
+            <Spinner
+                android:id="@+id/transport_spinner"
+                style="@style/standardText"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                app:layout_constraintEnd_toStartOf="@+id/etTransportHours"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toEndOf="@+id/etTransportEstimate"
+                app:layout_constraintTop_toBottomOf="@id/transportDirections" />
+
+
+            <TextView
+                android:id="@+id/etTransportHours"
+                style="@style/standardText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" hours"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/transport_spinner"
+                app:layout_constraintTop_toBottomOf="@id/transportDirections" />
+
+
+
+            <Button
+                android:id="@+id/cmdCancelTransport"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:elevation="1dp"
+                android:text="Cancel" android:paddingRight="@dimen/text_marginRight"
+                android:paddingLeft="@dimen/text_marginLeft"
+                android:textAppearance="@style/standardText"
+                android:onClick="cancelTransport"
+                android:textColor="@color/colorwhite"
+                android:background="@color/colortoolbarbackground"
+                app:layout_constraintEnd_toStartOf="@+id/cmdSaveTransport"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/etTransportHours"
+                android:focusableInTouchMode="true"
+                android:layout_marginTop="48dp" />
+
+
+            <Button
+                android:id="@+id/cmdSaveTransport"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:elevation="1dp"
+                android:paddingRight="@dimen/text_marginRight"
+                android:paddingLeft="@dimen/text_marginLeft"
+                android:text="Commit to Transport"
+                android:onClick="saveTransport"
+                android:textAppearance="@style/standardText"
+                android:textColor="@color/colorwhite"
+                android:background="@color/colortoolbarbackground"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/cmdCancelTransport"
+                app:layout_constraintStart_toEndOf="@+id/cmdCancelTransport"
+                app:layout_constraintTop_toBottomOf="@id/etTransportHours"
+                android:layout_marginTop="48dp" />
+
+
+
+        </android.support.constraint.ConstraintLayout>
+
+    </ScrollView>
+
+
+</android.support.constraint.ConstraintLayout>

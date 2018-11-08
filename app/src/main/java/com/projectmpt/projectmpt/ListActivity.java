@@ -1,6 +1,7 @@
 package com.projectmpt.projectmpt;
 
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.icu.text.SimpleDateFormat;
@@ -34,11 +35,13 @@ import android.widget.ExpandableListView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -59,6 +62,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
+
 public class ListActivity extends AppCompatActivity implements ClickListener {
 
     ChildEventListener mChildEventListener;
@@ -72,6 +78,9 @@ public class ListActivity extends AppCompatActivity implements ClickListener {
 
     private DrawerLayout mDrawerLayout;
     private String strURI;
+    public Integer NoNeedsVisible = 1;
+  //  public Double currLatitude;
+   // public Double currLongitude;
 
 
     @Override
@@ -149,9 +158,13 @@ public class ListActivity extends AppCompatActivity implements ClickListener {
                         @Override
                         public void onSuccess(final Location location) {
 
-                            final Double gridSize = 0.20;
+                          //  currLatitude = location.getLatitude();
+                           // currLongitude = location.getLongitude();
 
-                            Query query = mNeedsRef.orderByChild("latitude").startAt(location.getLatitude()-gridSize).endAt(location.getLatitude()+gridSize);
+                           // final Double gridSize = 0.00;
+
+                           // Query query = mNeedsRef.orderByChild("latitude").startAt(location.getLatitude()-gridSize).endAt(location.getLatitude()+gridSize);
+                            Query query = mNeedsRef;
                             query.addListenerForSingleValueEvent(new ValueEventListener() {
 
                             @Override
@@ -160,7 +173,9 @@ public class ListActivity extends AppCompatActivity implements ClickListener {
                                 list = new ArrayList<Transports>();
                                 for(DataSnapshot dataSnapshot1 :dataSnapshot.getChildren()){
 
-                                    if(dataSnapshot1.child("longitude").getValue(Double.class) > location.getLongitude()-gridSize && dataSnapshot1.child("longitude").getValue(Double.class) < location.getLongitude()+gridSize ) {
+                                   // if(dataSnapshot1.child("longitude").getValue(Double.class) > location.getLongitude()-gridSize && dataSnapshot1.child("longitude").getValue(Double.class) < location.getLongitude()+gridSize ) {
+
+                                        NoNeedsVisible = 8;
 
                                         Transports value = dataSnapshot1.getValue(Transports.class);
                                         Transports transports = new Transports();
@@ -170,37 +185,52 @@ public class ListActivity extends AppCompatActivity implements ClickListener {
                                         String heading = value.getHeading();
                                         String description = value.getDescription();
                                         String provideowner = value.getProvideowner();
+                                        Double providelatitude = value.getProvidelatitude();
+                                        Double providelongitude = value.getProvidelongitude();
                                         String locationdetails = value.getLocationdetails();
+                                        String providelocationdetails = value.getProvidelocationdetails();
+                                        //String distanceto = value.getDistanceto();
                                         String email = value.getOwner();
                                         String transportowner = value.getTransportowner();
                                         Double latitude = value.getLatitude();
                                         Double longitude = value.getLongitude();
                                         Long timefrom = value.getTimefrom();
                                         Long timeto = value.getTimeto();
+                                        Long providetimeto = value.getProvidetimeto();
 
-                                        Location dest = new Location("dummyprovider");
-                                        dest.setLatitude(latitude);
-                                        dest.setLongitude(longitude);
+                                        //Location dest = new Location("dummyprovider");
+                                        //dest.setLatitude(latitude);
+                                       // dest.setLongitude(longitude);
 
-                                        transports.setDistanceto(location.distanceTo(dest));
-                                        //Log.d("urb", "Distance: " +location.distanceTo(dest) );
+                                        if(type.equals("Provide")){
+                                            transports.setDistanceto(calculateDistanceInMiles(location.getLatitude(), location.getLongitude(), latitude, longitude) + " miles");
+                                        }else{
+                                            transports.setDistanceto(calculateDistanceInMiles(location.getLatitude(), location.getLongitude(), latitude, longitude) + " + "
+                                                    + calculateDistanceInMiles(providelatitude, providelongitude, latitude, longitude) + " miles");
+                                        }
+
+                                            //Log.d("urb", "Distance: " +location.distanceTo(dest) );
 
                                         transports.setNeedkey(needkey);
                                         transports.setType(type);
                                         transports.setHeading(heading);
                                         transports.setOwner(email);
                                         transports.setProvideowner(provideowner);
+                                        transports.setProvidelatitude(providelatitude);
+                                        transports.setProvidelongitude(providelongitude);
                                         transports.setTransportowner(transportowner);
                                         transports.setDescription(description);
                                         transports.setLocationdetails(locationdetails);
+                                        transports.setProvidelocationdetails(providelocationdetails);
                                         transports.setLatitude(latitude);
                                         transports.setLongitude(longitude);
                                         transports.setTimefrom(timefrom);
                                         transports.setTimeto(timeto);
+                                        transports.setProvidetimeto(providetimeto);
 
                                         list.add(transports);
 
-                                    }
+                                   // }
 
                                 }
 
@@ -213,6 +243,13 @@ public class ListActivity extends AppCompatActivity implements ClickListener {
                                 recycle.setAdapter(recyclerAdapter);
 
                                 recyclerAdapter.setClickListener(ListActivity.this);
+
+                                TextView txtNoNeed = findViewById(R.id.txtNoNeeds);
+                                if (NoNeedsVisible==8) {
+                                    txtNoNeed.setVisibility(View.GONE);
+                                }else{
+                                    txtNoNeed.setText("No current needs in this area, add a new need by clicking the + button below.");
+                                }
 
 
             }
@@ -257,14 +294,45 @@ public class ListActivity extends AppCompatActivity implements ClickListener {
         switch(view.getId()  ) {
 
             case R.id.imgMap:
-                strURI = "geo:0,0?q=" + list.get(position).getLatitude() + ","
-                        + list.get(position).getLongitude() + "(" + list.get(position).getHeading()
-                        + ")&z=18";
 
+                if(list.get(position).getType().equals("Provide")){
+                    strURI = "geo:0,0?q=" + list.get(position).getLatitude() + ","
+                            + list.get(position).getLongitude() + "(" + list.get(position).getHeading()
+                            + ")&z=18";
+                }else{
+
+                    strURI = "https://www.google.com/maps/dir/?api=1&destination=" + list.get(position).getLatitude() + "%2C" +
+                            list.get(position).getLongitude()+"&waypoints="+
+                            list.get(position).getProvidelatitude() + "%2C" +
+                            list.get(position).getProvidelongitude() +
+                            "&travelmode=walking";
+                }
+
+
+
+               //
                 Uri gmmIntentUri = Uri.parse(strURI);
-                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                mapIntent.setPackage("com.google.android.apps.maps");
-                startActivity(mapIntent);
+                Intent intent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                intent.setPackage("com.google.android.apps.maps");
+                try {
+                    startActivity(intent);
+                } catch (ActivityNotFoundException ex) {
+                    try {
+                        Intent unrestrictedIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                        startActivity(unrestrictedIntent);
+                    } catch (ActivityNotFoundException innerEx) {
+                        Toast.makeText(this, "Please install a maps application", Toast.LENGTH_LONG).show();
+                    }
+                }
+
+               // strURI = "geo:0,0?q=" + list.get(position).getLatitude() + ","
+                //        + list.get(position).getLongitude() + "(" + list.get(position).getHeading()
+                 //       + ")&z=18";
+
+               // Uri gmmIntentUri = Uri.parse(strURI);
+               // Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+               // mapIntent.setPackage("com.google.android.apps.maps");
+               // startActivity(mapIntent);
 
                 break;
 
@@ -272,18 +340,18 @@ public class ListActivity extends AppCompatActivity implements ClickListener {
 
                 FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
 
-                Intent intent = new Intent();
+               // Intent intent = new Intent();
 
-                   Log.d("urb", "Click: " + list.get(position).getType().toString());
+                 //  Log.d("urb", "Click: " + list.get(position).getType().toString());
 
                 if(list.get(position).getType().equals("Transport")) {
 
-                    Log.d("urb", "Transport: " + fUser.getEmail());
+                  //  Log.d("urb", "Transport: " + fUser.getEmail());
 
                     if (list.get(position).getProvideowner().equals(fUser.getEmail())) {
                         intent = new Intent(ListActivity.this, listDetailActivity.class);
                     } else {
-                        intent = new Intent(ListActivity.this, ListTransportActivity.class);
+                        intent = new Intent(ListActivity.this, TransportActivity.class);
                     }
 
                 }else if(list.get(position).getType().equals("In progress ")) {
@@ -297,7 +365,7 @@ public class ListActivity extends AppCompatActivity implements ClickListener {
                         }
 
                 }else {
-                    intent = new Intent(ListActivity.this, listDetailActivity.class);
+                    intent = new Intent(ListActivity.this, ProvideActivity.class);
                 }
 
 
@@ -309,6 +377,10 @@ public class ListActivity extends AppCompatActivity implements ClickListener {
                 intent.putExtra("LocationDetails", list.get(position).getLocationdetails());
                 intent.putExtra("Owner", list.get(position).getOwner());
                 intent.putExtra("ProvideOwner", list.get(position).getProvideowner());
+                intent.putExtra("ProvideLatitude", list.get(position).getProvidelatitude());
+                intent.putExtra("ProvideLongitude", list.get(position).getProvidelongitude());
+                intent.putExtra("ProvideLocationDetails", list.get(position).getProvidelocationdetails());
+                intent.putExtra("ProvideTimeTo", list.get(position).getProvidetimeto());
                 intent.putExtra("TransportOwner", list.get(position).getTransportowner());
                 intent.putExtra("Latitude", list.get(position).getLatitude());
                 intent.putExtra("Longitude", list.get(position).getLongitude());
@@ -324,6 +396,20 @@ public class ListActivity extends AppCompatActivity implements ClickListener {
         }
     }
 
+    public int calculateDistanceInMiles(double userLat, double userLng,
+                                        double venueLat, double venueLng) {
+
+        double latDistance = Math.toRadians(userLat - venueLat);
+        double lngDistance = Math.toRadians(userLng - venueLng);
+
+        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                + Math.cos(Math.toRadians(userLat)) * Math.cos(Math.toRadians(venueLat))
+                * Math.sin(lngDistance / 2) * Math.sin(lngDistance / 2);
+
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        return (int) (Math.round(3960 * c));
+    }
 
 }
 

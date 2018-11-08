@@ -6,12 +6,16 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -79,6 +83,10 @@ public class AddNewActivity extends AppCompatActivity {
 
 
         }
+
+
+        EditText editText = (EditText) findViewById(R.id.txtNeedShort);
+        editText.requestFocus();
 
     }
 
@@ -184,7 +192,7 @@ public class AddNewActivity extends AppCompatActivity {
             Spinner spExpire = findViewById(R.id.expire_spinner);
             Long dblExpire = Long.valueOf(spExpire.getSelectedItem().toString());
 
-            Long lngExpire = System.currentTimeMillis() + (dblExpire*360000);
+            Long lngExpire = System.currentTimeMillis() + (dblExpire*3600000);
 
             DatabaseReference mNeedsRef = FirebaseDatabase.getInstance().getReference("Transports");
             //Needs marker = new Needs(strHeading, strNeed, strLocation, user.getEmail(), dblLatitude, dblLongitude, System.currentTimeMillis(), lngExpire);
@@ -192,7 +200,7 @@ public class AddNewActivity extends AppCompatActivity {
             Transports marker = new Transports("","Provide", "", "",0 , 0, 0, 0, "",
                     strHeading, strNeed, strLocation,
                     user.getEmail().toString(), dblLatitude, dblLongitude,
-                    System.currentTimeMillis(), lngExpire,0);
+                    System.currentTimeMillis(), lngExpire,"");
 
 
 

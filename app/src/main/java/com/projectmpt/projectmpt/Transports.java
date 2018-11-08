@@ -23,7 +23,7 @@ public class Transports {
         public double longitude;
         public long timefrom;
         public long timeto;
-        public double distanceto;
+        public String distanceto;
 
 
 
@@ -33,7 +33,7 @@ public class Transports {
 
         public Transports(String needkey, String type, String providelocationdetails, String provideowner, double providelatitude, double providelongitude, long providetimefrom,
                           long providetimeto, String transportowner,  String heading, String description, String locationdetails, String owner, double latitude, double longitude, long timefrom, long timeto,
-                          double distanceto) {
+                          String distanceto) {
 
             this.needkey = needkey;
             this.type = type;
@@ -195,11 +195,11 @@ public class Transports {
             this.timeto = timeto;
         }
 
-        public double getDistanceto() {
+        public String getDistanceto() {
             return distanceto;
         }
 
-        public void setDistanceto(double distanceto) {
+        public void setDistanceto(String distanceto) {
             this.distanceto = distanceto;
         }
 

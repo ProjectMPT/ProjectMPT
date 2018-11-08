@@ -9,110 +9,161 @@
     tools:showIn="@layout/activity_provide">
 
 
-        <TextView android:id="@+id/txtProvideHeader"
+    <ScrollView
+        android:id="@+id/addNewScroll"
+        android:fillViewport="true"
+        android:paddingBottom="24dp"
+        android:paddingLeft="@dimen/text_marginLeft"
+        android:paddingRight="@dimen/text_marginRight"
+        android:background="@color/colorbackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorbackground"
+            android:paddingVertical="24dp"
+            tools:context="com.projectmpt.projectmpt.ListActivity">
+
+        <ImageView
+            android:id="@+id/imgType"
+            android:alpha="0.1"
+            android:layout_margin="6dp"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:text="Provide Need"
             android:paddingLeft="@dimen/text_marginLeft"
-            android:paddingRight="@dimen/text_marginRight"
-            style="@style/headerText"
+            android:paddingTop="24dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:src="@drawable/heart"
+
             />
+
+
+
+        <TextView android:id="@+id/txtCommitHeader"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Provide Need"
+            android:gravity="center_horizontal"
+            style="@style/titleText"
+            />
+
+        <TextView android:id="@+id/txtProvideDetail"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Provide details"
+            android:layout_marginTop="@dimen/text_marginTop"
+            android:gravity="center_horizontal"
+            style="@style/standardText"
+            app:layout_constraintTop_toBottomOf="@id/txtCommitHeader"
+            />
+
+
+            <TextView
+                android:id="@+id/timeCommitExpire"
+                android:layout_width="fill_parent"
+                android:text="Expires"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="@dimen/text_marginTop"
+                app:layout_constraintTop_toBottomOf="@id/txtProvideDetail"
+                style="@style/standardText" />
 
 
         <EditText
             android:id="@+id/txtProvideLocation"
             android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content"
             android:breakStrategy="balanced"
+            android:gravity="center_horizontal"
             android:fitsSystemWindows="true"
-            android:hint="The pickup will be marked at your present position, please provide further details about the location and detailed pickup instructions here"
+            android:layout_marginTop="@dimen/text_marginTop"
+            android:hint="If you have this item in your possession and want to commit to provide it, enter detailed pickup instructions here."
             android:inputType="textCapSentences|textMultiLine"
-            android:paddingLeft="@dimen/text_marginLeft"
-            android:paddingRight="@dimen/text_marginRight"
-            app:layout_constraintTop_toBottomOf="@id/txtProvideHeader"/>
+            app:layout_constraintTop_toBottomOf="@id/timeCommitExpire"/>
 
-        <TextView
-            android:id="@+id/txtFromProvide"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginBottom="10dp"
-            android:text="Available for the next "
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txtProvideLocation"
-            android:paddingLeft="@dimen/text_marginLeft"
-            android:paddingRight="@dimen/text_marginRight"
-            android:paddingTop="@dimen/text_marginTop"
-            style="@style/headerText"
-            />
+            <TextView
+                android:id="@+id/etCommitExpire"
+                style="@style/standardText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Available for: "
+                app:layout_constraintEnd_toStartOf="@+id/commit_spinner"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtProvideLocation" />
 
-
-        <Spinner
-            android:id="@+id/available_spinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/txtProvideLocation"
-            app:layout_constraintLeft_toRightOf="@id/txtFromProvide"/>
-
-        <TextView
-            android:id="@+id/txtToProvide"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="@dimen/text_marginTop"
-            android:layout_marginBottom="10dp"
-            android:text="hours"
-            app:layout_constraintTop_toBottomOf="@id/txtProvideLocation"
-            app:layout_constraintLeft_toRightOf="@id/available_spinner"/>
-            android:paddingLeft="@dimen/text_marginLeft"
-            android:paddingRight="@dimen/text_marginRight"
-            style="@style/headerText"
-            />
+            <Spinner
+                android:id="@+id/commit_spinner"
+                style="@style/standardText"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                app:layout_constraintEnd_toStartOf="@+id/etCommitHours"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toEndOf="@+id/etCommitExpire"
+                app:layout_constraintTop_toBottomOf="@id/txtProvideLocation" />
 
 
-        <Button
-            android:id="@+id/cmdCancelProvide"
+            <TextView
+                android:id="@+id/etCommitHours"
+                style="@style/standardText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" hours"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/commit_spinner"
+                app:layout_constraintTop_toBottomOf="@id/txtProvideLocation" />
+
+
+
+            <Button
+            android:id="@+id/cmdCancelCommit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:elevation="1dp"
             android:onClick="cancelProvide"
-            android:text="Cancel"
+            android:text="Cancel" android:paddingRight="@dimen/text_marginRight"
+            android:paddingLeft="@dimen/text_marginLeft"
             android:textAppearance="@style/standardText"
             android:textColor="@color/colorwhite"
             android:background="@color/colortoolbarbackground"
-            app:layout_constraintEnd_toStartOf="@+id/cmdSaveProvide"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toStartOf="@+id/cmdSaveCommit"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/available_spinner"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"/>
+            app:layout_constraintTop_toBottomOf="@id/etCommitHours"
+                android:focusableInTouchMode="true"
+                android:layout_marginTop="48dp" />
 
 
         <Button
-            android:id="@+id/cmdSaveProvide"
+            android:id="@+id/cmdSaveCommit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:elevation="1dp"
             android:onClick="saveProvide"
+            android:paddingRight="@dimen/text_marginRight"
+            android:paddingLeft="@dimen/text_marginLeft"
             android:text="Commit to Provide"
             android:textAppearance="@style/standardText"
             android:textColor="@color/colorwhite"
             android:background="@color/colortoolbarbackground"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/cmdCancelProvide"
-            app:layout_constraintStart_toEndOf="@+id/cmdCancelProvide"
-            app:layout_constraintTop_toBottomOf="@id/available_spinner"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"/>
+            app:layout_constraintLeft_toRightOf="@id/cmdCancelCommit"
+            app:layout_constraintStart_toEndOf="@+id/cmdCancelCommit"
+            app:layout_constraintTop_toBottomOf="@id/etCommitHours"
+            android:layout_marginTop="48dp" />
 
+        </android.support.constraint.ConstraintLayout>
 
-
-
+</ScrollView>
 
 
 </android.support.constraint.ConstraintLayout>

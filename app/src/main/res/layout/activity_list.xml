@@ -9,6 +9,8 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
+
+
     <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -18,10 +20,22 @@
         tools:context="com.projectmpt.projectmpt.ListActivity">
 
 
+        <TextView
+            android:id="@+id/txtNoNeeds"
+            style="@style/headerText"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/text_marginLeft"
+            android:paddingRight="@dimen/text_marginRight"
+            app:layout_constraintTop_toBottomOf="@+id/listtoolbar"
+            android:text="Waiting for data..."
+            />
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycle"
+            android:paddingBottom="64dp"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/listtoolbar">
 
 
@@ -51,6 +65,7 @@
 
 
     </android.support.constraint.ConstraintLayout>
+
 
     <!-- Container for contents of drawer - use NavigationView to make configuration easier -->
     <android.support.design.widget.NavigationView

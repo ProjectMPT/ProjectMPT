@@ -4,9 +4,9 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="lat_long_text_size">16sp</dimen>
     <dimen name="text_margin">24dp</dimen>
-    <dimen name="text_marginLeft">24dp</dimen>
-    <dimen name="text_marginRight">24dp</dimen>
-    <dimen name="text_marginTop">16dp</dimen>
-    <dimen name="text_marginBottom">16dp</dimen>
+    <dimen name="text_marginLeft">14dp</dimen>
+    <dimen name="text_marginRight">14dp</dimen>
+    <dimen name="text_marginTop">14dp</dimen>
+    <dimen name="text_marginBottom">24dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
 </resources>

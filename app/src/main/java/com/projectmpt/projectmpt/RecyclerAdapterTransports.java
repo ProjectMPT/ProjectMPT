@@ -45,7 +45,7 @@ public class RecyclerAdapterTransports extends RecyclerView.Adapter<RecyclerAdap
         Transports mylist = list.get(position);
         holder.heading.setText(mylist.getHeading());
         holder.description.setText(mylist.getDescription());
-        holder.distance.setText(String.format("%.1f",(mylist.getDistanceto()*0.00062137)) + " miles total");
+        holder.distance.setText("0");
 
         Long millis =  mylist.getTimeto() - System.currentTimeMillis();
         Long hours = TimeUnit.MILLISECONDS.toHours(millis);

@@ -59,10 +59,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyHold
         return myHolder;
     }
 
-   // Long timeLeft = mylist.g - System.currentTimeMillis()/1000;
-  //  java.text.SimpleDateFormat df = new java.text.SimpleDateFormat("HH:mm");
-
-                              //          transports.setTimeleft(df.format(timeLeft));
 
 
     @Override
@@ -72,10 +68,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyHold
         Transports mylist = list.get(position);
 
         String strHeader = mylist.getType() + " " + mylist.getHeading();
-        Log.d("Urban", mylist.getTransportowner() + " output");
+        //Log.d("Urban", mylist.getTransportowner() + " output");
 
+        //Double dblProvideDistance = calculateDistanceInMiles((location.getLatitude(),location.getLongitude(), latitude,longitude))
 
-        //holder.distance.setText(String.format("%.1f",(mylist.getDistanceto()*0.00062137)) + " miles");
+        String strDistance = "Distance " + mylist.getDistanceto();
+
+        holder.distance.setText(strDistance);
 
         if(mylist.getType().equals("Provide")) {
             holder.imgType.setImageResource(R.drawable.heart);
@@ -107,8 +106,15 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyHold
         Long mins = TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis));
 
 
+        //Log.d("urban", "Desc:" + mylist.getDescription() );
+       // Log.d("urban", "TimeTo:" + mylist.getTimeto() + ", currenttime:" + System.currentTimeMillis());
+       // Log.d("urban", "Hours:" + TimeUnit.MILLISECONDS.toHours(millis) + ", minutes:" + (TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis))));
 
-       // holder.timeleft.setText(hours + ":" + mins);
+           if (mins<1){
+               holder.timeleft.setText("Expired");
+           }else {
+               holder.timeleft.setText(hours + " hours " + mins + " minutes left");
+           }
 
       }
 
@@ -154,8 +160,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyHold
             super(itemView);
             heading = (TextView) itemView.findViewById(R.id.tvType);
             description= (TextView) itemView.findViewById(R.id.tvDetails);
-          //  distance= (TextView) itemView.findViewById(R.id.distance);
-          //  timeleft= (TextView) itemView.findViewById(R.id.timeleft);
+            distance= (TextView) itemView.findViewById(R.id.distance);
+            timeleft= (TextView) itemView.findViewById(R.id.timeleft);
             imgType =  (ImageView) itemView.findViewById(R.id.imgType);
 
             imgMap = (ImageButton) itemView.findViewById(R.id.imgMap);
@@ -163,7 +169,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyHold
             imgMap.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.d("urb", "Map:");
+                   // Log.d("urb", "Map:");
                     if(clicklistener !=null){
                         clicklistener.itemClicked(v,getAdapterPosition());
                     }
@@ -177,7 +183,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyHold
             main.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.d("urb", "Click 2:");
+                   // Log.d("urb", "Click 2:");
                     if(clicklistener !=null){
                         clicklistener.itemClicked(v,getAdapterPosition());
                     }
@@ -188,6 +194,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyHold
     public void setClickListener(ClickListener clickListener){
         this.clicklistener = clickListener;
     }
+
+
+
 
 }
 
