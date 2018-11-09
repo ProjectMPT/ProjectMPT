@@ -31,21 +31,6 @@ public class ProfileActivity extends AppCompatActivity {
                     });
         }
 
-/*Delete Account from https://github.com/firebase/FirebaseUI-Android/blob/master/auth/README.md
-
-        AuthUI.getInstance()
-                .delete(this)
-        .addOnCompleteListener(new OnCompleteListener<Void>() {
-        @Override
-        public void onComplete(@NonNull Task<Void> task) {
-            if (task.isSuccessful()) {
-                // Deletion succeeded
-            } else {
-                // Deletion failed
-            }
-        }
-    });*/
-
 
 
 }

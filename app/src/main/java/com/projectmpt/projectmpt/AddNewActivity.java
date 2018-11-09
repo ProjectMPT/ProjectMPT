@@ -3,41 +3,25 @@ package com.projectmpt.projectmpt;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-
-import com.firebase.geofire.GeoFire;
-import com.firebase.geofire.GeoLocation;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.Calendar;
-import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AddNewActivity extends AppCompatActivity {
 
@@ -52,12 +36,17 @@ public class AddNewActivity extends AppCompatActivity {
 
     private DatabaseReference mDatabase;
 
+    public EditText Editv;
+
+    public boolean Owner = false;
+    public String strKey;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new);
 
-        Spinner spinner = (Spinner) findViewById(R.id.expire_spinner);
+        Spinner spinner =  findViewById(R.id.expire_spinner);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.expire_array, android.R.layout.simple_spinner_item);
@@ -74,16 +63,51 @@ public class AddNewActivity extends AppCompatActivity {
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
 
-                Intent intent = new Intent(this, GPSTrackerActivity.class);
-                startActivityForResult(intent,1);
+            Intent intent = new Intent(this, GPSTrackerActivity.class);
+            startActivityForResult(intent,1);
 
-                Log.i("GPS", "REQUEST");
+            Log.i("GPS", "REQUEST");
 
         } else {
 
 
         }
 
+
+        if (savedInstanceState == null) {
+
+            Bundle extras = getIntent().getExtras();
+
+            if (extras == null) {
+                //newString= null;
+            } else {
+
+                FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
+
+                if (extras.getString("Owner").equals(fUser.getEmail())) {
+
+                    Owner = true;
+                    strKey = extras.getString("Key");
+
+                    String newString = extras.getString("Heading");
+                    Editv = findViewById(R.id.txtNeedShort);
+                    Editv.setText(newString);
+
+                    newString = extras.getString("Description");
+                    Editv = findViewById(R.id.txtNeed);
+                    Editv.setText(newString);
+
+                    newString = extras.getString("LocationDetails");
+                    Editv = findViewById(R.id.txtLocation);
+                    Editv.setText(newString);
+
+                    Button btn = findViewById(R.id.cmdSave);
+                    btn.setText("Update");
+
+                }
+            }
+
+        }
 
         EditText editText = (EditText) findViewById(R.id.txtNeedShort);
         editText.requestFocus();
@@ -115,33 +139,31 @@ public class AddNewActivity extends AppCompatActivity {
 
         bolFail=false;
         strMessage="";
-       // intTab = 2;
+
 
 
         EditText editText = (EditText) findViewById(R.id.txtLocation);
 
         strLocation = editText.getText().toString();
-        //if (this.locTxt!=null) strLocation = this.locTxt;
         if (strLocation.length()<4) {
             bolFail=true;
             strMessage = strMessage + "Please enter location details\n";
-           // intTab = 1;
+            // intTab = 1;
         }
 
         editText = (EditText) findViewById(R.id.txtNeedShort);
 
         strHeading =  editText.getText().toString();;
-        //if (this.headingTxt != null) strHeading = this.headingTxt;
         if (strHeading.length()<4) {
             bolFail=true;
             strMessage = strMessage + "Please enter a short description";
-           // intTab = 0;
+
         }
 
         if (dblLatitude+dblLongitude==0.0) {
             bolFail=true;
             strMessage = strMessage + "Unable to read current location";
-            // intTab = 0;
+
         }
 
 
@@ -150,14 +172,13 @@ public class AddNewActivity extends AppCompatActivity {
 
             AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
             builder1.setMessage(strMessage);
-            //builder1.setCancelable(true);
+
 
             builder1.setPositiveButton(
                     "OK",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             dialog.cancel();
-                           // showTab(intTab);
                         }
                     });
 
@@ -195,45 +216,58 @@ public class AddNewActivity extends AppCompatActivity {
             Long lngExpire = System.currentTimeMillis() + (dblExpire*3600000);
 
             DatabaseReference mNeedsRef = FirebaseDatabase.getInstance().getReference("Transports");
-            //Needs marker = new Needs(strHeading, strNeed, strLocation, user.getEmail(), dblLatitude, dblLongitude, System.currentTimeMillis(), lngExpire);
 
-            Transports marker = new Transports("","Provide", "", "",0 , 0, 0, 0, "",
-                    strHeading, strNeed, strLocation,
-                    user.getEmail().toString(), dblLatitude, dblLongitude,
-                    System.currentTimeMillis(), lngExpire,"");
+            if(Owner){
 
+                DatabaseReference mTransportsRef = FirebaseDatabase.getInstance().getReference("Transports");
 
+                DatabaseReference provideRef = mTransportsRef.child(strKey);
+                Map<String, Object> provideUpdates = new HashMap<>();
+                provideUpdates.put("heading", strHeading);
+                provideUpdates.put("description", strNeed);
+                provideUpdates.put("locationdetails", strLocation);
+                provideUpdates.put("timeto", lngExpire);
 
-            mNeedsRef.push().setValue(marker, new DatabaseReference.CompletionListener() {
-                @Override
-                public void onComplete(DatabaseError databaseError,
-                                       DatabaseReference databaseReference) {
+                provideRef.updateChildren(provideUpdates, new DatabaseReference.CompletionListener() {
+                    @Override
+                    public void onComplete(DatabaseError databaseError,
+                                           DatabaseReference databaseReference) {
 
-                    if (databaseError != null) {
-                        System.err.println("There was an error saving the location to GeoFire: " + databaseError);
-                    } else {
-
-                        String key = databaseReference.getKey();
-
-                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("NeedLocations");
-                        GeoFire geoFire = new GeoFire(ref);
-
-                        //geoFire.setLocation(key, new GeoLocation(dblLatitude, dblLongitude));
-
-
-                        geoFire.setLocation(key, new GeoLocation(dblLatitude, dblLongitude), new GeoFire.CompletionListener() {
-                            @Override
-                            public void onComplete(String key, DatabaseError error) {
-
-                            }
-
-                        });
-
+                        if (databaseError != null) {
+                            System.err.println("There was an error saving: " + databaseError);
+                        }
 
                     }
+                });
 
-                }
-            });
+
+
+
+
+            }else {
+
+
+                Transports marker = new Transports("", "Provide", "", "", 0, 0, 0, 0, "",
+                        strHeading, strNeed, strLocation,
+                        user.getEmail().toString(), dblLatitude, dblLongitude,
+                        System.currentTimeMillis(), lngExpire, "");
+
+
+                mNeedsRef.push().setValue(marker, new DatabaseReference.CompletionListener() {
+
+
+                    @Override
+                    public void onComplete(DatabaseError databaseError,
+                                           DatabaseReference databaseReference) {
+
+                        if (databaseError != null) {
+                            System.err.println("There was an error saving: " + databaseError);
+                        }
+
+                    }
+                });
+
+            }
 
             final Intent intent = new Intent(this, ListActivity.class);
 

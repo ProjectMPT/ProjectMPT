@@ -81,7 +81,7 @@
                 android:hint="Detailed description"
                 android:paddingLeft="@dimen/text_marginLeft"
                 android:paddingRight="@dimen/text_marginRight"
-                app:layout_constraintBottom_toTopOf="@id/cmdCancel1"
+                app:layout_constraintBottom_toTopOf="@id/cmdCancel"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/txtNeedShort"
@@ -101,7 +101,7 @@
                 android:inputType="textCapSentences|textMultiLine"
                 android:paddingLeft="@dimen/text_marginLeft"
                 android:paddingRight="@dimen/text_marginRight"
-                app:layout_constraintBottom_toTopOf="@id/cmdCancel2"
+                app:layout_constraintBottom_toTopOf="@id/cmdCancel"
                 app:layout_constraintTop_toBottomOf="@id/txtNeed"
                 app:layout_constraintVertical_bias=".3" />
 
@@ -149,7 +149,7 @@
                 android:background="@color/colortoolbarbackground"
                 android:elevation="1dp"
                 android:onClick="cancelNeed"
-                android:text="Cancel"
+                android:text="Back"
                 android:textAppearance="@style/standardText"
                 android:textColor="@color/colorwhite"
                 app:layout_constraintEnd_toStartOf="@+id/cmdSave"

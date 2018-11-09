@@ -1,19 +1,10 @@
-
-
 package com.projectmpt.projectmpt;
 
-import android.*;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.location.Location;
 import android.os.AsyncTask;
-import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
@@ -23,30 +14,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
-
-import com.firebase.geofire.GeoFire;
-import com.firebase.geofire.GeoLocation;
-import com.firebase.geofire.GeoQuery;
-import com.firebase.geofire.GeoQueryDataEventListener;
-import com.firebase.geofire.GeoQueryEventListener;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
 import com.firebase.ui.auth.ResultCodes;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -61,13 +39,9 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 123;
     Integer i = 0;
-    Integer count = 0;
 
-    DatabaseReference mNeedsRef = FirebaseDatabase.getInstance().getReference("Transports");
+   DatabaseReference mWelcome = FirebaseDatabase.getInstance().getReference("WelcomeMessage");
 
-    DatabaseReference mWelcome = FirebaseDatabase.getInstance().getReference("WelcomeMessage");
-
-    private FusedLocationProviderClient mFusedLocationClient;
     private DrawerLayout mDrawerLayout;
 
 
@@ -75,8 +49,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-       // Intent intent = new Intent(this, SettingsActivity.class);
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
@@ -97,13 +69,13 @@ public class MainActivity extends AppCompatActivity {
                         menuItem.setChecked(true);
 
 
-                            switch (menuItem.getItemId()) {
+                        switch (menuItem.getItemId()) {
 
-                                case R.id.settings:
-                                    Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
-                                    startActivity(intent);
-                                    return true;
-                            }
+                            case R.id.settings:
+                                Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+                                startActivity(intent);
+                                return true;
+                        }
 
                         mDrawerLayout.closeDrawers();
 
@@ -145,15 +117,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
-
-
-    //@Override
-  //  public boolean onCreateOptionsMenu(Menu menu) {
-   //     MenuInflater inflater = getMenuInflater();
-   //     inflater.inflate(R.menu.appbar_menu, menu);
-   //     return true;
- //   }
 
     @Override
     public void onStart() {
@@ -275,16 +238,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-
-  //  public void startList(View view) {
-    //    Intent intent = new Intent(this, ListActivity.class);
-     //   startActivity(intent);
-   // }
-
-   // public void startTransport(View view) {
-  //      Intent intent = new Intent(this, ListTransportActivity.class);
-   //     startActivity(intent);
-  //  }
 
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageButton bmImage;

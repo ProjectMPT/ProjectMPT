@@ -3,13 +3,9 @@
     <color name="colorPrimary">#7583a6</color>
     <color name="colorPrimaryDark">#988bc7</color>
     <color name="colorAccent">#90dfaa</color>
-    <color name="colorAccent2">#ee5642</color>
     <color name="colorwhite">#ffffff</color>
-    <color name="colorred">#cc0000</color>
     <color name="colorblack">#000000</color>
-    <color name="colorlinktext">#2ce080</color>
     <color name="colorbackground">#e9f0f3</color>
     <color name="colortoolbarbackground">#03314b</color>
-    <color name="colorbackgroundteal">#00cdcf</color>
 
 </resources>

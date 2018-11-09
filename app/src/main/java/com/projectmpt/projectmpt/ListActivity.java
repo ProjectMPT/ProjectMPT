@@ -4,12 +4,9 @@ package com.projectmpt.projectmpt;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.icu.text.SimpleDateFormat;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
@@ -18,56 +15,30 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ExpandableListAdapter;
-import android.widget.ExpandableListView;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.firebase.ui.auth.AuthUI;
-import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-//import com.firebase.ui.FirebaseListAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
-import static java.lang.Boolean.FALSE;
-import static java.lang.Boolean.TRUE;
 
 public class ListActivity extends AppCompatActivity implements ClickListener {
 
-    ChildEventListener mChildEventListener;
     DatabaseReference mNeedsRef = FirebaseDatabase.getInstance().getReference("Transports");
 
     private static final int RC_SIGN_IN = 123;
@@ -79,16 +50,13 @@ public class ListActivity extends AppCompatActivity implements ClickListener {
     private DrawerLayout mDrawerLayout;
     private String strURI;
     public Integer NoNeedsVisible = 1;
-  //  public Double currLatitude;
-   // public Double currLongitude;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
-        recycle = (RecyclerView) findViewById(R.id.recycle);
+        recycle = findViewById(R.id.recycle);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -158,12 +126,6 @@ public class ListActivity extends AppCompatActivity implements ClickListener {
                         @Override
                         public void onSuccess(final Location location) {
 
-                          //  currLatitude = location.getLatitude();
-                           // currLongitude = location.getLongitude();
-
-                           // final Double gridSize = 0.00;
-
-                           // Query query = mNeedsRef.orderByChild("latitude").startAt(location.getLatitude()-gridSize).endAt(location.getLatitude()+gridSize);
                             Query query = mNeedsRef;
                             query.addListenerForSingleValueEvent(new ValueEventListener() {
 
@@ -198,10 +160,6 @@ public class ListActivity extends AppCompatActivity implements ClickListener {
                                         Long timeto = value.getTimeto();
                                         Long providetimeto = value.getProvidetimeto();
 
-                                        //Location dest = new Location("dummyprovider");
-                                        //dest.setLatitude(latitude);
-                                       // dest.setLongitude(longitude);
-
                                         if(type.equals("Provide")){
                                             transports.setDistanceto(calculateDistanceInMiles(location.getLatitude(), location.getLongitude(), latitude, longitude) + " miles");
                                         }else{
@@ -209,7 +167,6 @@ public class ListActivity extends AppCompatActivity implements ClickListener {
                                                     + calculateDistanceInMiles(providelatitude, providelongitude, latitude, longitude) + " miles");
                                         }
 
-                                            //Log.d("urb", "Distance: " +location.distanceTo(dest) );
 
                                         transports.setNeedkey(needkey);
                                         transports.setType(type);
@@ -230,7 +187,7 @@ public class ListActivity extends AppCompatActivity implements ClickListener {
 
                                         list.add(transports);
 
-                                   // }
+
 
                                 }
 
@@ -325,47 +282,40 @@ public class ListActivity extends AppCompatActivity implements ClickListener {
                     }
                 }
 
-               // strURI = "geo:0,0?q=" + list.get(position).getLatitude() + ","
-                //        + list.get(position).getLongitude() + "(" + list.get(position).getHeading()
-                 //       + ")&z=18";
-
-               // Uri gmmIntentUri = Uri.parse(strURI);
-               // Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-               // mapIntent.setPackage("com.google.android.apps.maps");
-               // startActivity(mapIntent);
-
-                break;
+              break;
 
             default:
 
                 FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
 
-               // Intent intent = new Intent();
-
-                 //  Log.d("urb", "Click: " + list.get(position).getType().toString());
 
                 if(list.get(position).getType().equals("Transport")) {
 
-                  //  Log.d("urb", "Transport: " + fUser.getEmail());
 
                     if (list.get(position).getProvideowner().equals(fUser.getEmail())) {
-                        intent = new Intent(ListActivity.this, listDetailActivity.class);
+                        intent = new Intent(ListActivity.this, ProvideActivity.class);
                     } else {
                         intent = new Intent(ListActivity.this, TransportActivity.class);
                     }
 
                 }else if(list.get(position).getType().equals("In progress ")) {
 
-                    Log.d("urb", "Progress: " + fUser.getEmail());
+                   // Log.d("urb", "Progress: " + fUser.getEmail());
 
                         if(list.get(position).getTransportowner().equals(fUser.getEmail())){
-                            intent = new Intent(ListActivity.this, ListTransportDetailActivity.class);
+                            intent = new Intent(ListActivity.this, TransportActivity.class);
                         }else{
                             intent = new Intent(ListActivity.this, ListActivity.class);
                         }
 
                 }else {
-                    intent = new Intent(ListActivity.this, ProvideActivity.class);
+
+                    if(list.get(position).getOwner().equals(fUser.getEmail())){
+                        intent = new Intent(ListActivity.this, AddNewActivity.class);
+                    }else{
+                        intent = new Intent(ListActivity.this, ProvideActivity.class);
+                    }
+
                 }
 
 
@@ -389,7 +339,6 @@ public class ListActivity extends AppCompatActivity implements ClickListener {
                 intent.putExtra("DistanceTo", list.get(position).getDistanceto());
 
 
-                // Log.d("urb", "What:" + list.get(position).getNeedkey());
 
                 startActivity(intent);
 

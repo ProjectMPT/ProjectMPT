@@ -10,16 +10,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -31,6 +30,7 @@ DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("Trans
 
 public Bundle needsBundle;
 private TextView Textv;
+public boolean Owner = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -72,26 +72,35 @@ private TextView Textv;
                 Textv.setText(newString);
 
                 newLong= extras.getLong("TimeTo");
-                Textv = (TextView)findViewById(R.id.timeNeedExpire);
+                Textv = findViewById(R.id.timeNeedExpire);
                 Date date=new Date(newLong);
                 final DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG,DateFormat.SHORT);
                 Textv.setText("Delivery Expires: " +  dateFormat.format(date));
 
                newString= extras.getString("ProvideLocationDetails");
-                Textv = (TextView)findViewById(R.id.txtProvideLocationDetail);
+                Textv = findViewById(R.id.txtProvideLocationDetail);
                 Log.d("UBBE",newString + " huh?");
                 Textv.setText(newString);
 
                 newLong= extras.getLong("ProvideTimeTo");
-                Textv = (TextView)findViewById(R.id.timeProvideExpire);
+                Textv = findViewById(R.id.timeProvideExpire);
                 date =  new Date(newLong);
-                //final DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG,DateFormat.SHORT);
                 Textv.setText("Pickup Expires: " +  dateFormat.format(date));
+
+                FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
+
+                if (extras.getString("TransportOwner").equals(fUser.getEmail())) {
+
+                    Owner = true;
+                    Button btn = findViewById(R.id.cmdSaveTransport);
+                    btn.setText("Mark as Delivered");
+
+                }
 
 
             }
         } else {
-            newString= (String) savedInstanceState.getSerializable("Description");
+          
         }
 
 
@@ -107,6 +116,7 @@ private TextView Textv;
 
     }
 
+
     public void saveTransport(View view){
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -120,29 +130,35 @@ private TextView Textv;
 
             DatabaseReference provideRef = mTransportsRef.child(needsBundle.getString("Key"));
             Map<String, Object> provideUpdates = new HashMap<>();
-            provideUpdates.put("type", "In progress ");
-            provideUpdates.put("transportowner", user.getEmail());
 
-            provideRef.updateChildren(provideUpdates, new DatabaseReference.CompletionListener() {
-                @Override
-                public void onComplete(DatabaseError databaseError,
-                                       DatabaseReference databaseReference) {
+            if(Owner){
+                provideRef.removeValue();
+            }else {
 
-                    if (databaseError != null) {
-                        System.err.println("There was an error saving: " + databaseError);
-                    } else {
+                provideUpdates.put("type", "In progress ");
+                provideUpdates.put("transportowner", user.getEmail());
+
+
+                provideRef.updateChildren(provideUpdates, new DatabaseReference.CompletionListener() {
+                    @Override
+                    public void onComplete(DatabaseError databaseError,
+                                           DatabaseReference databaseReference) {
+
+                        if (databaseError != null) {
+                            System.err.println("There was an error saving: " + databaseError);
+                        } else {
+
+                        }
+                        ;
+
 
                     }
-                    ;
 
 
-                }
+                });
 
 
-            });
-
-
-
+            }
 
 
             final Intent intent = new Intent(this, ListActivity.class);
